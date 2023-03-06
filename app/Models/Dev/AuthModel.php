@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Model\Dev\AuthModel;
+namespace App\Models\Dev;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
