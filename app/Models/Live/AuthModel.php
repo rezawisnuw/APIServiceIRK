@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Model\Live\AuthModel;
+namespace App\Models\Live;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
