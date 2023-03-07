@@ -13,7 +13,7 @@ use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use App\Http\Model\Stag\AuthModel;
+use App\Http\Models\Stag\AuthModel;
 
 use PHPUnit\Framework\Exception;
 
