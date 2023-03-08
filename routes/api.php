@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Dev;
+use App\Http\Controllers\Stag;
+use App\Http\Controllers\Live;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +25,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['cors']], function() {
     //DEV
-    Route::post('auth/Dev','AuthController@Authentication');
+    Route::post('auth/Dev',[Dev\AuthController::class, 'Authentication']);
     //STAG
-    Route::post('auth/Stag','AuthController@Authentication');
+    Route::post('auth/Stag',[Stag\AuthController::class, 'Authentication']);
     //LIVE
-    Route::post('auth','AuthController@Authentication');
+    Route::post('auth',[Live\AuthController::class, 'Authentication']);
 });
