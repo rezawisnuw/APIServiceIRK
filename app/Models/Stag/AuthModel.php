@@ -87,9 +87,9 @@ class AuthModel extends Model
 
     public static function Logout(Request $request){
         try{
-            $token = str_contains($request->cookie('Authorization'), 'Bearer') ? substr($request->cookie('Authorization'),6) : $request->cookie('Authorization');
+            $token = str_contains($request->cookie('Authorization-stag'), 'Bearer') ? substr($request->cookie('Authorization-stag'),6) : $request->cookie('Authorization-stag');
             if($token != null){
-                Cookie::queue(Cookie::forget('Authorization'));
+                Cookie::queue(Cookie::forget('Authorization-stag'));
 
                 static::$status = 'Success';
                 static::$message = 'Data berhasil di proses';
@@ -120,7 +120,7 @@ class AuthModel extends Model
                 'http://'.config('app.URL_14_WCF').'/RESTSecurity/RESTSecurity.svc/GetTokenDetail',
                 [
                     RequestOptions::JSON => 
-                    ['token' => str_contains($request->cookie('Authorization'), 'Bearer') ? substr($request->cookie('Authorization'),6) : $request->cookie('Authorization')]
+                    ['token' => str_contains($request->cookie('Authorization-stag'), 'Bearer') ? substr($request->cookie('Authorization-stag'),6) : $request->cookie('Authorization-stag')]
                 ],
                 ['Content-Type' => 'application/json']
             );
