@@ -85,7 +85,7 @@ class AuthModel extends Model
         ];
     }
 
-    public static function Logout(Request $request){
+    public static function Logout($request){
         try{
             $token = str_contains($request->cookie('Authorization-stag'), 'Bearer') ? substr($request->cookie('Authorization-stag'),6) : $request->cookie('Authorization-stag');
             if($token != null){
@@ -113,7 +113,7 @@ class AuthModel extends Model
         ];
     }
 
-    public static function Authenticate(Request $request){
+    public static function Authenticate($request){
         try{
             $client = new Client(); 
             $response = $client->post(
