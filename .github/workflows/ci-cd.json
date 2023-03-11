@@ -1,0 +1,8 @@
+[
+    {
+        "name": "irk-webservices",
+        "ip": "SERVICE_HOST",
+        "password": "SERVICE_PASSWORD",
+        "port": "22"
+    }
+]
