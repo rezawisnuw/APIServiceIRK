@@ -17,8 +17,8 @@ class AuthModel extends Model
 
     public static function Login($request)
     {
-        $nik = $request->nik;
-        $password = $request->password;
+        $nik = $request['nik'];
+        $password = $request['password'];
 
         try
         {

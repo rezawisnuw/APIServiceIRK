@@ -25,9 +25,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['cors']], function() {
     //DEV
-    Route::post('auth/Dev',[Dev\AuthController::class, 'Authentication']);
+    Route::post('auth/dev',[Dev\AuthController::class, 'Authentication']);
     //STAG
-    Route::post('auth/Stag',[Stag\AuthController::class, 'Authentication']);
+    Route::post('auth/stag',[Stag\AuthController::class, 'Authentication']);
     //LIVE
     Route::post('auth',[Live\AuthController::class, 'Authentication']);
 });

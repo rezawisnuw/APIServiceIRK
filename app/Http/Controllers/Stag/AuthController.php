@@ -25,11 +25,12 @@ class AuthController extends Controller
     
     public function Authentication(Request $request)
     {
+        $formbody = $request->data;
         $codekey = null;
-
+        
         try{         
             
-            switch ($codekey) {
+            switch ($codekey = $formbody['code']) {
                 case 1:
                     $result = AuthModel::Login($request);
                     break;

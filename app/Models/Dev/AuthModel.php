@@ -17,13 +17,14 @@ class AuthModel extends Model
 
     public static function Login($request)
     {
-        $nik = $request->nik;
-        $password = $request->password;
-
+        $nik = $request['nik'];
+        $password = $request['password'];
+        
         try
         {
             $data = DB::connection(config('app.URL_SQLSRV93_DEV'))->select("EXEC [dbo].[LoginESSOnline]?,?", [$nik,$password]);
-
+            // $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select('SELECT * FROM COMMENT');
+            // return $data;
             $token = null;
 
             if($data) {
