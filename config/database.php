@@ -95,10 +95,10 @@ return [
 
         'sqlsrv93_dev' => [
             'driver' => 'sqlsrv',
-            // 'host' => env('DB_HOST_SQLSRV93_DEV', '202.158.99.205'),
-            'host' => env('DB_HOST_SQLSRV93_DEV', '172.31.2.93'), //local
-            // 'port' => env('DB_PORT_SQLSRV93_DEV', '8096'),
-            'port' => env('DB_PORT_SQLSRV93_DEV', '1433'), //local
+            'host' => env('DB_HOST_SQLSRV93_DEV', '101.234.116.253'), //public
+            //'host' => env('DB_HOST_SQLSRV93_DEV', '172.31.2.93'), //local
+            'port' => env('DB_PORT_SQLSRV93_DEV', '11433'), //public
+            //'port' => env('DB_PORT_SQLSRV93_DEV', '1433'), //local
             'database' => env('DB_DATABASE_SQLSRV93_DEV', 'DBMOBILE_DEV'),
             'username' => env('DB_USERNAME_SQLSRV93_DEV', 'sa'),
             'password' => env('DB_PASSWORD_SQLSRV93_DEV', 'J063r5sd2'),
@@ -109,10 +109,10 @@ return [
 
         'sqlsrv93_stag' => [
             'driver' => 'sqlsrv',
-            // 'host' => env('DB_HOST_SQLSRV93_STAG', '202.158.99.205'),
-            'host' => env('DB_HOST_SQLSRV93_STAG', '172.31.2.93'), //local
-            // 'port' => env('DB_PORT_SQLSRV93_STAG', '8096'),
-            'port' => env('DB_PORT_SQLSRV93_STAG', '1433'), //local
+            'host' => env('DB_HOST_SQLSRV93_STAG', '101.234.116.253'), //public
+            //'host' => env('DB_HOST_SQLSRV93_STAG', '172.31.2.93'), //local
+            'port' => env('DB_PORT_SQLSRV93_STAG', '11433'), //public
+            //'port' => env('DB_PORT_SQLSRV93_STAG', '1433'), //local
             'database' => env('DB_DATABASE_SQLSRV93_STAG', 'DBMOBILE_STAG'),
             'username' => env('DB_USERNAME_SQLSRV93_STAG', 'sa'),
             'password' => env('DB_PASSWORD_SQLSRV93_STAG', 'J063r5sd2'),
@@ -123,10 +123,10 @@ return [
 
         'sqlsrv93' => [
             'driver' => 'sqlsrv',
-            // 'host' => env('DB_HOST_SQLSRV93', '202.158.99.205'),
-            'host' => env('DB_HOST_SQLSRV93', '172.31.2.93'), //local
-            // 'port' => env('DB_PORT_SQLSRV93', '8096'),
-            'port' => env('DB_PORT_SQLSRV93', '1433'), //local
+            'host' => env('DB_HOST_SQLSRV93', '101.234.116.253'), //public
+            //'host' => env('DB_HOST_SQLSRV93', '172.31.2.93'), //local
+            'port' => env('DB_PORT_SQLSRV93', '11433'), //public
+            //'port' => env('DB_PORT_SQLSRV93', '1433'), //local
             'database' => env('DB_DATABASE_SQLSRV93', 'DBMOBILE'),
             'username' => env('DB_USERNAME_SQLSRV93', 'sa'),
             'password' => env('DB_PASSWORD_SQLSRV93', 'J063r5sd2'),
@@ -138,9 +138,7 @@ return [
         'pgsqllocal' =>[
             'driver' => 'pgsql',
             'host' => env('DB_HOST_PGSQLLOCAL', '127.0.0.1'),
-            //'host' => env('DB_PORT_PGSQLLOCAL', '202.158.99.205'), //public
             'port' => env('DB_PORT_PGSQLLOCAL', '5432'),
-            //'port' => env('DB_PORT_PGSQLLOCAL', '8095'), //public
             'database' => env('DB_DATABASE_PGSQLLOCAL', 'DB_IRK'),
             'username' => env('DB_USERNAME_PGSQLLOCAL', 'postgres'),
             'password' => env('DB_PASSWORD_PGSQLLOCAL', '1q2w3e4r'),
@@ -152,13 +150,11 @@ return [
 
         'pgsqlgcp_irk' =>[
             'driver' => 'pgsql',
-            'host' => env('DB_HOST_PGSQLGCP_IRK', '172.31.88.195'),
-            //'host' => env('DB_PORT_PGSQLGCP_IRK', '202.158.99.205'), //public
+            'host' => env('DB_PORT_PGSQLGCP_IRK', '34.128.72.151'),
             'port' => env('DB_PORT_PGSQLGCP_IRK', '5432'),
-            //'port' => env('DB_PORT_PGSQLGCP_IRK', '8095'), //public
-            'database' => env('DB_DATABASE_PGSQLGCP_IRK', 'IRK'),
-            'username' => env('DB_USERNAME_PGSQLGCP_IRK', 'postgres'),
-            'password' => env('DB_PASSWORD_PGSQLGCP_IRK', 'admin'),
+            'database' => env('DB_DATABASE_PGSQLGCP_IRK', 'irk'),
+            'username' => env('DB_USERNAME_PGSQLGCP_IRK', 'usersd2'),
+            'password' => env('DB_PASSWORD_PGSQLGCP_IRK', '5D2k0c4x'),
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',

@@ -16,8 +16,8 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.2"
-          tools: composer:v1
+          php-version: "8.1"
+          tools: composer:v2
 
       - name: Copy env.php
         run: php -r "file_exists('env.php') || copy('env.php.example', 'env.php');"
@@ -58,3 +58,6 @@ jobs:
             cd /var/www/APIServiceIRK
             git fetch origin main
             git pull origin main
+            php artisan cache:clear
+            php artisan config:cache
+            php artisan route:clear

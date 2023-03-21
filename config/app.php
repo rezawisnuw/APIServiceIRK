@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://irk-webservices'),
+    'url' => env('APP_URL', 'http://irkwebservice'),
 
     'asset_url' => env('ASSET_URL', '/'),
 
@@ -199,6 +199,9 @@ return [
         /*
          * Package Service Providers...
          */
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+
+
 
         /*
          * Application Service Providers...
