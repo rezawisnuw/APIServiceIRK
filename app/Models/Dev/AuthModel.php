@@ -22,11 +22,11 @@ class AuthModel extends Model
         
         try
         {
-            $data = DB::connection(config('app.URL_SQLSRV93_DEV'))->select("EXEC [dbo].[LoginESSOnline]?,?", [$nik,$password]);
-            //  $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-            //  ->table('Comment')
-            //  ->get();
-            //  return $data;
+            //$data = DB::connection(config('app.URL_SQLSRV93_DEV'))->select("EXEC [dbo].[LoginESSOnline]?,?", [$nik,$password]);
+             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+             ->table('Comment')
+             ->get();
+             return $data;
             $token = null;
 
             if($data) {
