@@ -25,7 +25,7 @@ class AuthController extends Controller
     
     public function Authentication(Request $request)
     {
-        $formbody = $request->data;
+        $formbody = $request;
         $codekey = null;
         
         try{         
