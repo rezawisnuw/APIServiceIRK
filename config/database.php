@@ -150,7 +150,7 @@ return [
 
         'pgsqlgcp_irk' =>[
             'driver' => 'pgsql',
-            'host' => env('DB_PORT_PGSQLGCP_IRK', '34.128.72.151'),
+            'host' => env('DB_HOST_PGSQLGCP_IRK', '34.128.72.151'),
             'port' => env('DB_PORT_PGSQLGCP_IRK', '5432'),
             'database' => env('DB_DATABASE_PGSQLGCP_IRK', 'irk'),
             'username' => env('DB_USERNAME_PGSQLGCP_IRK', 'usersd2'),
