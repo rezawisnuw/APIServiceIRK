@@ -21,7 +21,7 @@ class AuthController extends Controller
 {
     private $status = 'Error';
     private $data = null;
-    private $message = 'Proses tidak ditemukan';
+    private $message = 'Process is not found';
     
     public function Authentication(Request $request)
     {
