@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Live;
+namespace App\Http\Controllers\Live\IRK;
 use DB;
 use App\User;
 use Illuminate\Http\Request;
@@ -13,18 +13,19 @@ use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use App\Models\Live\AuthModel;
+use App\Models\Live\IRK\MotivasiModel;
 
 use PHPUnit\Framework\Exception;
 
-class AuthController extends Controller
+class MotivasiController extends Controller
 {
     private $status = 'Error';
     private $data = null;
     private $message = 'Process is not found';
     
-    public function Authentication(Request $request)
+    public function get(Request $request)
     {
+        
         $formbody = $request->data;
         $codekey = null;
         
@@ -32,13 +33,7 @@ class AuthController extends Controller
             
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = AuthModel::Login($request);
-                    break;
-                case 2:
-                    $result = AuthModel::Logout($request);
-                    break;
-                case 3:
-                    $result = AuthModel::Authenticate($request);
+                    $result = MotivasiModel::getDataMotivasi($formbody);
                     break;
                 default:
                     $result = collect([
@@ -58,5 +53,20 @@ class AuthController extends Controller
         }
 
         return response()->json($result);
+    }
+
+    public function post(Request $request)
+    {
+
+    }
+
+    public function put(Request $request)
+    {
+
+    }
+
+    public function delete(Request $request)
+    {
+
     }
 }

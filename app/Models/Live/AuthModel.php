@@ -12,8 +12,8 @@ class AuthModel extends Model
 {
     
 	private static $status = 'Failed';
-    private static $message = 'Data gagal di proses';
-    private static $data = 'Kosong';
+    private static $message = 'Data is cannot be process';
+    private static $data = 'Data is Empty';
 
     public static function Login($request)
     {
@@ -40,7 +40,7 @@ class AuthModel extends Model
                             $token = $credential['GetTokenForResult'];
 
                             static::$status = 'Success';
-                            static::$message = 'Data berhasil di proses';
+                            static::$message = 'Data has been process';
                             static::$data = $token;
                         }else{
                             $token = 'Cannot Generate Token';
@@ -52,13 +52,13 @@ class AuthModel extends Model
       
                     }else{
                         static::$status = 'Warning';
-                        static::$message = 'Anda perlu melakukan pengkinian data Atasan Anda';
+                        static::$message = 'You need to update your Head Department';
                         static::$data = null;
                     }
 
                 }else{
                     static::$status = 'Unmatch';
-                    static::$message = 'Username atau Password yang Anda Masukkan Salah, Silahkan Coba Lagi';               
+                    static::$message = 'Username or Password is not correct, Please Try Again';               
                     static::$data = [
                         $nik,
                         $password
@@ -92,7 +92,7 @@ class AuthModel extends Model
                 Cookie::queue(Cookie::forget('Authorization'));
 
                 static::$status = 'Success';
-                static::$message = 'Data berhasil di proses';
+                static::$message = 'Data has been process';
                 static::$data = $token;
             }else{
                 static::$status;
@@ -128,7 +128,7 @@ class AuthModel extends Model
             $responseBody = json_decode($response->getBody(), true);
 
             static::$status = 'Success';
-            static::$message = 'Data berhasil di proses';
+            static::$message = 'Data has been process';
             static::$data = $responseBody;
             
         }catch(Exception $e){
