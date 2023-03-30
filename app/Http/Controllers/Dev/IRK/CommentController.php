@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Live\IRK;
+namespace App\Http\Controllers\Dev\IRK;
 use DB;
 use App\User;
 use Illuminate\Http\Request;
@@ -13,11 +13,11 @@ use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use App\Models\Live\IRK\MotivasiModel;
+use App\Models\Dev\IRK\CommentModel;
 
 use PHPUnit\Framework\Exception;
 
-class MotivasiController extends Controller
+class CommentController extends Controller
 {
     private $status = 'Error';
     private $data = null;
@@ -25,7 +25,6 @@ class MotivasiController extends Controller
     
     public function get(Request $request)
     {
-        
         $formbody = $request->data;
         $codekey = null;
         
@@ -33,7 +32,7 @@ class MotivasiController extends Controller
             
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = MotivasiModel::showDataMotivasi($formbody);
+                    $result = CommentModel::showDataComment($formbody);
                     break;
                 default:
                     $result = collect([
@@ -57,7 +56,33 @@ class MotivasiController extends Controller
 
     public function post(Request $request)
     {
+        $formbody = $request->data;
+        $codekey = null;
+        
+        try{         
+            
+            switch ($codekey = $formbody['code']) {
+                case 1:
+                    $result = CommentModel::inputDataComment($formbody);
+                    break;
+                default:
+                    $result = collect([
+                        'status'  => $this->status,
+                        'data' => $this->data,
+                        'message' => $this->message
+                    ]);
+            }
+				
+        }
+        catch(\Exception $e){ 
+            $result = collect([
+                'status' => $this->status,
+                'data' => $this->data,
+                'message'  => $e->getCode() == 0 ? 'Error Controller Laravel = '.$e->getMessage() : 'Error Model Laravel = '.$e->getMessage().' Switch Case = '.$codekey
+            ]);
+        }
 
+        return response()->json($result);
     }
 
     public function put(Request $request)
