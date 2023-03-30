@@ -15,7 +15,7 @@ class MotivasiModel extends Model
     private static $message = 'Data is cannot be process';
     private static $data = 'Data is Empty';
 
-    public static function getDataMotivasi($request)
+    public static function showDataMotivasi($request)
     {
         try
         {

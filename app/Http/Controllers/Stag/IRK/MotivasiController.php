@@ -33,7 +33,7 @@ class MotivasiController extends Controller
             
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = MotivasiModel::getDataMotivasi($formbody);
+                    $result = MotivasiModel::showDataMotivasi($formbody);
                     break;
                 default:
                     $result = collect([

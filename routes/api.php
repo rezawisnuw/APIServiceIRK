@@ -39,6 +39,11 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('curhatku/post/dev',[Dev\IRK\CurhatkuController::class, 'post']);
         Route::post('curhatku/put/dev',[Dev\IRK\CurhatkuController::class, 'put']);
         Route::post('curhatku/delete/dev',[Dev\IRK\CurhatkuController::class, 'delete']);
+        //Comment
+        Route::post('comment/get/dev',[Dev\IRK\CommentController::class, 'get']);
+        Route::post('comment/post/dev',[Dev\IRK\CommentController::class, 'post']);
+        Route::post('comment/put/dev',[Dev\IRK\CommentController::class, 'put']);
+        Route::post('comment/delete/dev',[Dev\IRK\CommentController::class, 'delete']);
     });
     //END DEV
 
@@ -56,6 +61,11 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('curhatku/post/stag',[Stag\IRK\CurhatkuController::class, 'post']);
         Route::post('curhatku/put/stag',[Stag\IRK\CurhatkuController::class, 'put']);
         Route::post('curhatku/delete/stag',[Stag\IRK\CurhatkuController::class, 'delete']);
+        //Comment
+        Route::post('comment/get/stag',[Stag\IRK\CommentController::class, 'get']);
+        Route::post('comment/post/stag',[Stag\IRK\CommentController::class, 'post']);
+        Route::post('comment/put/stag',[Stag\IRK\CommentController::class, 'put']);
+        Route::post('comment/delete/stag',[Stag\IRK\CommentController::class, 'delete']);
     });
     //END STAG
 
@@ -73,6 +83,11 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('curhatku/post',[Live\IRK\CurhatkuController::class, 'post']);
         Route::post('curhatku/put',[Live\IRK\CurhatkuController::class, 'put']);
         Route::post('curhatku/delete',[Live\IRK\CurhatkuController::class, 'delete']);
+        //Comment
+        Route::post('comment/get',[Live\IRK\CommentController::class, 'get']);
+        Route::post('comment/post',[Live\IRK\CommentController::class, 'post']);
+        Route::post('comment/put',[Live\IRK\CommentController::class, 'put']);
+        Route::post('comment/delete',[Live\IRK\CommentController::class, 'delete']);
     });
     //END LIVE
 
