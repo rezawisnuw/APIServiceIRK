@@ -20,7 +20,7 @@ class CommentModel extends Model
         try
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-            ->table('Comment')
+            ->table('CommentDetails')
             ->get();
 
             if($data) {
