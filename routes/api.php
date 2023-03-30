@@ -26,53 +26,56 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['cors']], function() {
 
     //START DEV
-    Route::post('auth/dev',[Dev\AuthController::class, 'Authentication']);
     //IRK
-    Route::group(['prefix' => 'irk'], function () {
+    Route::group(['prefix' => 'dev'], function () {
+        Route::post('auth',[Dev\AuthController::class, 'Authentication']);
+
         //Motivasi
-        Route::post('motivasi/get/dev',[Dev\IRK\MotivasiController::class, 'get']);
-        Route::post('motivasi/post/dev',[Dev\IRK\MotivasiController::class, 'post']);
-        Route::post('motivasi/put/dev',[Dev\IRK\MotivasiController::class, 'put']);
-        Route::post('motivasi/delete/dev',[Dev\IRK\MotivasiController::class, 'delete']);
+        Route::post('motivasi/get',[Dev\IRK\MotivasiController::class, 'get']);
+        Route::post('motivasi/post',[Dev\IRK\MotivasiController::class, 'post']);
+        Route::post('motivasi/put',[Dev\IRK\MotivasiController::class, 'put']);
+        Route::post('motivasi/delete',[Dev\IRK\MotivasiController::class, 'delete']);
         //Curhatku
-        Route::post('curhatku/get/dev',[Dev\IRK\CurhatkuController::class, 'get']);
-        Route::post('curhatku/post/dev',[Dev\IRK\CurhatkuController::class, 'post']);
-        Route::post('curhatku/put/dev',[Dev\IRK\CurhatkuController::class, 'put']);
-        Route::post('curhatku/delete/dev',[Dev\IRK\CurhatkuController::class, 'delete']);
+        Route::post('curhatku/get',[Dev\IRK\CurhatkuController::class, 'get']);
+        Route::post('curhatku/post',[Dev\IRK\CurhatkuController::class, 'post']);
+        Route::post('curhatku/put',[Dev\IRK\CurhatkuController::class, 'put']);
+        Route::post('curhatku/delete',[Dev\IRK\CurhatkuController::class, 'delete']);
         //Comment
-        Route::post('comment/get/dev',[Dev\IRK\CommentController::class, 'get']);
-        Route::post('comment/post/dev',[Dev\IRK\CommentController::class, 'post']);
-        Route::post('comment/put/dev',[Dev\IRK\CommentController::class, 'put']);
-        Route::post('comment/delete/dev',[Dev\IRK\CommentController::class, 'delete']);
+        Route::post('comment/get',[Dev\IRK\CommentController::class, 'get']);
+        Route::post('comment/post',[Dev\IRK\CommentController::class, 'post']);
+        Route::post('comment/put',[Dev\IRK\CommentController::class, 'put']);
+        Route::post('comment/delete',[Dev\IRK\CommentController::class, 'delete']);
     });
     //END DEV
 
     //START STAG
-    Route::post('auth/stag',[Stag\AuthController::class, 'Authentication']);
     //IRK
-    Route::group(['prefix' => 'irk'], function () {
+    Route::group(['prefix' => 'stag'], function () {
+        Route::post('auth',[Stag\AuthController::class, 'Authentication']);
+
         //Motivasi
-        Route::post('motivasi/get/stag',[Stag\IRK\MotivasiController::class, 'get']);
-        Route::post('motivasi/post/stag',[Stag\IRK\MotivasiController::class, 'post']);
-        Route::post('motivasi/put/stag',[Stag\IRK\MotivasiController::class, 'put']);
-        Route::post('motivasi/delete/stag',[Stag\IRK\MotivasiController::class, 'delete']);
+        Route::post('motivasi/get',[Stag\IRK\MotivasiController::class, 'get']);
+        Route::post('motivasi/post',[Stag\IRK\MotivasiController::class, 'post']);
+        Route::post('motivasi/put',[Stag\IRK\MotivasiController::class, 'put']);
+        Route::post('motivasi/delete',[Stag\IRK\MotivasiController::class, 'delete']);
         //Curhatku
-        Route::post('curhatku/get/stag',[Stag\IRK\CurhatkuController::class, 'get']);
-        Route::post('curhatku/post/stag',[Stag\IRK\CurhatkuController::class, 'post']);
-        Route::post('curhatku/put/stag',[Stag\IRK\CurhatkuController::class, 'put']);
-        Route::post('curhatku/delete/stag',[Stag\IRK\CurhatkuController::class, 'delete']);
+        Route::post('curhatku/get',[Stag\IRK\CurhatkuController::class, 'get']);
+        Route::post('curhatku/post',[Stag\IRK\CurhatkuController::class, 'post']);
+        Route::post('curhatku/put',[Stag\IRK\CurhatkuController::class, 'put']);
+        Route::post('curhatku/delete',[Stag\IRK\CurhatkuController::class, 'delete']);
         //Comment
-        Route::post('comment/get/stag',[Stag\IRK\CommentController::class, 'get']);
-        Route::post('comment/post/stag',[Stag\IRK\CommentController::class, 'post']);
-        Route::post('comment/put/stag',[Stag\IRK\CommentController::class, 'put']);
-        Route::post('comment/delete/stag',[Stag\IRK\CommentController::class, 'delete']);
+        Route::post('comment/get',[Stag\IRK\CommentController::class, 'get']);
+        Route::post('comment/post',[Stag\IRK\CommentController::class, 'post']);
+        Route::post('comment/put',[Stag\IRK\CommentController::class, 'put']);
+        Route::post('comment/delete',[Stag\IRK\CommentController::class, 'delete']);
     });
     //END STAG
 
     //START LIVE
-    Route::post('auth',[Live\AuthController::class, 'Authentication']);
     //IRK
-    Route::group(['prefix' => 'irk'], function () {
+    Route::group(['prefix' => 'live'], function () {
+        Route::post('auth',[Live\AuthController::class, 'Authentication']);
+        
         //Motivasi
         Route::post('motivasi/get',[Live\IRK\MotivasiController::class, 'get']);
         Route::post('motivasi/post',[Live\IRK\MotivasiController::class, 'post']);
