@@ -49,19 +49,56 @@ class CurhatkuModel extends Model
 
     public static function inputDataCurhatku($request)
     {
-        $nik = $request['nik'];
-        $alias = $request['alias'];
-        $deskripsi = $request['deskripsi'];
-        $gambar = $request['gambar'];
+            
+        $nik = $request->nik;
+        $alias = $request->alias;
+        $deskripsi = $request->deskripsi;
+        $gambar = $request->gambar;
+        
+        $imgdata = '';
+        $imgformat = array("jpeg", "jpg", "png");
+        
+        if ($gambar->getSize() > 1048576 || !in_array($gambar->extension(), $imgformat)){
+            return [
+                'status'  => 'File Error',
+                'data' => static::$data,
+                'message' => 'Format File dan Size tidak sesuai',
+                'code' => 200
+            ];
+        }else{
+            $imgdata = base64_encode(file_get_contents($gambar->path()));
+            $imgextension = $gambar->extension();
+        }
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$alias,$deskripsi,$gambar]);
-
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$alias,$deskripsi,$imgextension]);
+            
             if($data) {
+                $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+                            ->table('Ticket_Curhatku')
+                            ->selectRaw('CAST(MAX("Id_Ticket") as integer) + 1 as next_id')
+                            ->value('next_id');
+
+                $client = new Client();
+                $response = $client->post(
+                        'https://cloud.hrindomaret.com/api/irk/upload',
+                        [
+                            RequestOptions::JSON => 
+                            [
+                             'file'=> $imgdata,
+                             'file_name' => 'Dev/'.$nik.'_'.$nextId.'.'.$imgextension
+                            ]
+                        ]
+                    );
+
+                $body = $response->getBody();
+                
+                $temp = json_decode($body);
+
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $data;
+                static::$data = $temp;
             } else{
                 static::$status;
                 static::$message;
