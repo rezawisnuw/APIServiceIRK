@@ -30,6 +30,11 @@ Route::group(['middleware' => ['cors']], function() {
     Route::group(['prefix' => 'dev'], function () {
         Route::post('auth',[Dev\AuthController::class, 'Authentication']);
 
+        //Ceritakita
+        Route::post('ceritakita/get',[Dev\IRK\CeritakitaController::class, 'get']);
+        Route::post('ceritakita/post',[Dev\IRK\CeritakitaController::class, 'post']);
+        Route::post('ceritakita/put',[Dev\IRK\CeritakitaController::class, 'put']);
+        Route::post('ceritakita/delete',[Dev\IRK\CeritakitaController::class, 'delete']);
         //Motivasi
         Route::post('motivasi/get',[Dev\IRK\MotivasiController::class, 'get']);
         Route::post('motivasi/post',[Dev\IRK\MotivasiController::class, 'post']);
@@ -53,6 +58,11 @@ Route::group(['middleware' => ['cors']], function() {
     Route::group(['prefix' => 'stag'], function () {
         Route::post('auth',[Stag\AuthController::class, 'Authentication']);
 
+        //Ceritakita
+        Route::post('ceritakita/get',[Stag\IRK\CeritakitaController::class, 'get']);
+        Route::post('ceritakita/post',[Stag\IRK\CeritakitaController::class, 'post']);
+        Route::post('ceritakita/put',[Stag\IRK\CeritakitaController::class, 'put']);
+        Route::post('ceritakita/delete',[Stag\IRK\CeritakitaController::class, 'delete']);
         //Motivasi
         Route::post('motivasi/get',[Stag\IRK\MotivasiController::class, 'get']);
         Route::post('motivasi/post',[Stag\IRK\MotivasiController::class, 'post']);
@@ -76,6 +86,11 @@ Route::group(['middleware' => ['cors']], function() {
     Route::group(['prefix' => 'live'], function () {
         Route::post('auth',[Live\AuthController::class, 'Authentication']);
         
+        //Ceritakita
+        Route::post('ceritakita/get',[Live\IRK\CeritakitaController::class, 'get']);
+        Route::post('ceritakita/post',[Live\IRK\CeritakitaController::class, 'post']);
+        Route::post('ceritakita/put',[Live\IRK\CeritakitaController::class, 'put']);
+        Route::post('ceritakita/delete',[Live\IRK\CeritakitaController::class, 'delete']);
         //Motivasi
         Route::post('motivasi/get',[Live\IRK\MotivasiController::class, 'get']);
         Route::post('motivasi/post',[Live\IRK\MotivasiController::class, 'post']);
