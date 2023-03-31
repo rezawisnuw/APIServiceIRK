@@ -21,9 +21,26 @@ class CurhatkuModel extends Model
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Ticket_Curhatku')
+            ->orderBy('Id_Ticket','DESC')
             ->get();
 
             if($data) {
+                
+                // $client = new Client();
+                // $filesplit =  explode("/",$data[0]->Gambar);
+                // $response = $client->get(
+                //         'https://cloud.hrindomaret.com/api/irk/download?file_name='.$filesplit[0].'%2f'.$filesplit[1],
+                //         [
+                //             'query' => [
+                //                 'file_name' => $filesplit[0].'%2f'.$filesplit[1]
+                //             ]
+                //         ]
+                //     );
+
+                // $body = $response->getBody();
+                
+                // $temp = json_decode($body);
+
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
                 static::$data = $data;
@@ -55,7 +72,6 @@ class CurhatkuModel extends Model
         $deskripsi = $request->deskripsi;
         $gambar = $request->gambar;
         
-        $imgdata = '';
         $imgformat = array("jpeg", "jpg", "png");
         
         if ($gambar->getSize() > 1048576 || !in_array($gambar->extension(), $imgformat)){
@@ -66,7 +82,6 @@ class CurhatkuModel extends Model
                 'code' => 200
             ];
         }else{
-            $imgdata = base64_encode(file_get_contents($gambar->path()));
             $imgextension = $gambar->extension();
         }
 
@@ -80,25 +95,25 @@ class CurhatkuModel extends Model
                             ->selectRaw('CAST(MAX("Id_Ticket") as integer) + 1 as next_id')
                             ->value('next_id');
 
-                $client = new Client();
-                $response = $client->post(
-                        'https://cloud.hrindomaret.com/api/irk/upload',
-                        [
-                            RequestOptions::JSON => 
-                            [
-                             'file'=> $imgdata,
-                             'file_name' => 'Dev/'.$nik.'_'.$nextId.'.'.$imgextension
-                            ]
-                        ]
-                    );
+                // $client = new Client();
+                // $response = $client->post(
+                //         'https://cloud.hrindomaret.com/api/irk/upload',
+                //         [
+                //             RequestOptions::JSON => 
+                //             [
+                //              'file'=> $gambar,
+                //              'file_name' => 'Dev/'.$nik.'_'.$nextId.'.'.$imgextension
+                //             ]
+                //         ]
+                //     );
 
-                $body = $response->getBody();
+                // $body = $response->getBody();
                 
-                $temp = json_decode($body);
+                // $temp = json_decode($body);
 
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $temp;
+                static::$data = $nextId;
             } else{
                 static::$status;
                 static::$message;
