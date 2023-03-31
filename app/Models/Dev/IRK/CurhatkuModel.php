@@ -112,9 +112,11 @@ class CurhatkuModel extends Model
                 
                 // $temp = json_decode($body);
 
+                $imgpath = 'Dev/'.$nik.'_'.$nextId.'.'.$imgextension;
+
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $nextId;
+                static::$data = $imgpath;
             } else{
                 static::$status;
                 static::$message;

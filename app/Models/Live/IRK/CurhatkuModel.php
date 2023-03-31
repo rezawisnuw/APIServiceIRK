@@ -79,9 +79,11 @@ class CurhatkuModel extends Model
                             ->selectRaw('CAST(MAX("Id_Ticket") as integer) + 1 as next_id')
                             ->value('next_id');
 
+                $imgpath = 'Dev/'.$nik.'_'.$nextId.'.'.$imgextension;
+
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $nextId;
+                static::$data = $imgpath;
             } else{
                 static::$status;
                 static::$message;
