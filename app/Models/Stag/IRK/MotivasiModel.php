@@ -22,6 +22,7 @@ class MotivasiModel extends Model
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Ticket_Motivasi')
             ->orderBy('id_ticket','DESC')
+            ->limit(35)
             ->get();
 
             if($data) {
