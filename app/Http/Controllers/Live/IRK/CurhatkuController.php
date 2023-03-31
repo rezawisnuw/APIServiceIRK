@@ -56,12 +56,32 @@ class CurhatkuController extends Controller
 
     public function post(Request $request)
     {
-        $formbody = $request->data;
         $codekey = null;
+
+        $datadecode = json_decode($request->data);
+        $filedecode = json_decode($request->file);
+        $b64filedecode = base64_decode($filedecode);
+
+        $arrayfile = [];
+        $tmpFilePath = "example.txt";
+        file_put_contents($tmpFilePath, $b64filedecode);
+        $tmpFile = new File($tmpFilePath);
+        $file = new UploadedFile(
+            $tmpFile->getPathname(),
+            $tmpFile->getFilename(),
+            $tmpFile->getMimeType(),
+            0,
+            true // Mark it as test, since the file isn't from real HTTP POST.
+        );
+        array_push($arrayfile, $file);
+        //return response()->json($arrayfile[0]->extension());
+        isset($datadecode->gambar) && !empty($datadecode->gambar) ? $datadecode->gambar = $arrayfile[0] : $datadecode->gambar = '';
+
+        $formbody = $datadecode;
         
         try{         
             
-            switch ($codekey = $formbody['code']) {
+            switch ($codekey = $formbody->code) {
                 case 1:
                     $result = CurhatkuModel::inputDataCurhatku($formbody);
                     break;
