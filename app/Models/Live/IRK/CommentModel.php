@@ -52,10 +52,11 @@ class CommentModel extends Model
         $nik = $request['nik'];
         $comment = $request['comment'];
         $idticket = $request['idticket'];
+        $tag = $request['tag'];
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcomment(?,?,?)", [$nik,$comment,$idticket]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcomment(?,?,?,?)", [$nik,$comment,$idticket,$tag]);
 
             if($data) {
                 static::$status = 'Success';
