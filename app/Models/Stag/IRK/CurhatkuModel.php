@@ -56,38 +56,38 @@ class CurhatkuModel extends Model
         $deskripsi = $request->deskripsi;
         $gambar = $request->gambar;
 
-        $imgformat = array("jpeg", "jpg", "png");
-        
-        if ($gambar->getSize() > 1048576 || !in_array($gambar->extension(), $imgformat)){
-            return [
-                'status'  => 'File Error',
-                'data' => static::$data,
-                'message' => 'Format File dan Size tidak sesuai',
-                'code' => 200
-            ];
-        }else{
-            $imgextension = $gambar->extension();
-        }
-
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$alias,$deskripsi,$imgextension]);
+            $imgformat = array("jpeg", "jpg", "png");
+        
+            if ($gambar->getSize() > 1048576 || !in_array($gambar->extension(), $imgformat)){
+                return [
+                    'status'  => 'File Error',
+                    'data' => static::$data,
+                    'message' => 'Format File dan Size tidak sesuai',
+                    'code' => 200
+                ];
+            }else{
+                $imgextension = $gambar->extension();
 
-            if($data) {
-                $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-                            ->table('Ticket_Curhatku')
-                            ->selectRaw('CAST(MAX("Id_Ticket") as integer) + 1 as next_id')
-                            ->value('next_id');
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$alias,$deskripsi,$imgextension]);
 
-                $imgpath = 'Dev/'.$nik.'_'.$nextId.'.'.$imgextension;
+                if($data) {
+                    $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+                                ->table('Ticket_Curhatku')
+                                ->selectRaw('CAST(MAX("Id_Ticket") as integer) + 1 as next_id')
+                                ->value('next_id');
 
-                static::$status = 'Success';
-                static::$message = 'Data has been process';
-                static::$data = $imgpath;
-            } else{
-                static::$status;
-                static::$message;
-                static::$data;
+                    $imgpath = 'Dev/'.$nik.'_'.$nextId.'.'.$imgextension;
+
+                    static::$status = 'Success';
+                    static::$message = 'Data has been process';
+                    static::$data = $imgpath;
+                } else{
+                    static::$status;
+                    static::$message;
+                    static::$data;
+                }
             }
 
         }
