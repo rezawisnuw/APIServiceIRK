@@ -21,7 +21,7 @@ class CeritakitaModel extends Model
         {   
             $first = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Ticket_Motivasi')
-            ->select('id_ticket as IdTicket', 'id_user as Employee', 'judul_motivasi as Header', 'motivasi as Text', 'photo as Picture', 'tag as Key', 'addtiem as Created')
+            ->select('id_ticket as IdTicket', 'id_user as Employee', 'judul_motivasi as Header', 'motivasi as Text', 'photo as Picture', 'tag as Key', 'addtime as Created')
             ->orderBy('id_ticket','DESC')
             ->limit(35);
 
