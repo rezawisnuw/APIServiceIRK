@@ -50,6 +50,11 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('comment/post',[Dev\IRK\CommentController::class, 'post']);
         Route::post('comment/put',[Dev\IRK\CommentController::class, 'put']);
         Route::post('comment/delete',[Dev\IRK\CommentController::class, 'delete']);
+        //Like
+        Route::post('like/get',[Dev\IRK\LikeController::class, 'get']);
+        Route::post('like/post',[Dev\IRK\LikeController::class, 'post']);
+        Route::post('like/put',[Dev\IRK\LikeController::class, 'put']);
+        Route::post('like/delete',[Dev\IRK\LikeController::class, 'delete']);
     });
     //END DEV
 
@@ -78,6 +83,11 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('comment/post',[Stag\IRK\CommentController::class, 'post']);
         Route::post('comment/put',[Stag\IRK\CommentController::class, 'put']);
         Route::post('comment/delete',[Stag\IRK\CommentController::class, 'delete']);
+        //Like
+        Route::post('like/get',[Stag\IRK\LikeController::class, 'get']);
+        Route::post('like/post',[Stag\IRK\LikeController::class, 'post']);
+        Route::post('like/put',[Stag\IRK\LikeController::class, 'put']);
+        Route::post('like/delete',[Stag\IRK\LikeController::class, 'delete']);
     });
     //END STAG
 
@@ -106,6 +116,11 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('comment/post',[Live\IRK\CommentController::class, 'post']);
         Route::post('comment/put',[Live\IRK\CommentController::class, 'put']);
         Route::post('comment/delete',[Live\IRK\CommentController::class, 'delete']);
+        //Like
+        Route::post('like/get',[Live\IRK\LikeController::class, 'get']);
+        Route::post('like/post',[Live\IRK\LikeController::class, 'post']);
+        Route::post('like/put',[Live\IRK\LikeController::class, 'put']);
+        Route::post('like/delete',[Live\IRK\LikeController::class, 'delete']);
     });
     //END LIVE
 
