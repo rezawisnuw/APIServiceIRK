@@ -52,25 +52,42 @@ class ProfileModel extends Model
 
     public static function inputDataProfile($request)
     {
-        $nik = $request['nik'];
-        $nama = $request['nama'];
-        $nohp = $request['nohp'];
-        $alias = $request['alias'];
-        $kelamin = $request['kelamin'];
-        $email = $request['email'];
+        $nik = $request->nik;
+        $nama = $request->nama;
+        $nohp = $request->nohp;
+        $alias = $request->alias;
+        $kelamin = $request->kelamin;
+        $email = $request->email;
+        $photo = $request->photo;
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputProfile(?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email]);
+            $imgformat = array("jpeg", "jpg", "png");
+        
+            if ($photo->getSize() > 1048576 || !in_array($photo->extension(), $imgformat)){
+                return [
+                    'status'  => 'File Error',
+                    'data' => static::$data,
+                    'message' => 'Format File dan Size tidak sesuai',
+                    'code' => 200
+                ];
+            }else{
+                $imgextension = $photo->extension();
 
-            if($data) {
-                static::$status = 'Success';
-                static::$message = 'Data has been process';
-                static::$data = $data;
-            } else{
-                static::$status;
-                static::$message;
-                static::$data;
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,$imgextension]);
+
+                if($data) {
+
+                    $imgpath = 'Dev/Ceritakita/Profile/'.$nik.'_'.$nama.'.'.$imgextension;
+
+                    static::$status = 'Success';
+                    static::$message = 'Data has been process';
+                    static::$data = $imgpath;
+                } else{
+                    static::$status;
+                    static::$message;
+                    static::$data;
+                }
             }
 
         }
@@ -89,25 +106,42 @@ class ProfileModel extends Model
 
     public static function editDataProfile($request)
     {
-        $nik = $request['nik'];
-        $nama = $request['nama'];
-        $nohp = $request['nohp'];
-        $alias = $request['alias'];
-        $kelamin = $request['kelamin'];
-        $email = $request['email'];
+        $nik = $request->nik;
+        $nama = $request->nama;
+        $nohp = $request->nohp;
+        $alias = $request->alias;
+        $kelamin = $request->kelamin;
+        $email = $request->email;
+        $photo = $request->photo;
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL editProfile(?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email]);
+            $imgformat = array("jpeg", "jpg", "png");
+        
+            if ($photo->getSize() > 1048576 || !in_array($photo->extension(), $imgformat)){
+                return [
+                    'status'  => 'File Error',
+                    'data' => static::$data,
+                    'message' => 'Format File dan Size tidak sesuai',
+                    'code' => 200
+                ];
+            }else{
+                $imgextension = $photo->extension();
 
-            if($data) {
-                static::$status = 'Success';
-                static::$message = 'Data has been process';
-                static::$data = $data;
-            } else{
-                static::$status;
-                static::$message;
-                static::$data;
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL editProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,$photo]);
+
+                if($data) {
+
+                    $imgpath = 'Dev/Ceritakita/Profile/'.$nik.'_'.$nama.'.'.$imgextension;
+
+                    static::$status = 'Success';
+                    static::$message = 'Data has been process';
+                    static::$data = $imgpath;
+                } else{
+                    static::$status;
+                    static::$message;
+                    static::$data;
+                }
             }
 
         }
