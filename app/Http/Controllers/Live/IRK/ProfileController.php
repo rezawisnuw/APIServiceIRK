@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Stag\IRK;
+namespace App\Http\Controllers\Live\IRK;
 use DB;
 use App\User;
 use Illuminate\Http\Request;
@@ -13,11 +13,11 @@ use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use App\Models\Stag\IRK\LikeModel;
+use App\Models\Live\IRK\ProfileModel;
 
 use PHPUnit\Framework\Exception;
 
-class LikeController extends Controller
+class ProfileController extends Controller
 {
     private $status = 'Error';
     private $data = null;
@@ -32,13 +32,7 @@ class LikeController extends Controller
             
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = LikeModel::showDataLike($formbody);
-                    break;
-                case 2:
-                    $result = LikeModel::showDataLikeCurhatku($formbody);
-                    break;
-                case 3:
-                    $result = LikeModel::showDataLikeMotivasi($formbody);
+                    $result = ProfileModel::showDataProfile($formbody);
                     break;
                 default:
                     $result = collect([
@@ -69,7 +63,7 @@ class LikeController extends Controller
             
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = LikeModel::inputDataLike($formbody);
+                    $result = ProfileModel::inputDataProfile($formbody);
                     break;
                 default:
                     $result = collect([
@@ -93,7 +87,33 @@ class LikeController extends Controller
 
     public function put(Request $request)
     {
+        $formbody = $request->data;
+        $codekey = null;
+        
+        try{         
+            
+            switch ($codekey = $formbody['code']) {
+                case 1:
+                    $result = ProfileModel::editDataProfile($formbody);
+                    break;
+                default:
+                    $result = collect([
+                        'status'  => $this->status,
+                        'data' => $this->data,
+                        'message' => $this->message
+                    ]);
+            }
+				
+        }
+        catch(\Exception $e){ 
+            $result = collect([
+                'status' => $this->status,
+                'data' => $this->data,
+                'message'  => $e->getCode() == 0 ? 'Error Controller Laravel = '.$e->getMessage() : 'Error Model Laravel = '.$e->getMessage().' Switch Case = '.$codekey
+            ]);
+        }
 
+        return response()->json($result);
     }
 
     public function delete(Request $request)

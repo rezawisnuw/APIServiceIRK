@@ -34,6 +34,12 @@ class CommentController extends Controller
                 case 1:
                     $result = CommentModel::showDataComment($formbody);
                     break;
+                case 2:
+                    $result = CommentModel::showDataCommentCurhatku($formbody);
+                    break;
+                case 3:
+                    $result = CommentModel::showDataCommentMotivasi($formbody);
+                    break;
                 default:
                     $result = collect([
                         'status'  => $this->status,
