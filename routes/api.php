@@ -55,6 +55,16 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('like/post',[Dev\IRK\LikeController::class, 'post']);
         Route::post('like/put',[Dev\IRK\LikeController::class, 'put']);
         Route::post('like/delete',[Dev\IRK\LikeController::class, 'delete']);
+        //Report
+        Route::post('report/get',[Dev\IRK\ReportController::class, 'get']);
+        Route::post('report/post',[Dev\IRK\ReportController::class, 'post']);
+        Route::post('report/put',[Dev\IRK\ReportController::class, 'put']);
+        Route::post('report/delete',[Dev\IRK\ReportController::class, 'delete']);
+        //Profile
+        Route::post('profile/get',[Dev\IRK\ProfileController::class, 'get']);
+        Route::post('profile/post',[Dev\IRK\ProfileController::class, 'post']);
+        Route::post('profile/put',[Dev\IRK\ProfileController::class, 'put']);
+        Route::post('profile/delete',[Dev\IRK\ProfileController::class, 'delete']);
     });
     //END DEV
 
@@ -88,6 +98,16 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('like/post',[Stag\IRK\LikeController::class, 'post']);
         Route::post('like/put',[Stag\IRK\LikeController::class, 'put']);
         Route::post('like/delete',[Stag\IRK\LikeController::class, 'delete']);
+        //Report
+        Route::post('report/get',[Stag\IRK\ReportController::class, 'get']);
+        Route::post('report/post',[Stag\IRK\ReportController::class, 'post']);
+        Route::post('report/put',[Stag\IRK\ReportController::class, 'put']);
+        Route::post('report/delete',[Stag\IRK\ReportController::class, 'delete']);
+        //Profile
+        Route::post('profile/get',[Stag\IRK\ProfileController::class, 'get']);
+        Route::post('profile/post',[Stag\IRK\ProfileController::class, 'post']);
+        Route::post('profile/put',[Stag\IRK\ProfileController::class, 'put']);
+        Route::post('profile/delete',[Stag\IRK\ProfileController::class, 'delete']);
     });
     //END STAG
 
@@ -121,6 +141,16 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('like/post',[Live\IRK\LikeController::class, 'post']);
         Route::post('like/put',[Live\IRK\LikeController::class, 'put']);
         Route::post('like/delete',[Live\IRK\LikeController::class, 'delete']);
+        //Report
+        Route::post('report/get',[Live\IRK\ReportController::class, 'get']);
+        Route::post('report/post',[Live\IRK\ReportController::class, 'post']);
+        Route::post('report/put',[Live\IRK\ReportController::class, 'put']);
+        Route::post('report/delete',[Live\IRK\ReportController::class, 'delete']);
+        //Profile
+        Route::post('profile/get',[Live\IRK\ProfileController::class, 'get']);
+        Route::post('profile/post',[Live\IRK\ProfileController::class, 'post']);
+        Route::post('profile/put',[Live\IRK\ProfileController::class, 'put']);
+        Route::post('profile/delete',[Live\IRK\ProfileController::class, 'delete']);
     });
     //END LIVE
 

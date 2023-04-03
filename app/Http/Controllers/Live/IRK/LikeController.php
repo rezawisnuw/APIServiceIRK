@@ -34,6 +34,12 @@ class LikeController extends Controller
                 case 1:
                     $result = LikeModel::showDataLike($formbody);
                     break;
+                case 2:
+                    $result = LikeModel::showDataLikeCurhatku($formbody);
+                    break;
+                case 3:
+                    $result = LikeModel::showDataLikeMotivasi($formbody);
+                    break;
                 default:
                     $result = collect([
                         'status'  => $this->status,

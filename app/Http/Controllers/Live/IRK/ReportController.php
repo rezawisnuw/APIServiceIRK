@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Stag\IRK;
+namespace App\Http\Controllers\Live\IRK;
 use DB;
 use App\User;
 use Illuminate\Http\Request;
@@ -13,11 +13,11 @@ use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use App\Models\Stag\IRK\LikeModel;
+use App\Models\Live\IRK\ReportModel;
 
 use PHPUnit\Framework\Exception;
 
-class LikeController extends Controller
+class ReportController extends Controller
 {
     private $status = 'Error';
     private $data = null;
@@ -32,13 +32,10 @@ class LikeController extends Controller
             
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = LikeModel::showDataLike($formbody);
+                    $result = ReportModel::showDataReportTicket($formbody);
                     break;
                 case 2:
-                    $result = LikeModel::showDataLikeCurhatku($formbody);
-                    break;
-                case 3:
-                    $result = LikeModel::showDataLikeMotivasi($formbody);
+                    $result = ReportModel::showDataReportComment($formbody);
                     break;
                 default:
                     $result = collect([
@@ -69,7 +66,10 @@ class LikeController extends Controller
             
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = LikeModel::inputDataLike($formbody);
+                    $result = ReportModel::inputDataReportTicket($formbody);
+                    break;
+                case 2:
+                    $result = ReportModel::inputDataReportComment($formbody);
                     break;
                 default:
                     $result = collect([

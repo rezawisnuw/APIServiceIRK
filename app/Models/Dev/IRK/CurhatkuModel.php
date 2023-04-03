@@ -21,7 +21,7 @@ class CurhatkuModel extends Model
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Ticket_Curhatku')
-            ->orderBy('Id_Ticket','DESC')
+            ->orderBy('Created_at','DESC')
             ->limit(35)
             ->get();
 

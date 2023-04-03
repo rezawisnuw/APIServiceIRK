@@ -8,125 +8,97 @@ use Cookie;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
-class LikeModel extends Model
+class ProfileModel extends Model
 {
     
 	private static $status = 'Failed';
     private static $message = 'Data is cannot be process';
     private static $data = 'Data is Empty';
 
-    public static function showDataLike($request)
-    {
-        try
-        {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-            ->table('LikeDetails')
-            ->orderBy('Created_at','DESC')
-            ->get();
-
-            if($data) {
-                static::$status = 'Success';
-                static::$message = 'Data has been process';
-                static::$data = $data;
-            } else{
-                static::$status;
-                static::$message;
-                static::$data;
-            }
-
-        }
-        catch(\Exception $e){ 
-            static::$status;
-            static::$data = null;
-            static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
-        }
-
-        return [
-            'status'  => static::$status,
-            'data' => static::$data,
-            'message' => static::$message
-        ];
-    }
-
-    public static function showDataLikeCurhatku($request)
-    {
-        try
-        {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-            ->table('Likes')
-            ->leftJoin('LikesDetails','Likes.Id_Likes','=','LikesDetails.Id_Likes')
-            ->where('tag','=','curhatku')
-            ->orderBy('Created_at','DESC')
-            ->get();
-
-            if($data) {
-                static::$status = 'Success';
-                static::$message = 'Data has been process';
-                static::$data = $data;
-            } else{
-                static::$status;
-                static::$message;
-                static::$data;
-            }
-
-        }
-        catch(\Exception $e){ 
-            static::$status;
-            static::$data = null;
-            static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
-        }
-
-        return [
-            'status'  => static::$status,
-            'data' => static::$data,
-            'message' => static::$message
-        ];
-    }
-
-    public static function showDataLikeMotivasi($request)
-    {
-        try
-        {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-            ->table('Likes')
-            ->leftJoin('LikesDetails','Likes.Id_Likes','=','LikesDetails.Id_Likes')
-            ->where('tag','=','motivasi')
-            ->orderBy('Created_at','DESC')
-            ->get();
-
-            if($data) {
-                static::$status = 'Success';
-                static::$message = 'Data has been process';
-                static::$data = $data;
-            } else{
-                static::$status;
-                static::$message;
-                static::$data;
-            }
-
-        }
-        catch(\Exception $e){ 
-            static::$status;
-            static::$data = null;
-            static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
-        }
-
-        return [
-            'status'  => static::$status,
-            'data' => static::$data,
-            'message' => static::$message
-        ];
-    }
-
-    public static function inputDataLike($request)
+    public static function showDataProfile($request)
     {
         $nik = $request['nik'];
-        $idticket = $request['idticket'];
-        $tag = $request['tag'];
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputlike(?,?,?)", [$nik,$idticket,$tag]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+            ->table('UserProfile')
+            ->where('Nik_Karyawan','=', $nik)
+            ->get();
+
+            if($data) {
+                static::$status = 'Success';
+                static::$message = 'Data has been process';
+                static::$data = $data;
+            } else{
+                static::$status;
+                static::$message;
+                static::$data;
+            }
+
+        }
+        catch(\Exception $e){ 
+            static::$status;
+            static::$data = null;
+            static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+        }
+
+        return [
+            'status'  => static::$status,
+            'data' => static::$data,
+            'message' => static::$message
+        ];
+    }
+
+    public static function inputDataProfile($request)
+    {
+        $nik = $request['nik'];
+        $nama = $request['nama'];
+        $nohp = $request['nohp'];
+        $alias = $request['alias'];
+        $kelamin = $request['kelamin'];
+        $email = $request['email'];
+
+        try
+        {
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputProfile(?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email]);
+
+            if($data) {
+                static::$status = 'Success';
+                static::$message = 'Data has been process';
+                static::$data = $data;
+            } else{
+                static::$status;
+                static::$message;
+                static::$data;
+            }
+
+        }
+        catch(\Exception $e){ 
+            static::$status;
+            static::$data = null;
+            static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+        }
+
+        return [
+            'status'  => static::$status,
+            'data' => static::$data,
+            'message' => static::$message
+        ];
+    }
+
+    public static function editDataProfile($request)
+    {
+        $nik = $request['nik'];
+        $nama = $request['nama'];
+        $nohp = $request['nohp'];
+        $alias = $request['alias'];
+        $kelamin = $request['kelamin'];
+        $email = $request['email'];
+
+        try
+        {
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL editProfile(?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email]);
 
             if($data) {
                 static::$status = 'Success';
