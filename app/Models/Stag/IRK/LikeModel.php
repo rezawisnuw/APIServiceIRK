@@ -50,12 +50,15 @@ class LikeModel extends Model
 
     public static function showDataLikeCurhatku($request)
     {
+        $idticket = $request['idticket'];
+
         try
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Likes')
             ->leftJoin('LikesDetails','Likes.Id_Likes','=','LikesDetails.Id_Likes')
-            ->where('tag','=','curhatku')
+            ->where('LikesDetails.Tag','=','curhatku')
+            ->where('Likes.Id_Ticket','=', $idticket)
             ->orderBy('Created_at','DESC')
             ->get();
 
@@ -85,12 +88,15 @@ class LikeModel extends Model
 
     public static function showDataLikeMotivasi($request)
     {
+        $idticket = $request['idticket'];
+
         try
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Likes')
             ->leftJoin('LikesDetails','Likes.Id_Likes','=','LikesDetails.Id_Likes')
-            ->where('tag','=','motivasi')
+            ->where('LikesDetails.Tag','=','motivasi')
+            ->where('Likes.Id_Ticket','=', $idticket)
             ->orderBy('Created_at','DESC')
             ->get();
 
