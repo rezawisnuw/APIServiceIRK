@@ -31,7 +31,7 @@ class CeritakitaModel extends Model
             ->orderBy('Created_at','DESC')
             ->limit(35);
 
-            $data = $first->union($second)->get();
+            $data = $first->union($second)->orderBy('Created','DESC')->get();
 
             if($data) {
                 static::$status = 'Success';
