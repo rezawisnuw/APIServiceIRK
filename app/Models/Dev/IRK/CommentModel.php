@@ -50,12 +50,15 @@ class CommentModel extends Model
 
     public static function showDataCommentCurhatku($request)
     {
+        $idticket = $request['idticket'];
+
         try
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Comment')
             ->leftJoin('CommentDetails','Comment.Id_Comment','=','CommentDetails.Id_Comment')
-            ->where('tag','=','curhatku')
+            ->where('CommentDetails.Tag','=','curhatku')
+            ->where('Comment.Id_Ticket','=', $idticket)
             ->orderBy('Created_at','DESC')
             ->get();
 
@@ -85,12 +88,15 @@ class CommentModel extends Model
 
     public static function showDataCommentMotivasi($request)
     {
+        $idticket = $request['idticket'];
+
         try
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Comment')
             ->leftJoin('CommentDetails','Comment.Id_Comment','=','CommentDetails.Id_Comment')
-            ->where('tag','=','motivasi')
+            ->where('CommentDetails.Tag','=','motivasi')
+            ->where('Comment.Id_Ticket','=', $idticket)
             ->orderBy('Created_at','DESC')
             ->get();
 
