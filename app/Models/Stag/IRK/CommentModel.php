@@ -57,7 +57,7 @@ class CommentModel extends Model
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Comment')
             ->leftJoin('CommentDetails','Comment.Id_Comment','=','CommentDetails.Id_Comment')
-            ->where('CommentDetails.Tag','=','curhatku')
+            ->where('Comment.Tag','=','curhatku')
             ->where('Comment.Id_Ticket','=',$idticket)
             ->orderBy('Created_at','DESC')
             ->get();
@@ -95,7 +95,7 @@ class CommentModel extends Model
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Comment')
             ->leftJoin('CommentDetails','Comment.Id_Comment','=','CommentDetails.Id_Comment')
-            ->where('CommentDetails.Tag','=','motivasi')
+            ->where('Comment.Tag','=','motivasi')
             ->where('Comment.Id_Ticket','=', $idticket)
             ->orderBy('Created_at','DESC')
             ->get();
