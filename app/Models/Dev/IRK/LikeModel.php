@@ -20,7 +20,7 @@ class LikeModel extends Model
         try
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-            ->table('LikeDetails')
+            ->table('LikesDetails')
             ->orderBy('Created_at','DESC')
             ->get();
 
