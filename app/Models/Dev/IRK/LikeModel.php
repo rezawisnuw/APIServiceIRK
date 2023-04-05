@@ -15,19 +15,23 @@ class LikeModel extends Model
     private static $message = 'Data is cannot be process';
     private static $data = 'Data is Empty';
 
-    public static function showDataLike($request)
+    public static function showDataLikeTotal($request)
     {
+        $idticket = $request['idticket'];
+        $tag = $request['tag'];
+
         try
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-            ->table('LikesDetails')
-            ->orderBy('Created_at','DESC')
+            ->table('Likes')
+            ->where('Likes.Tag','=',$tag)
+            ->where('Likes.Id_Ticket','=', $idticket)
             ->get();
 
             if($data) {
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $data;
+                static::$data = ['Total'=>count($data)];
             } else{
                 static::$status;
                 static::$message;
