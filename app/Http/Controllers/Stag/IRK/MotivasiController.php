@@ -35,6 +35,9 @@ class MotivasiController extends Controller
                 case 1:
                     $result = MotivasiModel::showDataMotivasi($formbody);
                     break;
+                case 1:
+                    $result = MotivasiModel::showDataMotivasiSingle($formbody);
+                    break;
                 default:
                     $result = collect([
                         'status'  => $this->status,
