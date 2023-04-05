@@ -60,11 +60,14 @@ class CommentModel extends Model
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Comment')
+            ->select('CommentDetails.Nik_Karyawan','CommentDetails.Comment','CommentDetails.Created_at','UserProfile.Alias')
             ->leftJoin('CommentDetails','Comment.Id_Comment','=','CommentDetails.Id_Comment')
+            ->leftJoin('UserProfile','CommentDetails.Nik_Karyawan', '=' ,'UserProfile.Nik_Karyawan')
             ->where('Comment.Tag','=','curhatku')
             ->where('Comment.Id_Ticket','=', $idticket)
-            ->orderBy('Created_at','DESC')
+            ->orderBy('CommentDetails.Created_at','DESC')
             ->get();
+
 
             if($data) {
                 static::$status = 'Success';
@@ -98,11 +101,14 @@ class CommentModel extends Model
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Comment')
+            ->select('CommentDetails.Nik_Karyawan','CommentDetails.Comment','CommentDetails.Created_at','UserProfile.Alias')
             ->leftJoin('CommentDetails','Comment.Id_Comment','=','CommentDetails.Id_Comment')
+            ->leftJoin('UserProfile','CommentDetails.Nik_Karyawan', '=' ,'UserProfile.Nik_Karyawan')
             ->where('Comment.Tag','=','motivasi')
             ->where('Comment.Id_Ticket','=', $idticket)
-            ->orderBy('Created_at','DESC')
+            ->orderBy('CommentDetails.Created_at','DESC')
             ->get();
+
 
             if($data) {
                 static::$status = 'Success';
