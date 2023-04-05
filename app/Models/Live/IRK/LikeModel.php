@@ -63,7 +63,7 @@ class LikeModel extends Model
             ->leftJoin('LikesDetails','Likes.Id_Likes','=','LikesDetails.Id_Likes')
             ->where('Likes.Tag','=','curhatku')
             ->where('Likes.Id_Ticket','=', $idticket)
-            ->orderBy('Created_at','DESC')
+            ->orderBy('LikesDetails.Created_at','DESC')
             ->get();
 
             if($data) {
@@ -101,7 +101,7 @@ class LikeModel extends Model
             ->leftJoin('LikesDetails','Likes.Id_Likes','=','LikesDetails.Id_Likes')
             ->where('Likes.Tag','=','motivasi')
             ->where('Likes.Id_Ticket','=', $idticket)
-            ->orderBy('Created_at','DESC')
+            ->orderBy('LikesDetails.Created_at','DESC')
             ->get();
 
             if($data) {
