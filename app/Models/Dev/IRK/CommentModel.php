@@ -15,19 +15,23 @@ class CommentModel extends Model
     private static $message = 'Data is cannot be process';
     private static $data = 'Data is Empty';
 
-    public static function showDataComment($request)
+    public static function showDataCommentTotal($request)
     {
+        $idticket = $request['idticket'];
+        $tag = $request['tag'];
+
         try
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-            ->table('CommentDetails')
-            ->orderBy('Created_at','DESC')
+            ->table('Comment')
+            ->where('Comment.Tag','=',$tag)
+            ->where('Comment.Id_Ticket','=',$idticket)
             ->get();
 
             if($data) {
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $data;
+                static::$data = ['Total'=>count($data)];
             } else{
                 static::$status;
                 static::$message;

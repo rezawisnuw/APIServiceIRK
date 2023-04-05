@@ -32,7 +32,7 @@ class LikeController extends Controller
             
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = LikeModel::showDataLike($formbody);
+                    $result = LikeModel::showDataLikeTotal($formbody);
                     break;
                 case 2:
                     $result = LikeModel::showDataLikeCurhatku($formbody);

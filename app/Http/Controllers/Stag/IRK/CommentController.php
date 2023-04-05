@@ -32,7 +32,7 @@ class CommentController extends Controller
             
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = CommentModel::showDataComment($formbody);
+                    $result = CommentModel::showDataCommentTotal($formbody);
                     break;
                 case 2:
                     $result = CommentModel::showDataCommentCurhatku($formbody);
