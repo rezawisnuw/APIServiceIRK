@@ -49,4 +49,36 @@ class MotivasiModel extends Model
         ];
     }
 
+    public static function showDataMotivasiSingle($request)
+    {
+        $idticket = $request['idticket'];
+
+        try
+        {
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showmotivasi(?)",[$idticket]);
+
+            if($data) {
+                static::$status = 'Success';
+                static::$message = 'Data has been process';
+                static::$data = $data;
+            } else{
+                static::$status;
+                static::$message;
+                static::$data;
+            }
+
+        }
+        catch(\Exception $e){ 
+            static::$status;
+            static::$data = null;
+            static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+        }
+
+        return [
+            'status'  => static::$status,
+            'data' => static::$data,
+            'message' => static::$message
+        ];
+    }
+
 }
