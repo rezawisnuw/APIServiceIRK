@@ -17,7 +17,7 @@ class CeritakitaModel extends Model
 
     public static function showDataCeritakita($request)
     {
-        $page = $request['page'];
+        $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
 
         try
         {   
