@@ -71,7 +71,7 @@ class LikeModel extends Model
             if($data) {
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $data;
+                static::$data = ['Total'=>count($data)];
             } else{
                 static::$status;
                 static::$message;
@@ -111,7 +111,7 @@ class LikeModel extends Model
             if($data) {
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $data;
+                static::$data = ['Total'=>count($data)];
             } else{
                 static::$status;
                 static::$message;
@@ -145,7 +145,7 @@ class LikeModel extends Model
             if($data) {
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $data;
+                static::$data = ['Total'=>count($data)];
             } else{
                 static::$status;
                 static::$message;
