@@ -60,7 +60,9 @@ class LikeModel extends Model
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Likes')
+            ->select('LikesDetails.Nik_Karyawan','LikesDetails.Created_at','UserProfile.Alias')
             ->leftJoin('LikesDetails','Likes.Id_Likes','=','LikesDetails.Id_Likes')
+            ->leftJoin('UserProfile','LikesDetails.Nik_Karyawan', '=' ,'UserProfile.Nik_Karyawan')
             ->where('Likes.Tag','=','curhatku')
             ->where('Likes.Id_Ticket','=', $idticket)
             ->orderBy('LikesDetails.Created_at','DESC')
