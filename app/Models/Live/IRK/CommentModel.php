@@ -31,7 +31,7 @@ class CommentModel extends Model
             if($data) {
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = ['Total'=>count($data)];
+                static::$data = $data;
             } else{
                 static::$status;
                 static::$message;
