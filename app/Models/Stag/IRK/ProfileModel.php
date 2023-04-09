@@ -130,11 +130,11 @@ class ProfileModel extends Model
                 }else{
                     $imgextension = $photo->extension();
 
-                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,$imgextension]);
+                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL editProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,$photo]);
 
                     if($data) {
 
-                        $imgpath = 'Stag/Ceritakita/Profile/'.$nik.'_'.$nama.'.'.$imgextension;
+                        $imgpath = 'Dev/Ceritakita/Profile/'.$nik.'_'.$nama.'.'.$imgextension;
 
                         static::$status = 'Success';
                         static::$message = 'Data has been process';
@@ -146,20 +146,22 @@ class ProfileModel extends Model
                     }
                 }
             }else{
-                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,'']);
-                
-                if($data) {
-                    $imgpath = 'Stag/Ceritakita/Profile/'.$nik.'_'.$nama.'.';
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL editProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,'']);
 
-                    static::$status = 'Success';
-                    static::$message = 'Data has been process';
-                    static::$data = $imgpath;
-                } else{
-                    static::$status;
-                    static::$message;
-                    static::$data;
-                }
+                    if($data) {
+
+                        $imgpath = 'Dev/Ceritakita/Profile/'.$nik.'_'.$nama.'.';
+
+                        static::$status = 'Success';
+                        static::$message = 'Data has been process';
+                        static::$data = $imgpath;
+                    } else{
+                        static::$status;
+                        static::$message;
+                        static::$data;
+                    }
             }
+            
 
         }
         catch(\Exception $e){ 

@@ -129,37 +129,56 @@ class ProfileModel extends Model
         $alias = $request->alias;
         $kelamin = $request->kelamin;
         $email = $request->email;
-        $photo = $request->photo;
+        $photo = isset($request->photo) ? $request->photo : '';
 
         try
         {
-            $imgformat = array("jpeg", "jpg", "png");
+            
+            if(!empty($photo)){
+                $imgformat = array("jpeg", "jpg", "png");
         
-            if ($photo->getSize() > 1048576 || !in_array($photo->extension(), $imgformat)){
-                return [
-                    'status'  => 'File Error',
-                    'data' => static::$data,
-                    'message' => 'Format File dan Size tidak sesuai',
-                    'code' => 200
-                ];
-            }else{
-                $imgextension = $photo->extension();
+                if ($photo->getSize() > 1048576 || !in_array($photo->extension(), $imgformat)){
+                    return [
+                        'status'  => 'File Error',
+                        'data' => static::$data,
+                        'message' => 'Format File dan Size tidak sesuai',
+                        'code' => 200
+                    ];
+                }else{
+                    $imgextension = $photo->extension();
 
-                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL editProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,$photo]);
+                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL editProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,$photo]);
 
-                if($data) {
+                    if($data) {
 
-                    $imgpath = 'Dev/Ceritakita/Profile/'.$nik.'_'.$nama.'.'.$imgextension;
+                        $imgpath = 'Dev/Ceritakita/Profile/'.$nik.'_'.$nama.'.'.$imgextension;
 
-                    static::$status = 'Success';
-                    static::$message = 'Data has been process';
-                    static::$data = $imgpath;
-                } else{
-                    static::$status;
-                    static::$message;
-                    static::$data;
+                        static::$status = 'Success';
+                        static::$message = 'Data has been process';
+                        static::$data = $imgpath;
+                    } else{
+                        static::$status;
+                        static::$message;
+                        static::$data;
+                    }
                 }
+            }else{
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL editProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,'']);
+
+                    if($data) {
+
+                        $imgpath = 'Dev/Ceritakita/Profile/'.$nik.'_'.$nama.'.';
+
+                        static::$status = 'Success';
+                        static::$message = 'Data has been process';
+                        static::$data = $imgpath;
+                    } else{
+                        static::$status;
+                        static::$message;
+                        static::$data;
+                    }
             }
+            
 
         }
         catch(\Exception $e){ 
