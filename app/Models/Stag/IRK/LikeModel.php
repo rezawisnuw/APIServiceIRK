@@ -141,10 +141,10 @@ class LikeModel extends Model
             //$data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputlike(?,?,?)", [$nik,$idticket,$tag]);
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select inputlike(?,?,?)", [$nik,$idticket,$tag]);
 
-            if($data) {
+            if($data[0]->inputlike == 'Data Created') {
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $data;
+                static::$data = true;
             }else if($data[0]->inputlike == 'Data Doubled'){
                 static::$status;
                 static::$message;
