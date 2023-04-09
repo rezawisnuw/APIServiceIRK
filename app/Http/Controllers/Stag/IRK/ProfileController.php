@@ -59,23 +59,26 @@ class ProfileController extends Controller
         $codekey = null;
 
         $datadecode = json_decode($request->data);
-        $filedecode = json_decode($request->file);
-        $b64filedecode = base64_decode($filedecode);
+        
+        if(isset($request->file)){
+            $filedecode = json_decode($request->file);
+            $b64filedecode = base64_decode($filedecode);
 
-        $arrayfile = [];
-        $tmpFilePath = "example.txt";
-        file_put_contents($tmpFilePath, $b64filedecode);
-        $tmpFile = new File($tmpFilePath);
-        $file = new UploadedFile(
-            $tmpFile->getPathname(),
-            $tmpFile->getFilename(),
-            $tmpFile->getMimeType(),
-            0,
-            true // Mark it as test, since the file isn't from real HTTP POST.
-        );
-        array_push($arrayfile, $file);
-        //return response()->json($arrayfile[0]->extension());
-        isset($datadecode->photo) && !empty($datadecode->photo) ? $datadecode->photo = $arrayfile[0] : $datadecode->photo = '';
+            $arrayfile = [];
+            $tmpFilePath = "example.txt";
+            file_put_contents($tmpFilePath, $b64filedecode);
+            $tmpFile = new File($tmpFilePath);
+            $file = new UploadedFile(
+                $tmpFile->getPathname(),
+                $tmpFile->getFilename(),
+                $tmpFile->getMimeType(),
+                0,
+                true // Mark it as test, since the file isn't from real HTTP POST.
+            );
+            array_push($arrayfile, $file);
+            //return response()->json($arrayfile[0]->extension());
+            isset($datadecode->photo) && !empty($datadecode->photo) ? $datadecode->photo = $arrayfile[0] : $datadecode->photo = '';
+        }
 
         $formbody = $datadecode;
         
@@ -110,23 +113,26 @@ class ProfileController extends Controller
         $codekey = null;
 
         $datadecode = json_decode($request->data);
-        $filedecode = json_decode($request->file);
-        $b64filedecode = base64_decode($filedecode);
+        
+        if(isset($request->file)){
+            $filedecode = json_decode($request->file);
+            $b64filedecode = base64_decode($filedecode);
 
-        $arrayfile = [];
-        $tmpFilePath = "example.txt";
-        file_put_contents($tmpFilePath, $b64filedecode);
-        $tmpFile = new File($tmpFilePath);
-        $file = new UploadedFile(
-            $tmpFile->getPathname(),
-            $tmpFile->getFilename(),
-            $tmpFile->getMimeType(),
-            0,
-            true // Mark it as test, since the file isn't from real HTTP POST.
-        );
-        array_push($arrayfile, $file);
-        //return response()->json($arrayfile[0]->extension());
-        isset($datadecode->photo) && !empty($datadecode->photo) ? $datadecode->photo = $arrayfile[0] : $datadecode->photo = '';
+            $arrayfile = [];
+            $tmpFilePath = "example.txt";
+            file_put_contents($tmpFilePath, $b64filedecode);
+            $tmpFile = new File($tmpFilePath);
+            $file = new UploadedFile(
+                $tmpFile->getPathname(),
+                $tmpFile->getFilename(),
+                $tmpFile->getMimeType(),
+                0,
+                true // Mark it as test, since the file isn't from real HTTP POST.
+            );
+            array_push($arrayfile, $file);
+            //return response()->json($arrayfile[0]->extension());
+            isset($datadecode->photo) && !empty($datadecode->photo) ? $datadecode->photo = $arrayfile[0] : $datadecode->photo = '';
+        }
 
         $formbody = $datadecode;
         
