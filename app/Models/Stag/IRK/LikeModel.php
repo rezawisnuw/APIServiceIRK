@@ -145,7 +145,11 @@ class LikeModel extends Model
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
                 static::$data = $data;
-            } else{
+            }else if($data[0]->inputlike == 'Data Doubled'){
+                static::$status;
+                static::$message;
+                static::$data = $data[0]->inputlike;
+            }else{
                 static::$status;
                 static::$message;
                 static::$data;

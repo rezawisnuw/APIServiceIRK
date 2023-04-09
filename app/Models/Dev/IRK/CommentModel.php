@@ -101,7 +101,6 @@ class CommentModel extends Model
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Comment')
-            ->table('Comment')
             ->select('CommentDetails.Nik_Karyawan','CommentDetails.Comment','CommentDetails.Created_at','UserProfile.Alias')
             ->leftJoin('CommentDetails','Comment.Id_Comment','=','CommentDetails.Id_Comment')
             ->leftJoin('UserProfile','CommentDetails.Nik_Karyawan', '=' ,'UserProfile.Nik_Karyawan')
