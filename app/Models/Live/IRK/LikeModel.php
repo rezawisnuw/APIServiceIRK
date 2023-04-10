@@ -60,7 +60,7 @@ class LikeModel extends Model
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Likes')
-            ->select('LikesDetails.Nik_Karyawan','LikesDetails.Created_at','UserProfile.Alias')
+            ->select('LikesDetails.Nik_Karyawan','LikesDetails.Like','LikesDetails.Created_at','UserProfile.Alias')
             ->leftJoin('LikesDetails','Likes.Id_Likes','=','LikesDetails.Id_Likes')
             ->leftJoin('UserProfile','LikesDetails.Nik_Karyawan', '=' ,'UserProfile.Nik_Karyawan')
             ->where('Likes.Tag','=','curhatku')
@@ -100,7 +100,7 @@ class LikeModel extends Model
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Likes')
-            ->select('LikesDetails.Nik_Karyawan','LikesDetails.Created_at','UserProfile.Alias')
+            ->select('LikesDetails.Nik_Karyawan','LikesDetails.Like','LikesDetails.Created_at','UserProfile.Alias')
             ->leftJoin('LikesDetails','Likes.Id_Likes','=','LikesDetails.Id_Likes')
             ->leftJoin('UserProfile','LikesDetails.Nik_Karyawan', '=' ,'UserProfile.Nik_Karyawan')
             ->where('Likes.Tag','=','motivasi')
@@ -137,20 +137,17 @@ class LikeModel extends Model
         $nik = $request['nik'];
         $idticket = $request['idticket'];
         $tag = $request['tag'];
+        $userlike = $request['userlike'];
 
         try
         {
             //$data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputlike(?,?,?)", [$nik,$idticket,$tag]);
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select inputlike(?,?,?)", [$nik,$idticket,$tag]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select inputlike(?,?,?,?)", [$nik,$idticket,$tag,$userlike]);
 
-            if($data[0]->inputlike == 'Data Created') {
+            if($data) {
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = true;
-            }else if($data[0]->inputlike == 'Data Doubled'){
-                static::$status;
-                static::$message;
-                static::$data = $data[0]->inputlike;
+                static::$data = $data;
             }else{
                 static::$status;
                 static::$message;
