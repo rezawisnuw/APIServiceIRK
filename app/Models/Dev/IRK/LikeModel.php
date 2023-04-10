@@ -141,8 +141,8 @@ class LikeModel extends Model
 
         try
         {
-            //$data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputlike(?,?,?)", [$nik,$idticket,$tag]);
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select inputlike(?,?,?,?)", [$nik,$idticket,$tag,$userlike]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputlike(?,?,?,?)", [$nik,$idticket,$tag,$userlike]);
+            //$data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select inputlike(?,?,?,?)", [$nik,$idticket,$tag,$userlike]);
 
             if($data) {
                 static::$status = 'Success';
