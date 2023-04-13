@@ -22,7 +22,7 @@ class CeritakitaModel extends Model
 
         try
         {   
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showceritakita(?,>)",[$userid,$page]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showceritakita(?,?)",[$userid,$page]);
 
             if($data) {
                 static::$status = 'Success';
