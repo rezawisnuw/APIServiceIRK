@@ -17,11 +17,12 @@ class CeritakitaModel extends Model
 
     public static function showDataCeritakita($request)
     {
+        $userid = $request['userid'];
         $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
 
         try
         {   
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showceritakita(?)",[$page]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showceritakita(?,>)",[$userid,$page]);
 
             if($data) {
                 static::$status = 'Success';
