@@ -67,11 +67,12 @@ class CurhatkuModel extends Model
 
     public static function showDataCurhatkuSingle($request)
     {
+        $userid = $request['userid'];
         $idticket = $request['idticket'];
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcurhatku(?)",[$idticket]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcurhatku(?,?)",[$userid,$idticket]);
 
             if($data) {
                 static::$status = 'Success';
