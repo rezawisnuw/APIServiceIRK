@@ -51,11 +51,12 @@ class MotivasiModel extends Model
 
     public static function showDataMotivasiSingle($request)
     {
+        $userid = $request['userid'];
         $idticket = $request['idticket'];
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showmotivasi(?)",[$idticket]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showmotivasi(?,?)",[$userid,$idticket]);
 
             if($data) {
                 static::$status = 'Success';
