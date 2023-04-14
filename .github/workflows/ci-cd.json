@@ -4,5 +4,11 @@
         "ip": "SERVICE_HOST",
         "password": "SERVICE_PASSWORD",
         "port": "22"
+    },
+    {
+        "name": "irkwebservicenonha",
+        "ip": "SERVICE_HOST_2",
+        "password": "SERVICE_PASSWORD",
+        "port": "22"
     }
 ]
