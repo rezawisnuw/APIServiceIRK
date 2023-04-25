@@ -17,12 +17,15 @@ class MotivasiModel extends Model
 
     public static function showDataMotivasi($request)
     {
+        $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
+        
         try
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Ticket_Motivasi')
             ->orderBy('addtime','DESC')
-            ->limit(35)
+            ->limit(10)
+            ->offset($page * 10)
             ->get();
 
             if($data) {
@@ -53,11 +56,10 @@ class MotivasiModel extends Model
     {
         $userid = $request['userid'];
         $idticket = $request['idticket'];
-        $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showmotivasi(?,?,?)",[$userid,$idticket,$page]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showmotivasi(?,?)",[$userid,$idticket]);
 
             if($data) {
                 static::$status = 'Success';
