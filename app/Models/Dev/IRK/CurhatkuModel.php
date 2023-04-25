@@ -69,10 +69,11 @@ class CurhatkuModel extends Model
     {
         $userid = $request['userid'];
         $idticket = $request['idticket'];
+        $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcurhatku(?,?)",[$userid,$idticket]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcurhatku(?,?,?)",[$userid,$idticket,$page]);
 
             if($data) {
                 static::$status = 'Success';
