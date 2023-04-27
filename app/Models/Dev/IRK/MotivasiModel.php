@@ -23,6 +23,7 @@ class MotivasiModel extends Model
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Ticket_Motivasi')
+            ->select('id_ticket as idticket', 'id_user as employee', 'judul_motivasi as header', 'motivasi as text', 'photo as picture', 'tag as key', 'alias as alias', 'addtime as created')
             ->orderBy('addtime','DESC')
             ->limit(10)
             ->offset($page * 10)
