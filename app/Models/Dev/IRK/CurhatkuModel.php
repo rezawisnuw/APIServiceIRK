@@ -23,7 +23,8 @@ class CurhatkuModel extends Model
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Ticket_Curhatku')
-            ->select('Id_Ticket as idticket', 'Nik_Karyawan as employee', 'Caption as header', 'Deskripsi as text', 'Gambar as picture', 'Tag as key', 'Alias as alias', 'Created_at as created')
+            ->select('Id_Ticket as idticket', 'Nik_Karyawan as employee', 'Caption as header', 'Deskripsi as text', 'Gambar as picture', 'Tag as key', 
+                DB::raw('case when "Alias" is not null then substring("Alias" from 3 for 8) else "Alias" end as alias'),'Created_at as created')
             ->orderBy('created','DESC')
             ->limit(10)
             ->offset($page * 10)
