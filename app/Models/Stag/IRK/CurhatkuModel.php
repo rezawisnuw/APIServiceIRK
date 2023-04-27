@@ -18,13 +18,18 @@ class CurhatkuModel extends Model
     public static function showDataCurhatku($request)
     {
         $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
+        $userid = $request['userid'];
         
         try
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Ticket_Curhatku')
             ->select('Id_Ticket as idticket', 'Nik_Karyawan as employee', 'Caption as header', 'Deskripsi as text', 'Gambar as picture', 'Tag as key', 
-                DB::raw('case when "Alias" is not null then substring("Alias" from 3 for 8) else "Alias" end as alias'),'Created_at as created')
+                DB::raw('case when "Alias" is not null then substring("Alias" from 3 for 8) else "Alias" end as alias'),'Created_at as created',
+                DB::raw('(select count(*) from "Comment" where "Tag" = \'curhatku\' and "Id_Ticket" = "Ticket_Curhatku"."Id_Ticket") as ttlcomment'),
+                DB::raw('(select count(*) from "Likes" left join "LikesDetails" on "Likes"."Id_Likes" = "LikesDetails"."Id_Likes" where "Likes"."Tag" = \'curhatku\' and "Likes"."Id_Ticket" = "Ticket_Curhatku"."Id_Ticket" and "LikesDetails"."Like" = \'1\') as ttllike'),
+                DB::raw('(select case when "Nik_Karyawan" = \'.$userid.\' then \'1\' else \'0\' end as liked from "Likes" left join "LikesDetails" on "Likes"."Id_Likes" = "LikesDetails"."Id_Likes" where "Likes"."Tag" = \'curhatku\' and "Likes"."Id_Ticket" = "Ticket_Curhatku"."Id_Ticket") as likeby')
+            )
             ->orderBy('created','DESC')
             ->limit(10)
             ->offset($page * 10)
