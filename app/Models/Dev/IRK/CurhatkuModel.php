@@ -23,7 +23,8 @@ class CurhatkuModel extends Model
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Ticket_Curhatku')
-            ->orderBy('Created_at','DESC')
+            ->select('Id_Ticket as idticket', 'Nik_Karyawan as employee', 'Caption as header', 'Deskripsi as text', 'Gambar as picture', 'Tag as key', 'caption as alias', 'Created_at as created')
+            ->orderBy('created','DESC')
             ->limit(10)
             ->offset($page * 10)
             ->get();
@@ -105,8 +106,9 @@ class CurhatkuModel extends Model
     {
             
         $nik = $request->nik;
-        $alias = $request->alias;
+        $caption = $request->caption;
         $deskripsi = $request->deskripsi;
+        $alias = base64_encode(microtime().$request->nik);//substr(base64_encode(microtime().$request->nik),3,8);
         $gambar = isset($request->gambar) ? $request->gambar : '';
 
         try
@@ -124,7 +126,7 @@ class CurhatkuModel extends Model
                 }else{
                     $imgextension = $gambar->extension();
 
-                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$alias,$deskripsi,$imgextension]);
+                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?,?)", [$nik,$caption,$deskripsi,$alias,$imgextension]);
                 
                     if($data) {
                         $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
@@ -160,7 +162,7 @@ class CurhatkuModel extends Model
                     }
                 }
             } else{
-                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$alias,$deskripsi,'']);
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?,?)", [$nik,$caption,$deskripsi,$alias,'']);
                 
                 if($data) {
                     $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))

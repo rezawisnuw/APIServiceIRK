@@ -23,7 +23,8 @@ class CurhatkuModel extends Model
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('Ticket_Curhatku')
-            ->orderBy('Created_at','DESC')
+            ->select('Id_Ticket as idticket', 'Nik_Karyawan as employee', 'Caption as header', 'Deskripsi as text', 'Gambar as picture', 'Tag as key', 'Alias as alias', 'Created_at as created')
+            ->orderBy('created','DESC')
             ->limit(10)
             ->offset($page * 10)
             ->get();
@@ -88,7 +89,7 @@ class CurhatkuModel extends Model
     public static function inputDataCurhatku($request)
     {
         $nik = $request->nik;
-        $alias = $request->alias;
+        $caption = $request->caption;
         $deskripsi = $request->deskripsi;
         $gambar = $request->gambar;
 
@@ -107,7 +108,7 @@ class CurhatkuModel extends Model
                 }else{
                     $imgextension = $gambar->extension();
 
-                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$alias,$deskripsi,$imgextension]);
+                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$caption,$deskripsi,$imgextension]);
 
                     if($data) {
                         $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
@@ -127,7 +128,7 @@ class CurhatkuModel extends Model
                     }
                 }
             } else{
-                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$alias,$deskripsi,'']);
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$caption,$deskripsi,'']);
                 
                 if($data) {
                     $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
