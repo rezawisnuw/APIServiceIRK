@@ -157,7 +157,7 @@ class CommentModel extends Model
             } else{
                 static::$status;
                 static::$message;
-                static::$data;
+                static::$data = $data;
             }
 
         }
