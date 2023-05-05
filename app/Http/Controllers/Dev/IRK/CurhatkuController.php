@@ -25,7 +25,7 @@ class CurhatkuController extends Controller
     private $message = 'Process is not found';
     
     public function get(Request $request)
-    {
+    { //return response()->json($request);
         $formbody = $request->data;
         $codekey = null;
         

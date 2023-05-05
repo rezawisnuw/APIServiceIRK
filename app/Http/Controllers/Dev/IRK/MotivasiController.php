@@ -59,8 +59,57 @@ class MotivasiController extends Controller
     }
 
     public function post(Request $request)
-    {
+    {   
+        $codekey = null;
 
+        $datadecode = json_decode($request->data);
+
+        if(isset($request->file)){
+            $filedecode = json_decode($request->file);
+            $b64filedecode = base64_decode($filedecode);
+
+            $arrayfile = [];
+            $tmpFilePath = "example.txt";
+            file_put_contents($tmpFilePath, $b64filedecode);
+            $tmpFile = new File($tmpFilePath);
+            $file = new UploadedFile(
+                $tmpFile->getPathname(),
+                $tmpFile->getFilename(),
+                $tmpFile->getMimeType(),
+                0,
+                true // Mark it as test, since the file isn't from real HTTP POST.
+            );
+            array_push($arrayfile, $file);
+            //return response()->json($arrayfile[0]->extension());
+            isset($datadecode->photo) && !empty($datadecode->photo) ? $datadecode->photo = $arrayfile[0] : $datadecode->photo = '';
+        }
+        
+        $formbody = $datadecode;
+        
+        try{         
+            
+            switch ($codekey = $formbody->code) {
+                case 1:
+                    $result = MotivasiModel::inputDataMotivasi($formbody);
+                    break;
+                default:
+                    $result = collect([
+                        'status'  => $this->status,
+                        'data' => $this->data,
+                        'message' => $this->message
+                    ]);
+            }
+				
+        }
+        catch(\Exception $e){ 
+            $result = collect([
+                'status' => $this->status,
+                'data' => $this->data,
+                'message'  => $e->getCode() == 0 ? 'Error Controller Laravel = '.$e->getMessage() : 'Error Model Laravel = '.$e->getMessage().' Switch Case = '.$codekey
+            ]);
+        }
+
+        return response()->json($result);
     }
 
     public function put(Request $request)

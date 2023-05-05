@@ -92,4 +92,114 @@ class MotivasiModel extends Model
         ];
     }
 
+    public static function inputDataMotivasi($request)
+    {
+
+        $nik = $request->nik; 
+        $judul = $request->judul;
+        $motivasi = $request->motivasi;
+        $alias = base64_encode(microtime().$request->nik);//substr(base64_encode(microtime().$request->nik),3,8);
+        $photo = isset($request->photo) ? $request->photo : '';
+
+        try
+        {
+            if(!empty($photo)){
+                $imgformat = array("jpeg", "jpg", "png");
+        
+                if ($photo->getSize() > 1048576 || !in_array($photo->extension(), $imgformat)){
+                    return [
+                        'status'  => 'File Error',
+                        'data' => static::$data,
+                        'message' => 'Format File dan Size tidak sesuai',
+                        'code' => 200
+                    ];
+                }else{
+                    $imgextension = $photo->extension();
+
+                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputmotivasi(?,?,?,?,?)", [$nik,$judul,$motivasi,$alias,$imgextension]);
+                
+                    if($data) {
+                        $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+                                    ->table('Ticket_Motivasi')
+                                    ->selectRaw('CAST(MAX("id_ticket") as integer) as next_id')
+                                    ->value('next_id');
+
+                        // $client = new Client();
+                        // $response = $client->post(
+                        //         'https://cloud.hrindomaret.com/api/irk/upload',
+                        //         [
+                        //             RequestOptions::JSON => 
+                        //             [
+                        //              'file'=> $photo,
+                        //              'file_name' => 'Dev/'.$nik.'_'.$nextId.'.'.$imgextension
+                        //             ]
+                        //         ]
+                        //     );
+
+                        // $body = $response->getBody();
+                        
+                        // $temp = json_decode($body);
+
+                        $imgpath = 'Dev/Ceritakita/Motivasi/'.$nik.'_'.$nextId.'.'.$imgextension;
+
+                        static::$status = 'Success';
+                        static::$message = 'Data has been process';
+                        static::$data = $imgpath;
+                    } else{
+                        static::$status;
+                        static::$message;
+                        static::$data;
+                    }
+                }
+            } else{
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputmotivasi(?,?,?,?,?)", [$nik,$judul,$motivasi,$alias,'']);
+                
+                if($data) {
+                    $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+                                ->table('Ticket_Motivasi')
+                                ->selectRaw('CAST(MAX("id_ticket") as integer) as next_id')
+                                ->value('next_id');
+
+                    // $client = new Client();
+                    // $response = $client->post(
+                    //         'https://cloud.hrindomaret.com/api/irk/upload',
+                    //         [
+                    //             RequestOptions::JSON => 
+                    //             [
+                    //              'file'=> $photo,
+                    //              'file_name' => 'Dev/'.$nik.'_'.$nextId.'.'.$imgextension
+                    //             ]
+                    //         ]
+                    //     );
+
+                    // $body = $response->getBody();
+                    
+                    // $temp = json_decode($body);
+
+                    $imgpath = 'Dev/Ceritakita/Motivasi/'.$nik.'_'.$nextId.'.';
+
+                    static::$status = 'Success';
+                    static::$message = 'Data has been process';
+                    static::$data = $imgpath;
+                } else{
+                    static::$status;
+                    static::$message;
+                    static::$data;
+                }
+            }            
+
+        }
+        catch(\Exception $e){ 
+            static::$status;
+            static::$data = null;
+            static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+        }
+
+        return [
+            'status'  => static::$status,
+            'data' => static::$data,
+            'message' => static::$message
+        ];
+    }
+
 }
