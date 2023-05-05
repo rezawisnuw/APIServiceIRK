@@ -131,7 +131,7 @@ class CurhatkuModel extends Model
                     ];
                 }else{
                     $imgextension = $gambar->extension();
-
+                    
                     $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?,?)", [$nik,$caption,$deskripsi,$alias,$imgextension]);
                 
                     if($data) {
