@@ -117,7 +117,7 @@ class AuthModel extends Model
         try{
             $client = new Client(); 
             $response = $client->post(
-                'http://'.config('app.URL_14_WCF').'/RESTSecurity/RESTSecurity.svc/GetTokenDetail',
+                'http://'.config('app.URL_LIVE').'/RESTSecurity/RESTSecurity.svc/GetTokenDetail',
                 [
                     RequestOptions::JSON => 
                     ['token' => str_contains($request->cookie('Authorization'), 'Bearer') ? substr($request->cookie('Authorization'),6) : $request->cookie('Authorization')]
