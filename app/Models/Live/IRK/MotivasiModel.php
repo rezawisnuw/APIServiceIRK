@@ -28,7 +28,7 @@ class MotivasiModel extends Model
                 DB::raw('case when "alias" is not null then substring("alias" from 3 for 8) else "alias" end as alias'), 'addtime as created',
                 DB::raw('(select count(*) from "Comment" where "Tag" = \'motivasi\' and "Id_Ticket" = "Ticket_Motivasi"."id_ticket") as ttlcomment'),
                 DB::raw('(select count(*) from "Likes" left join "LikesDetails" on "Likes"."Id_Likes" = "LikesDetails"."Id_Likes" where "Likes"."Tag" = \'motivasi\' and "Likes"."Id_Ticket" = "Ticket_Motivasi"."id_ticket" and "LikesDetails"."Like" = \'1\') as ttllike'),
-                DB::raw('(select case when "Nik_Karyawan" = \'.$userid.\' then \'1\' else \'0\' end as liked from "Likes" left join "LikesDetails" on "Likes"."Id_Likes" = "LikesDetails"."Id_Likes" where "Likes"."Tag" = \'motivasi\' and "Likes"."Id_Ticket" = "Ticket_Motivasi"."id_ticket") as likeby')
+                DB::raw('(select case when "Nik_Karyawan" = \'.$userid.\' then \'1\' else \'0\' end as liked from "Likes" left join "LikesDetails" on "Likes"."Id_Likes" = "LikesDetails"."Id_Likes" where "Likes"."Tag" = \'motivasi\' and "Likes"."Id_Ticket" = "Ticket_Motivasi"."id_ticket" order by "LikesDetails"."Created_by" = \'.$userid.\' desc limit 1) as likeby')
             )
             ->orderBy('addtime','DESC')
             ->limit(10)
