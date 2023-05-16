@@ -13,7 +13,7 @@ class AuthModel extends Model
     
 	private static $status = 'Failed';
     private static $message = 'Data is cannot be process';
-    private static $data = 'Data is Empty';
+    private static $data = null;
 
     public static function Login($request)
     {
@@ -53,7 +53,7 @@ class AuthModel extends Model
                     }else{
                         static::$status = 'Warning';
                         static::$message = 'You need to update your Head Department';
-                        static::$data = null;
+                        static::$data;
                     }
 
                 }else{
@@ -74,7 +74,7 @@ class AuthModel extends Model
         }
         catch(\Exception $e){ 
             static::$status;
-            static::$data = null;
+            static::$data;
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 
@@ -97,12 +97,12 @@ class AuthModel extends Model
             }else{
                 static::$status;
                 static::$message;
-                static::$data = null;
+                static::$data;
             }
             
-        }catch(Exception $e){
+        }catch(\Exception $e){
             static::$status;
-            static::$data = null;
+            static::$data;
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Other = '.$e->getMessage();
         }
 
@@ -131,9 +131,9 @@ class AuthModel extends Model
             static::$message = 'Data has been process';
             static::$data = $responseBody;
             
-        }catch(Exception $e){
+        }catch(\Exception $e){
             static::$status;
-            static::$data = null;
+            static::$data;
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Function WCF = '.$e->getMessage();
         }
 

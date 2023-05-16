@@ -13,7 +13,7 @@ class ReportModel extends Model
     
 	private static $status = 'Failed';
     private static $message = 'Data is cannot be process';
-    private static $data = 'Data is Empty';
+    private static $data = null;
 
     public static function showDataReportTicket($request)
     {
@@ -36,7 +36,7 @@ class ReportModel extends Model
         }
         catch(\Exception $e){ 
             static::$status;
-            static::$data = null;
+            static::$data;
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 
@@ -68,7 +68,7 @@ class ReportModel extends Model
         }
         catch(\Exception $e){ 
             static::$status;
-            static::$data = null;
+            static::$data;
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 
@@ -103,7 +103,7 @@ class ReportModel extends Model
         }
         catch(\Exception $e){ 
             static::$status;
-            static::$data = null;
+            static::$data;
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 
@@ -138,7 +138,7 @@ class ReportModel extends Model
         }
         catch(\Exception $e){ 
             static::$status;
-            static::$data = null;
+            static::$data;
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 
