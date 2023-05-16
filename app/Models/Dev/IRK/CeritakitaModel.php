@@ -13,7 +13,7 @@ class CeritakitaModel extends Model
     
 	private static $status = 'Failed';
     private static $message = 'Data is cannot be process';
-    private static $data = 'Data is Empty';
+    private static $data = null;
 
     public static function showDataCeritakita($request)
     {
@@ -28,7 +28,7 @@ class CeritakitaModel extends Model
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
                 static::$data = $data;
-            } else{
+            }else{
                 static::$status;
                 static::$message;
                 static::$data;
@@ -37,7 +37,7 @@ class CeritakitaModel extends Model
         }
         catch(\Exception $e){ 
             static::$status;
-            static::$data = null;
+            static::$data;
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 

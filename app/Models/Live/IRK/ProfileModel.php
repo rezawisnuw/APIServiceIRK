@@ -13,7 +13,7 @@ class ProfileModel extends Model
     
 	private static $status = 'Failed';
     private static $message = 'Data is cannot be process';
-    private static $data = 'Data is Empty';
+    private static $data = null;
 
     public static function showDataProfile($request)
     {
@@ -39,7 +39,7 @@ class ProfileModel extends Model
         }
         catch(\Exception $e){ 
             static::$status;
-            static::$data = null;
+            static::$data;
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 
@@ -93,7 +93,7 @@ class ProfileModel extends Model
         }
         catch(\Exception $e){ 
             static::$status;
-            static::$data = null;
+            static::$data;
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 
@@ -166,7 +166,7 @@ class ProfileModel extends Model
         }
         catch(\Exception $e){ 
             static::$status;
-            static::$data = null;
+            static::$data;
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 
