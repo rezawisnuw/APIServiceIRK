@@ -41,6 +41,11 @@ class CeritakitaModel extends Model
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 
+        for($index = 0; $index < count($data); $index++ ){
+            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+        }
+
         return [
             'status'  => static::$status,
             'data' => static::$data,
