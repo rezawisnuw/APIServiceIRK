@@ -22,7 +22,7 @@ class VersionModel extends Model
 
         try
         {   
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))
             ->table('VersionApp')
             ->where('OS_Type','=',$ostype)
             ->get();
@@ -60,7 +60,7 @@ class VersionModel extends Model
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputappversion(?,?,?)", [$ostype,$versioncode,$versionapp]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->insert("CALL inputappversion(?,?,?)", [$ostype,$versioncode,$versionapp]);
 
             if($data) {
                 static::$status = 'Success';

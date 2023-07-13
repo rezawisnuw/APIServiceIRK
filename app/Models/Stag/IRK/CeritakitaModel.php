@@ -22,7 +22,7 @@ class CeritakitaModel extends Model
 
         try
         {   
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showceritakita(?,?)",[$userid,$page]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->select("select * from showceritakita(?,?)",[$userid,$page]);
 
             if($data) {
                 static::$status = 'Success';
@@ -42,8 +42,8 @@ class CeritakitaModel extends Model
         }
 
         for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?,?)",[$data[$index]->idticket,$data[$index]->key]);
-            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->select("select * from showcomment(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->select("select * from showlike(?,?)",[$data[$index]->idticket,$data[$index]->key]);
         }
 
         return [

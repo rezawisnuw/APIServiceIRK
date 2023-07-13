@@ -22,7 +22,7 @@ class CommentModel extends Model
 
         try
         {
-            // $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+            // $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))
             // ->table('Comment')
             // ->leftJoin('CommentDetails','Comment.Id_Comment','=','CommentDetails.Id_Comment')
             // ->where('Comment.Tag','=',$tag)
@@ -30,7 +30,7 @@ class CommentModel extends Model
             // ->orderBy('CommentDetails.Created_at','DESC')
             // ->get();
 
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?,?)",[$idticket,$tag]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->select("select * from showcomment(?,?)",[$idticket,$tag]);
 
             if($data) {
                 static::$status = 'Success';
@@ -62,7 +62,7 @@ class CommentModel extends Model
 
     //     try
     //     {
-    //         $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+    //         $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))
     //         ->table('Comment')
     //         ->select('CommentDetails.Nik_Karyawan','CommentDetails.Comment','CommentDetails.Alias','CommentDetails.Created_at')//,'UserProfile.Alias')
     //         ->leftJoin('CommentDetails','Comment.Id_Comment','=','CommentDetails.Id_Comment')
@@ -103,7 +103,7 @@ class CommentModel extends Model
 
     //     try
     //     {
-    //         $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+    //         $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))
     //         ->table('Comment')
     //         ->select('CommentDetails.Nik_Karyawan','CommentDetails.Comment','CommentDetails.Alias','CommentDetails.Created_at')//,'UserProfile.Alias')
     //         ->leftJoin('CommentDetails','Comment.Id_Comment','=','CommentDetails.Id_Comment')
@@ -148,7 +148,7 @@ class CommentModel extends Model
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcomment(?,?,?,?,?)", [$nik,$comment,$idticket,$alias,$tag]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->insert("CALL inputcomment(?,?,?,?,?)", [$nik,$comment,$idticket,$alias,$tag]);
 
             if($data) {
                 static::$status = 'Success';

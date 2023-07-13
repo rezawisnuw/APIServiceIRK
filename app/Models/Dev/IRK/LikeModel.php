@@ -22,7 +22,7 @@ class LikeModel extends Model
 
         try
         {
-            // $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+            // $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
             // ->table('Likes')
             // ->leftJoin('LikesDetails','Likes.Id_Likes','=','LikesDetails.Id_Likes')
             // ->where('Likes.Tag','=',$tag)
@@ -30,7 +30,7 @@ class LikeModel extends Model
             // ->orderBy('LikesDetails.Created_at','DESC')
             // ->get();
 
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?,?)",[$idticket,$tag]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->select("select * from showlike(?,?)",[$idticket,$tag]);
 
             if($data) {
                 static::$status = 'Success';
@@ -62,7 +62,7 @@ class LikeModel extends Model
 
     //     try
     //     {
-    //         $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+    //         $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
     //         ->table('Likes')
     //         ->select('LikesDetails.Nik_Karyawan','LikesDetails.Like','LikeDetails.Alias','LikesDetails.Created_at')//,'UserProfile.Alias')
     //         ->leftJoin('LikesDetails','Likes.Id_Likes','=','LikesDetails.Id_Likes')
@@ -102,7 +102,7 @@ class LikeModel extends Model
 
     //     try
     //     {
-    //         $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+    //         $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
     //         ->table('Likes')
     //         ->select('LikesDetails.Nik_Karyawan','LikesDetails.Like','LikeDetails.Alias','LikesDetails.Created_at')//,'UserProfile.Alias')
     //         ->leftJoin('LikesDetails','Likes.Id_Likes','=','LikesDetails.Id_Likes')
@@ -146,7 +146,7 @@ class LikeModel extends Model
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputlike(?,?,?,?,?)", [$nik,$idticket,$tag,$alias,$userlike]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->insert("CALL inputlike(?,?,?,?,?)", [$nik,$idticket,$tag,$alias,$userlike]);
 
             if($data) {
                 static::$status = 'Success';

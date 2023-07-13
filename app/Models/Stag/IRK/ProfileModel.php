@@ -21,7 +21,7 @@ class ProfileModel extends Model
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))
             ->table('UserProfile')
             ->where('Nik_Karyawan','=', $nik)
             ->get();
@@ -74,7 +74,7 @@ class ProfileModel extends Model
             }else{
                 $imgextension = $photo->extension();
 
-                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,$imgextension]);
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->insert("CALL inputProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,$imgextension]);
 
                 if($data) {
 
@@ -130,7 +130,7 @@ class ProfileModel extends Model
                 }else{
                     $imgextension = $photo->extension();
 
-                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL editProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,$photo]);
+                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->insert("CALL editProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,$photo]);
 
                     if($data) {
 
@@ -146,7 +146,7 @@ class ProfileModel extends Model
                     }
                 }
             }else{
-                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL editProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,'']);
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->insert("CALL editProfile(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$kelamin,$email,'']);
 
                     if($data) {
 

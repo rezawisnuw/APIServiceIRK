@@ -22,7 +22,7 @@ class CurhatkuModel extends Model
         
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))
             ->table('TicketCurhatku')
             ->select('Id_Ticket as idticket', 'Nik_Karyawan as employee', 'Caption as header', 'Deskripsi as text', 'Gambar as picture', 'Tag as key', 
                 DB::raw('case when "Alias" is not null then substring("Alias" from 3 for 8) else "Alias" end as alias'),'Created_at as created',
@@ -66,7 +66,7 @@ class CurhatkuModel extends Model
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcurhatku(?,?)",[$userid,$idticket]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->select("select * from showcurhatku(?,?)",[$userid,$idticket]);
 
             if($data) {
                 static::$status = 'Success';
@@ -86,8 +86,8 @@ class CurhatkuModel extends Model
         }
 
         for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?,?)",[$data[$index]->idticket,$data[$index]->key]);
-            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->select("select * from showcomment(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->select("select * from showlike(?,?)",[$data[$index]->idticket,$data[$index]->key]);
         }
 
         return [
@@ -119,10 +119,10 @@ class CurhatkuModel extends Model
                 }else{
                     $imgextension = $gambar->extension();
 
-                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$caption,$deskripsi,$imgextension]);
+                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$caption,$deskripsi,$imgextension]);
 
                     if($data) {
-                        $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+                        $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))
                                     ->table('TicketCurhatku')
                                     ->selectRaw('CAST(MAX("Id_Ticket") as integer) as next_id')
                                     ->value('next_id');
@@ -139,10 +139,10 @@ class CurhatkuModel extends Model
                     }
                 }
             } else{
-                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$caption,$deskripsi,'']);
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$caption,$deskripsi,'']);
                 
                 if($data) {
-                    $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+                    $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))
                                 ->table('TicketCurhatku')
                                 ->selectRaw('CAST(MAX("Id_Ticket") as integer) as next_id')
                                 ->value('next_id');
