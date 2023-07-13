@@ -22,7 +22,7 @@ class MotivasiModel extends Model
         
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
             ->table('TicketMotivasi')
             ->select('id_ticket as idticket', 'id_user as employee', 'judul_motivasi as header', 'motivasi as text', 'photo as picture', 'tag as key', 
                 DB::raw('case when "alias" is not null then substring("alias" from 3 for 8) else "alias" end as alias'), 'addtime as created',
@@ -53,8 +53,8 @@ class MotivasiModel extends Model
         }
 
         for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?,?)",[$data[$index]->idticket,$data[$index]->key]);
-            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->select("select * from showcomment(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->select("select * from showlike(?,?)",[$data[$index]->idticket,$data[$index]->key]);
         }
 
         return [
@@ -71,7 +71,7 @@ class MotivasiModel extends Model
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showmotivasi(?,?)",[$userid,$idticket]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->select("select * from showmotivasi(?,?)",[$userid,$idticket]);
 
             if($data) {
                 static::$status = 'Success';
@@ -121,10 +121,10 @@ class MotivasiModel extends Model
                 }else{
                     $imgextension = $photo->extension();
 
-                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputmotivasi(?,?,?,?,?)", [$nik,$judul,$motivasi,$alias,$imgextension]);
+                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->insert("CALL inputmotivasi(?,?,?,?,?)", [$nik,$judul,$motivasi,$alias,$imgextension]);
                 
                     if($data) {
-                        $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+                        $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
                                     ->table('TicketMotivasi')
                                     ->selectRaw('CAST(MAX("id_ticket") as integer) as next_id')
                                     ->value('next_id');
@@ -157,10 +157,10 @@ class MotivasiModel extends Model
                     }
                 }
             } else{
-                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputmotivasi(?,?,?,?,?)", [$nik,$judul,$motivasi,$alias,'']);
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->insert("CALL inputmotivasi(?,?,?,?,?)", [$nik,$judul,$motivasi,$alias,'']);
                 
                 if($data) {
-                    $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+                    $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
                                 ->table('TicketMotivasi')
                                 ->selectRaw('CAST(MAX("id_ticket") as integer) as next_id')
                                 ->value('next_id');

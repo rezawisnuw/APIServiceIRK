@@ -19,7 +19,7 @@ class ReportModel extends Model
     {
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
             ->table('ReportDetails')
             ->orderBy('Created_at','DESC')
             ->get();
@@ -52,7 +52,7 @@ class ReportModel extends Model
     {
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
             ->table('ReportCommentDetails')
             ->orderBy('Created_at','DESC')
             ->get();
@@ -90,7 +90,7 @@ class ReportModel extends Model
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputreportticket(?,?,?,?)", [$nik,$report,$idticket,$tag]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->insert("CALL inputreportticket(?,?,?,?)", [$nik,$report,$idticket,$tag]);
 
             if($data) {
                 static::$status = 'Success';
@@ -125,7 +125,7 @@ class ReportModel extends Model
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputreportcomment(?,?,?,?)", [$nik,$report,$idticket,$tag]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->insert("CALL inputreportcomment(?,?,?,?)", [$nik,$report,$idticket,$tag]);
 
             if($data) {
                 static::$status = 'Success';
