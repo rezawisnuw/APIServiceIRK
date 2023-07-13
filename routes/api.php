@@ -65,6 +65,11 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('profile/post',[Dev\IRK\ProfileController::class, 'post']);
         Route::post('profile/put',[Dev\IRK\ProfileController::class, 'put']);
         Route::post('profile/delete',[Dev\IRK\ProfileController::class, 'delete']);
+        //Version
+        Route::post('version/get',[Dev\IRK\VersionController::class, 'get']);
+        Route::post('version/post',[Dev\IRK\VersionController::class, 'post']);
+        Route::post('version/put',[Dev\IRK\VersionController::class, 'put']);
+        Route::post('version/delete',[Dev\IRK\VersionController::class, 'delete']);
     });
     //END DEV
 
@@ -108,6 +113,11 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('profile/post',[Stag\IRK\ProfileController::class, 'post']);
         Route::post('profile/put',[Stag\IRK\ProfileController::class, 'put']);
         Route::post('profile/delete',[Stag\IRK\ProfileController::class, 'delete']);
+        //Version
+        Route::post('version/get',[Stag\IRK\VersionController::class, 'get']);
+        Route::post('version/post',[Stag\IRK\VersionController::class, 'post']);
+        Route::post('version/put',[Stag\IRK\VersionController::class, 'put']);
+        Route::post('version/delete',[Stag\IRK\VersionController::class, 'delete']);
     });
     //END STAG
 
@@ -151,6 +161,11 @@ Route::group(['middleware' => ['cors']], function() {
         Route::post('profile/post',[Live\IRK\ProfileController::class, 'post']);
         Route::post('profile/put',[Live\IRK\ProfileController::class, 'put']);
         Route::post('profile/delete',[Live\IRK\ProfileController::class, 'delete']);
+        //Version
+        Route::post('version/get',[Live\IRK\VersionController::class, 'get']);
+        Route::post('version/post',[Live\IRK\VersionController::class, 'post']);
+        Route::post('version/put',[Live\IRK\VersionController::class, 'put']);
+        Route::post('version/delete',[Live\IRK\VersionController::class, 'delete']);
     });
     //END LIVE
 

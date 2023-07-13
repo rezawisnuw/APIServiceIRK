@@ -23,12 +23,12 @@ class MotivasiModel extends Model
         try
         {
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-            ->table('Ticket_Motivasi')
+            ->table('TicketMotivasi')
             ->select('id_ticket as idticket', 'id_user as employee', 'judul_motivasi as header', 'motivasi as text', 'photo as picture', 'tag as key', 
                 DB::raw('case when "alias" is not null then substring("alias" from 3 for 8) else "alias" end as alias'), 'addtime as created',
-                DB::raw('(select count(*) from "Comment" where "Tag" = \'motivasi\' and "Id_Ticket" = "Ticket_Motivasi"."id_ticket") as ttlcomment'),
-                DB::raw('(select count(*) from "Likes" left join "LikesDetails" on "Likes"."Id_Likes" = "LikesDetails"."Id_Likes" where "Likes"."Tag" = \'motivasi\' and "Likes"."Id_Ticket" = "Ticket_Motivasi"."id_ticket" and "LikesDetails"."Like" = \'1\') as ttllike'),
-                DB::raw('(select case when "Nik_Karyawan" = \'.$userid.\' then \'1\' else \'0\' end as liked from "Likes" left join "LikesDetails" on "Likes"."Id_Likes" = "LikesDetails"."Id_Likes" where "Likes"."Tag" = \'motivasi\' and "Likes"."Id_Ticket" = "Ticket_Motivasi"."id_ticket" order by "LikesDetails"."Created_by" = \'.$userid.\' desc limit 1) as likeby')
+                DB::raw('(select count(*) from "Comment" where "Tag" = \'motivasi\' and "Id_Ticket" = "TicketMotivasi"."id_ticket") as ttlcomment'),
+                DB::raw('(select count(*) from "Likes" left join "LikesDetails" on "Likes"."Id_Likes" = "LikesDetails"."Id_Likes" where "Likes"."Tag" = \'motivasi\' and "Likes"."Id_Ticket" = "TicketMotivasi"."id_ticket" and "LikesDetails"."Like" = \'1\') as ttllike'),
+                DB::raw('(select case when "Nik_Karyawan" = \'.$userid.\' then \'1\' else \'0\' end as liked from "Likes" left join "LikesDetails" on "Likes"."Id_Likes" = "LikesDetails"."Id_Likes" where "Likes"."Tag" = \'motivasi\' and "Likes"."Id_Ticket" = "TicketMotivasi"."id_ticket" order by "LikesDetails"."Created_by" = \'.$userid.\' desc limit 1) as likeby')
             )
             ->orderBy('addtime','DESC')
             ->limit(10)
@@ -85,6 +85,11 @@ class MotivasiModel extends Model
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 
+        for($index = 0; $index < count($data); $index++ ){
+            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+        }
+
         return [
             'status'  => static::$status,
             'data' => static::$data,
@@ -120,7 +125,7 @@ class MotivasiModel extends Model
                 
                     if($data) {
                         $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-                                    ->table('Ticket_Motivasi')
+                                    ->table('TicketMotivasi')
                                     ->selectRaw('CAST(MAX("id_ticket") as integer) as next_id')
                                     ->value('next_id');
 
@@ -156,7 +161,7 @@ class MotivasiModel extends Model
                 
                 if($data) {
                     $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-                                ->table('Ticket_Motivasi')
+                                ->table('TicketMotivasi')
                                 ->selectRaw('CAST(MAX("id_ticket") as integer) as next_id')
                                 ->value('next_id');
 
