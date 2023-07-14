@@ -55,9 +55,9 @@ class VersionModel extends Model
 
     public static function inputDataAppVersion($request)
     {
-        $ostype = $request['os_type'];
-        $versioncode = $request['version_code'];
-        $versionapp = $request['version_name'];
+        $ostype = $request['ostype'];
+        $versioncode = $request['versioncode'];
+        $versionapp = $request['versionname'];
 
         try
         {
