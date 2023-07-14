@@ -161,6 +161,32 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'pgsqlgcp_irk_stag' =>[
+            'driver' => 'pgsql',
+            'host' => env('DB_HOST_PGSQLGCP_IRK_STAG', 'dbirk'),
+            'port' => env('DB_PORT_PGSQLGCP_IRK_STAG', '5432'),
+            'database' => env('DB_DATABASE_PGSQLGCP_IRK_STAG', 'irk_stag'),
+            'username' => env('DB_USERNAME_PGSQLGCP_IRK_STAG', 'usersd2'),
+            'password' => env('DB_PASSWORD_PGSQLGCP_IRK_STAG', '5D2k0c4x'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
+        'pgsqlgcp_irk_dev' =>[
+            'driver' => 'pgsql',
+            'host' => env('DB_HOST_PGSQLGCP_IRK_DEV', 'dbirk'),
+            'port' => env('DB_PORT_PGSQLGCP_IRK_DEV', '5432'),
+            'database' => env('DB_DATABASE_PGSQLGCP_IRK_DEV', 'irk_dev'),
+            'username' => env('DB_USERNAME_PGSQLGCP_IRK_DEV', 'usersd2'),
+            'password' => env('DB_PASSWORD_PGSQLGCP_IRK_DEV', '5D2k0c4x'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
     ],
 
     /*

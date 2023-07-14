@@ -23,7 +23,7 @@ class VersionModel extends Model
         try
         {   
             $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-            ->table('VersionApp')
+            ->table('AppVersion')
             ->where('OS_Type','=',$ostype)
             ->get();
             
