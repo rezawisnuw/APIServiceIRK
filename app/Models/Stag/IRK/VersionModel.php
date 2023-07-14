@@ -66,7 +66,7 @@ class VersionModel extends Model
             if($data) {
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $data[0];
+                static::$data = $data;
             } else{
                 static::$status;
                 static::$message;
