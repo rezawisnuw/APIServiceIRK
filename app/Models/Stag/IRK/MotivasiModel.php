@@ -126,7 +126,7 @@ class MotivasiModel extends Model
                     if($data) {
                         $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))
                                     ->table('TicketMotivasi')
-                                    ->selectRaw('CAST(MAX("id_ticket") as integer) as next_id')
+                                    ->selectRaw('MAX("id_ticket") as next_id')
                                     ->value('next_id');
 
                         // $client = new Client();
@@ -162,7 +162,7 @@ class MotivasiModel extends Model
                 if($data) {
                     $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))
                                 ->table('TicketMotivasi')
-                                ->selectRaw('CAST(MAX("id_ticket") as integer) as next_id')
+                                ->selectRaw('MAX("id_ticket") as next_id')
                                 ->value('next_id');
 
                     // $client = new Client();

@@ -142,7 +142,7 @@ class CurhatkuModel extends Model
                     if($data) {
                         $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
                                     ->table('TicketCurhatku')
-                                    ->selectRaw('CAST(MAX("Id_Ticket") as integer) as next_id')
+                                    ->selectRaw('MAX("Id_Ticket") as next_id')
                                     ->value('next_id');
 
                         // $client = new Client();
@@ -178,7 +178,7 @@ class CurhatkuModel extends Model
                 if($data) {
                     $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
                                 ->table('TicketCurhatku')
-                                ->selectRaw('CAST(MAX("Id_Ticket") as integer) as next_id')
+                                ->selectRaw('MAX("Id_Ticket") as next_id')
                                 ->value('next_id');
 
                     // $client = new Client();
