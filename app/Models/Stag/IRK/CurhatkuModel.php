@@ -102,7 +102,8 @@ class CurhatkuModel extends Model
         $nik = $request->nik;
         $caption = $request->caption;
         $deskripsi = $request->deskripsi;
-        $gambar = $request->gambar;
+        $alias = base64_encode(microtime().$request->nik);//substr(base64_encode(microtime().$request->nik),3,8);
+        $gambar = isset($request->gambar) ? $request->gambar : '';
 
         try
         {
@@ -119,12 +120,12 @@ class CurhatkuModel extends Model
                 }else{
                     $imgextension = $gambar->extension();
 
-                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->insert("CALL inputcurhatku(?,?,?,?)", [$nik,$caption,$deskripsi,$imgextension]);
+                    $data = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))->insert("CALL inputcurhatku(?,?,?,?,?)", [$nik,$caption,$deskripsi,$alias,$imgextension]);
 
                     if($data) {
                         $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))
                                     ->table('TicketCurhatku')
-                                    ->selectRaw('CAST(MAX("Id_Ticket") as integer) as next_id')
+                                    ->selectRaw('MAX("Id_Ticket") as next_id')
                                     ->value('next_id');
 
                         $imgpath = 'Stag/Ceritakita/Curhatku/'.$nik.'_'.$nextId.'.'.$imgextension;
@@ -144,7 +145,7 @@ class CurhatkuModel extends Model
                 if($data) {
                     $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'))
                                 ->table('TicketCurhatku')
-                                ->selectRaw('CAST(MAX("Id_Ticket") as integer) as next_id')
+                                ->selectRaw('MAX("Id_Ticket") as next_id')
                                 ->value('next_id');
 
                     $imgpath = 'Stag/Ceritakita/Curhatku/'.$nik.'_'.$nextId.'.';
