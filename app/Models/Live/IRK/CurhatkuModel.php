@@ -115,7 +115,7 @@ class CurhatkuModel extends Model
             if($data) {
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $data;
+                static::$data = $data[0]->ttldatacurhatku;
             } else{
                 static::$status;
                 static::$message;
