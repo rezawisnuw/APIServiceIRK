@@ -55,4 +55,45 @@ class CeritakitaModel extends Model
         ];
     }
 
+    public static function showDataCeritakitaTotal($request)
+    {
+
+        try
+        {
+            $data1 = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
+            ->table('TicketCurhatku')
+            ->select(DB::raw('count(*) as ttldatacurhatku'))  
+            ->get();
+
+            $data2 = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
+            ->table('TicketMotivasi')
+            ->select(DB::raw('count(*) as ttldatamotivasi'))  
+            ->get();
+
+            $data = $data1[0]->ttldatacurhatku + $data2[0]->ttldatamotivasi;
+
+            if($data) {
+                static::$status = 'Success';
+                static::$message = 'Data has been process';
+                static::$data = $data;
+            } else{
+                static::$status;
+                static::$message;
+                static::$data;
+            }
+
+        }
+        catch(\Exception $e){ 
+            static::$status;
+            static::$data;
+            static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+        }
+
+        return [
+            'status'  => static::$status,
+            'data' => static::$data,
+            'message' => static::$message
+        ];
+    }
+
 }

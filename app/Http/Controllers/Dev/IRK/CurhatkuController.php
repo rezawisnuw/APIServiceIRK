@@ -38,6 +38,9 @@ class CurhatkuController extends Controller
                 case 2:
                     $result = CurhatkuModel::showDataCurhatkuSingle($formbody);
                     break;
+                case 3:
+                    $result = CurhatkuModel::showDataCurhatkuTotal($formbody);
+                    break;
                 default:
                     $result = collect([
                         'status'  => $this->status,
