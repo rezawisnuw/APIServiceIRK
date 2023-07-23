@@ -115,7 +115,7 @@ class MotivasiModel extends Model
             if($data) {
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
-                static::$data = $data;
+                static::$data = $data[0]->ttldatamotivasi;
             } else{
                 static::$status;
                 static::$message;
