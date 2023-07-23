@@ -52,6 +52,11 @@ class CurhatkuModel extends Model
             static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 
+        for($index = 0; $index < count($data); $index++ ){
+            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+        }
+
         return [
             'status'  => static::$status,
             'data' => static::$data,
@@ -88,6 +93,40 @@ class CurhatkuModel extends Model
         for($index = 0; $index < count($data); $index++ ){
             $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?,?)",[$data[$index]->idticket,$data[$index]->key]);
             $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+        }
+
+        return [
+            'status'  => static::$status,
+            'data' => static::$data,
+            'message' => static::$message
+        ];
+    }
+
+    public static function showDataCurhatkuTotal($request)
+    {
+
+        try
+        {
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
+            ->table('TicketCurhatku')
+            ->select(DB::raw('count(*) as ttldatacurhatku'))  
+            ->get();
+
+            if($data) {
+                static::$status = 'Success';
+                static::$message = 'Data has been process';
+                static::$data = $data;
+            } else{
+                static::$status;
+                static::$message;
+                static::$data;
+            }
+
+        }
+        catch(\Exception $e){ 
+            static::$status;
+            static::$data;
+            static::$message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
         }
 
         return [

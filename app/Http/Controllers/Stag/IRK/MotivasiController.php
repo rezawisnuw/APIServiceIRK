@@ -35,8 +35,11 @@ class MotivasiController extends Controller
                 case 1:
                     $result = MotivasiModel::showDataMotivasi($formbody);
                     break;
-                case 1:
+                case 2:
                     $result = MotivasiModel::showDataMotivasiSingle($formbody);
+                    break;
+                case 3:
+                    $result = MotivasiModel::showDataMotivasiTotal($formbody);
                     break;
                 default:
                     $result = collect([
