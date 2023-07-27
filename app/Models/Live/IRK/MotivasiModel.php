@@ -165,7 +165,7 @@ class MotivasiModel extends Model
                     if($data) {
                         $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
                                     ->table('TicketMotivasi')
-                                    ->selectRaw('MAX("id_ticket") as next_id')
+                                    ->selectRaw('max(cast(left("id_ticket",length("id_ticket")-2) as integer)) as next_id')
                                     ->value('next_id');
 
                         // $client = new Client();
