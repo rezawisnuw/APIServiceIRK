@@ -164,7 +164,7 @@ class CurhatkuModel extends Model
                     if($data) {
                         $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
                                     ->table('TicketCurhatku')
-                                    ->selectRaw('max(cast(left("Id_Ticket",length("Id_Ticket")-2) as integer))||'.'-C'.' as next_id')
+                                    ->selectRaw('max(cast(left("Id_Ticket",length("Id_Ticket")-2) as integer)) as next_id')
                                     ->value('next_id');
 
                         $imgpath = 'Live/Ceritakita/Curhatku/'.$nik.'_'.$nextId.'.'.$imgextension;
