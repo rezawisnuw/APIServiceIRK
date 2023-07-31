@@ -55,8 +55,8 @@ class CurhatkuModel extends Model
         }
 
         for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?)",[$data[$index]->idticket]);
-            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?)",[$data[$index]->idticket]);
+            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?)",[$data[$index]->id_ticket]);
+            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?)",[$data[$index]->id_ticket]);
         }
 
         return [
@@ -93,8 +93,8 @@ class CurhatkuModel extends Model
         }
 
         for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?,?)",[$data[$index]->idticket,$data[$index]->key]);
-            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?)",[$data[$index]->id_ticket]);
+            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?)",[$data[$index]->id_ticket]);
         }
 
         return [
