@@ -282,13 +282,13 @@ class MotivasiModel extends Model
 
                     if($data) {
                         // $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-                        //             ->table('TicketCurhatku')
-                        //             ->selectRaw('max(cast(left("Id_Ticket",length("Id_Ticket")-2) as integer)) as next_id')
+                        //             ->table('TicketMotivasi')
+                        //             ->selectRaw('max(cast(left("id_ticket",length("id_ticket")-2) as integer)) as next_id')
                         //             ->value('next_id');
 
-                        // $imgpath = 'Live/Ceritakita/Curhatku/'.$nik.'_'.$nextId.'.'.$imgextension;
+                        // $imgpath = 'Live/Ceritakita/Motivasi/'.$nik.'_'.$nextId.'.'.$imgextension;
 
-                        $imgpath = 'Live/Ceritakita/'.$idimg.'.'.$imgextension;
+                        $imgpath = 'Live/Ceritakita/Motivasi'.$idimg.'.'.$imgextension;
 
                         static::$status = 'Success';
                         static::$message = 'Data has been process';
@@ -304,11 +304,11 @@ class MotivasiModel extends Model
                 
                 if($data) {
                     // $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
-                    //             ->table('TicketCurhatku')
-                    //             ->selectRaw('MAX("Id_Ticket") as next_id')
+                    //             ->table('TicketMotivasi')
+                    //             ->selectRaw('MAX("id_ticket") as next_id')
                     //             ->value('next_id');
 
-                    $imgpath = 'Live/Ceritakita/'.$idimg.'.';
+                    $imgpath = 'Live/Ceritakita/Motivasi'.$idimg.'.';
 
                     static::$status = 'Success';
                     static::$message = 'Data has been process';
