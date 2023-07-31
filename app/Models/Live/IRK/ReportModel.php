@@ -84,7 +84,7 @@ class ReportModel extends Model
         $nik = $request['nik'];
         $report = $request['report'];
         $idticket = $request['idticket'];
-        $tag = $request['tag'];
+        $tag = 'curhatku';//$request['tag'];
 
         try
         {
@@ -118,12 +118,12 @@ class ReportModel extends Model
     {
         $nik = $request['nik'];
         $report = $request['report'];
-        $idticket = $request['idticket'];
-        $tag = $request['tag'];
+        $idcomment = $request['idcomment'];
+        $tag = 'curhatku';//$request['tag'];
 
         try
         {
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputreportcomment(?,?,?,?)", [$nik,$report,$idticket,$tag]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputreportcomment(?,?,?,?)", [$nik,$report,$idcomment,$tag]);
 
             if($data) {
                 static::$status = 'Success';
