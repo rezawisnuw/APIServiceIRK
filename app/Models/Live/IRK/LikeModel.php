@@ -18,7 +18,6 @@ class LikeModel extends Model
     public static function showDataLikeTotal($request)
     {
         $idticket = $request['idticket'];
-        $tag = $request['tag'];
 
         try
         {
@@ -30,7 +29,7 @@ class LikeModel extends Model
             // ->orderBy('LikesDetails.Created_at','DESC')
             // ->get();
 
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?,?)",[$idticket,$tag]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?)",[$idticket]);
 
             if($data) {
                 static::$status = 'Success';
@@ -140,7 +139,7 @@ class LikeModel extends Model
     {
         $nik = $request['nik'];
         $idticket = $request['idticket'];
-        $tag = $request['tag'];
+        $tag = 'curhatku';//$request['tag'];
         $alias = base64_encode(microtime().$request['nik']);//substr(base64_encode(microtime().$request['nik']),3,8);
         $userlike = $request['userlike'];
 
