@@ -252,7 +252,7 @@ class CurhatkuModel extends Model
 
                         // $imgpath = 'Live/Ceritakita/Curhatku/'.$nik.'_'.$nextId.'.'.$imgextension;
 
-                        $imgpath = 'Live/Ceritakita/'.$idimg.'.'.$imgextension;
+                        $imgpath = 'Live/Ceritakita/Curhatku/'.$idimg.'.'.$imgextension;
 
                         static::$status = 'Success';
                         static::$message = 'Data has been process';
@@ -272,7 +272,7 @@ class CurhatkuModel extends Model
                     //             ->selectRaw('MAX("Id_Ticket") as next_id')
                     //             ->value('next_id');
 
-                    $imgpath = 'Live/Ceritakita/'.$idimg.'.';
+                    $imgpath = 'Live/Ceritakita/Curhatku/'.$idimg.'.';
 
                     static::$status = 'Success';
                     static::$message = 'Data has been process';
