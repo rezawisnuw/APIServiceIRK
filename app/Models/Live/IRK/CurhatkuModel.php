@@ -226,7 +226,7 @@ class CurhatkuModel extends Model
 
         try
         {
-            $idimg = substr(base64_encode(microtime().$nik),3,8);
+            $idimg = substr($alias,3,8);
 
             if(!empty($gambar)){
                 $imgformat = array("jpeg", "jpg", "png");
