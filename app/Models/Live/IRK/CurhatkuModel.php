@@ -55,6 +55,7 @@ class CurhatkuModel extends Model
         }
 
         for($index = 0; $index < count($data); $index++ ){
+            $data[$index]->created = date('Y-m-d H:i:s',strtotime($data[$index]->created));
             $data[$index]->alias = substr($data[$index]->alias,3,8);
             $data[$index]->comments = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?)",[$data[$index]->idticket]);
             $data[$index]->likes = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?)",[$data[$index]->idticket]);
@@ -94,6 +95,7 @@ class CurhatkuModel extends Model
         }
 
         for($index = 0; $index < count($data); $index++ ){
+            $data[$index]->created = date('Y-m-d H:i:s',strtotime($data[$index]->created));
             $data[$index]->alias = substr($data[$index]->alias,3,8);
             $data[$index]->comments = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showcomment(?)",[$data[$index]->idticket]);
             $data[$index]->likes = DB::connection(config('app.URL_PGSQLGCP_IRK'))->select("select * from showlike(?)",[$data[$index]->idticket]);
