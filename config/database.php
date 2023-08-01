@@ -93,48 +93,6 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
-        'sqlsrv93_dev' => [
-            'driver' => 'sqlsrv',
-            'host' => env('DB_HOST_SQLSRV93_DEV', '101.234.116.253'), //public
-            //'host' => env('DB_HOST_SQLSRV93_DEV', '172.31.2.93'), //local
-            'port' => env('DB_PORT_SQLSRV93_DEV', '11433'), //public
-            //'port' => env('DB_PORT_SQLSRV93_DEV', '1433'), //local
-            'database' => env('DB_DATABASE_SQLSRV93_DEV', 'DBMOBILE_DEV'),
-            'username' => env('DB_USERNAME_SQLSRV93_DEV', 'sa'),
-            'password' => env('DB_PASSWORD_SQLSRV93_DEV', 'J063r5sd2'),
-            'prefix' => '',
-            'strict' => true,
-            'engine' => null,
-        ],
-
-        'sqlsrv93_stag' => [
-            'driver' => 'sqlsrv',
-            'host' => env('DB_HOST_SQLSRV93_STAG', '101.234.116.253'), //public
-            //'host' => env('DB_HOST_SQLSRV93_STAG', '172.31.2.93'), //local
-            'port' => env('DB_PORT_SQLSRV93_STAG', '11433'), //public
-            //'port' => env('DB_PORT_SQLSRV93_STAG', '1433'), //local
-            'database' => env('DB_DATABASE_SQLSRV93_STAG', 'DBMOBILE_STAG'),
-            'username' => env('DB_USERNAME_SQLSRV93_STAG', 'sa'),
-            'password' => env('DB_PASSWORD_SQLSRV93_STAG', 'J063r5sd2'),
-            'prefix' => '',
-            'strict' => true,
-            'engine' => null,
-        ],
-
-        'sqlsrv93' => [
-            'driver' => 'sqlsrv',
-            'host' => env('DB_HOST_SQLSRV93', '101.234.116.253'), //public
-            //'host' => env('DB_HOST_SQLSRV93', '172.31.2.93'), //local
-            'port' => env('DB_PORT_SQLSRV93', '11433'), //public
-            //'port' => env('DB_PORT_SQLSRV93', '1433'), //local
-            'database' => env('DB_DATABASE_SQLSRV93', 'DBMOBILE'),
-            'username' => env('DB_USERNAME_SQLSRV93', 'sa'),
-            'password' => env('DB_PASSWORD_SQLSRV93', 'J063r5sd2'),
-            'prefix' => '',
-            'strict' => true,
-            'engine' => null,
-        ],
-
         'pgsqllocal' =>[
             'driver' => 'pgsql',
             'host' => env('DB_HOST_PGSQLLOCAL', '127.0.0.1'),
