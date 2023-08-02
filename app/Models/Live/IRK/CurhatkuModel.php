@@ -266,7 +266,7 @@ class CurhatkuModel extends Model
                     }
                 }
             } else{
-                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputceritakita(?,?,?,?,?,?)", [$nik,$caption,$deskripsi,$alias,'',$tag]);
+                $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))->insert("CALL inputceritakita(?,?,?,?,?,?)", [$nik,$caption,$deskripsi,$alias,$idimg.'.',$tag]);
                 
                 if($data) {
                     // $nextId = DB::connection(config('app.URL_PGSQLGCP_IRK'))
