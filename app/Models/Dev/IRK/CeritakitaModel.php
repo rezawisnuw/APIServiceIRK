@@ -17,7 +17,6 @@ class CeritakitaModel extends Model
 
     public static function showDataCeritakita($request)
     {
-        
         $userid = $request['userid'];
         $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
 
@@ -44,8 +43,10 @@ class CeritakitaModel extends Model
         }
 
         for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->comment = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->select("select * from showcomment(?,?)",[$data[$index]->idticket,$data[$index]->key]);
-            $data[$index]->like = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->select("select * from showlike(?,?)",[$data[$index]->idticket,$data[$index]->key]);
+            $data[$index]->created = date('Y-m-d H:i:s',strtotime($data[$index]->created));
+            $data[$index]->alias = substr($data[$index]->alias,3,8);
+            $data[$index]->comments = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->select("select * from showcomment(?)",[$data[$index]->idticket]);
+            $data[$index]->likes = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->select("select * from showlike(?)",[$data[$index]->idticket]);
         }
                     
         return [
@@ -60,17 +61,24 @@ class CeritakitaModel extends Model
 
         try
         {
-            $data1 = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
-            ->table('TicketCurhatku')
-            ->select(DB::raw('count(*) as ttldatacurhatku'))  
+            // $data1 = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
+            // ->table('TicketCurhatku')
+            // ->select(DB::raw('count(*) as ttldatacurhatku'))  
+            // ->get();
+
+            // $data2 = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
+            // ->table('TicketMotivasi')
+            // ->select(DB::raw('count(*) as ttldatamotivasi'))  
+            // ->get();
+
+            //$data = $data1[0]->ttldatacurhatku + $data2[0]->ttldatamotivasi;
+
+            $data3 = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
+            ->table('CeritaKita')
+            ->select(DB::raw('count(*) as ttldataceritakita'))  
             ->get();
 
-            $data2 = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
-            ->table('TicketMotivasi')
-            ->select(DB::raw('count(*) as ttldatamotivasi'))  
-            ->get();
-
-            $data = $data1[0]->ttldatacurhatku + $data2[0]->ttldatamotivasi;
+            $data = $data3[0]->ttldataceritakita;
 
             if($data) {
                 static::$status = 'Success';

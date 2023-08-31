@@ -28,7 +28,7 @@ class CeritakitaModel extends Model
                 static::$status = 'Success';
                 static::$message = 'Data has been process';
                 static::$data = $data;
-            } else{
+            }else{
                 static::$status;
                 static::$message;
                 static::$data;
