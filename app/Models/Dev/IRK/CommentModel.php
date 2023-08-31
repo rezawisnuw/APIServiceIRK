@@ -18,7 +18,6 @@ class CommentModel extends Model
     public static function showDataCommentTotal($request)
     {
         $idticket = $request['idticket'];
-        $tag = $request['tag'];
 
         try
         {
@@ -30,7 +29,7 @@ class CommentModel extends Model
             // ->orderBy('CommentDetails.Created_at','DESC')
             // ->get();
 
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->select("select * from showcomment(?,?)",[$idticket,$tag]);
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))->select("select * from showcomment(?)",[$idticket]);
 
             if($data) {
                 static::$status = 'Success';
@@ -144,7 +143,7 @@ class CommentModel extends Model
         $comment = $request['comment'];
         $idticket = $request['idticket'];
         $alias = base64_encode(microtime().$request['nik']);//substr(base64_encode(microtime().$request['nik']),3,8);
-        $tag = $request['tag'];
+        $tag = 'curhatku';//$request['tag'];
 
         try
         {
@@ -157,7 +156,7 @@ class CommentModel extends Model
             } else{
                 static::$status;
                 static::$message;
-                static::$data;
+                static::$data = $data;
             }
 
         }

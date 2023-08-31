@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Dev\IRK;
 use DB;
-use SplFileInfo;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -25,7 +24,7 @@ class CurhatkuController extends Controller
     private $message = 'Process is not found';
     
     public function get(Request $request)
-    { //return response()->json($request);
+    {
         $formbody = $request->data;
         $codekey = null;
         

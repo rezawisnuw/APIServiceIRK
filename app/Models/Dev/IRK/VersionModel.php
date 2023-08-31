@@ -22,10 +22,10 @@ class VersionModel extends Model
 
         try
         {   
-            $data = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'))
+            $data = DB::connection(config('app.URL_PGSQLGCP_IRK'))
             ->table('AppVersion')
-            ->select('OS_Type as os_type','Version_Code as version_code', 'Version_App as version_name')
-            ->where('OS_Type','=',$ostype)
+            ->select('os_type','version_code','version_name')
+            ->where('os_type','=',$ostype)
             ->get();
             
             if($data) {
