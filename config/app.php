@@ -227,6 +227,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'IRKHelper' => App\Helper\IRKHelper::class
     ])->toArray(),
 
 ];
