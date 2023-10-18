@@ -13,7 +13,7 @@ use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use App\Models\IRK\IdeakuModel;
+use App\Models\IRK\CeritakitaModel;
 use App\Helper\IRKHelper;
 
 use PHPUnit\Framework\Exception;
