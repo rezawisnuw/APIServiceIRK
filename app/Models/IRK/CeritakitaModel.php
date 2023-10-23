@@ -158,4 +158,39 @@ class CeritakitaModel extends Model
         ];
     }
 
+    public function editDataContentCeritakita($request)
+    {
+
+        $nik = $request['nik'];
+        $idticket = $request['idticket'];
+        $tag = $request['tag'];
+
+        try
+        {
+            $data = $this->connection->insert("CALL editceritakita(?,?,?)", [$nik,$idticket,$tag]);
+
+            if($data) {
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
+            } else{
+                $this->status;
+                $this->message;
+                $this->data;
+            }
+
+        }
+        catch(\Throwable $e){ 
+            $this->status = 'Error';
+            $this->data = null;
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+        }
+
+        return [
+            'status'  => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
+        ];
+    }
+
 }
