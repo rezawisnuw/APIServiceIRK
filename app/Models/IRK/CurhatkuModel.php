@@ -58,10 +58,12 @@ class CurhatkuModel extends Model
         for($index = 0; $index < count($data); $index++ ){
             $data[$index]->comments = $this->connection->select("select * from showcomment(?)",[$data[$index]->idticket]);
             for($comment = 0; $comment < count($data[$index]->comments); $comment++ ){
-                $data[$index]->comments[$comment]->report_comment = $this->connection->select("select * from showreportcomment(?)",[$data[$index]->comments[$comment]->id_comment]);
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?)",[$data[$index]->comments[$comment]->id_comment]);
+                $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
             $data[$index]->likes = $this->connection->select("select * from showlike(?)",[$data[$index]->idticket]);
-            $data[$index]->report_ticket = $this->connection->select("select * from showreportticket(?)",[$data[$index]->idticket]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?)",[$data[$index]->idticket]);
+            $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
         return [
@@ -81,7 +83,7 @@ class CurhatkuModel extends Model
             $data = $this->connection->select("select * from showcurhatkudetail(?,?)",[$userid,$idticket]);
 
             if($data) {
-                $this->status = 'Success';
+                $this->status = 'Processing';
                 $this->message = 'Data has been process';
                 $this->data = $data;
             } else{
@@ -100,10 +102,12 @@ class CurhatkuModel extends Model
         for($index = 0; $index < count($data); $index++ ){
             $data[$index]->comments = $this->connection->select("select * from showcomment(?)",[$data[$index]->idticket]);
             for($comment = 0; $comment < count($data[$index]->comments); $comment++ ){
-                $data[$index]->comments[$comment]->report_comment = $this->connection->select("select * from showreportcomment(?)",[$data[$index]->comments[$comment]->id_comment]);
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?)",[$data[$index]->comments[$comment]->id_comment]);
+                $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
             $data[$index]->likes = $this->connection->select("select * from showlike(?)",[$data[$index]->idticket]);
-            $data[$index]->report_ticket = $this->connection->select("select * from showreportticket(?)",[$data[$index]->idticket]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?)",[$data[$index]->idticket]);
+            $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
         return [
