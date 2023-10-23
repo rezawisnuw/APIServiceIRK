@@ -35,8 +35,10 @@ class ReportModel extends Model
         try
         {
             $data = $this->connection
-            ->table('ReportDetails')
+            ->table('ReportTicket')
             ->get();
+
+            //$data = $this->connection->select("select * from showreportticket(?)",[$idticket]);
 
             if($data) {
                 $this->$status = 'Success';
@@ -67,8 +69,10 @@ class ReportModel extends Model
         try
         {
             $data = $this->connection
-            ->table('ReportCommentDetails')
+            ->table('ReportComment')
             ->get();
+
+            //$data = $this->connection->select("select * from showreportcomment(?)",[$idcomment]);
 
             if($data) {
                 $this->$status = 'Success';
