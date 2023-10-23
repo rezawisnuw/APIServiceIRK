@@ -122,7 +122,33 @@ class CeritakitaController extends Controller
 
     public function put(Request $request)
     {
+        $formbody = $request->data;
+        $codekey = null;
+        
+        try{         
+            
+            switch ($codekey = $formbody['code']) {
+                case 1:
+                    $result = $this->model->editDataContentCeritakita($formbody);
+                    break;
+                default:
+                    $result = collect([
+                        'status'  => $this->status,
+                        'data' => $this->data,
+                        'message' => $this->message
+                    ]);
+            }
+				
+        }
+        catch(\Throwable $e){ 
+            $result = collect([
+                'status' => 'Error',
+                'data' => null,
+                'message'  => $e->getCode() == 0 ? 'Error Controller Laravel = '.$e->getMessage() : 'Error Model Laravel = '.$e->getMessage().' On Switch Case = '.$codekey
+            ]);
+        }
 
+        return response()->json($result);
     }
 
     public function delete(Request $request)
