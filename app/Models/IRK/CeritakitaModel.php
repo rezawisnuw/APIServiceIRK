@@ -59,10 +59,12 @@ class CeritakitaModel extends Model
         for($index = 0; $index < count($data); $index++ ){
             $data[$index]->comments = $this->connection->select("select * from showcomment(?)",[$data[$index]->idticket]);
             for($comment = 0; $comment < count($data[$index]->comments); $comment++ ){
-                $data[$index]->comments[$comment]->report_comment = $this->connection->select("select * from showreportcomment(?)",[$data[$index]->comments[$comment]->id_comment]);
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?)",[$data[$index]->comments[$comment]->id_comment]);
+                $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
             $data[$index]->likes = $this->connection->select("select * from showlike(?)",[$data[$index]->idticket]);
-            $data[$index]->report_ticket = $this->connection->select("select * from showreportticket(?)",[$data[$index]->idticket]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?)",[$data[$index]->idticket]);
+            $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
         return [
@@ -97,6 +99,55 @@ class CeritakitaModel extends Model
             $this->status = 'Error';
             $this->data = null;
             $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+        }
+
+        return [
+            'status'  => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
+        ];
+    }
+
+    public function showDataCeritakitaSub($request)
+    {
+
+        $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
+        $userid = $request['userid'];
+        $tag = $request['tag'];
+        $periode = $request['periode'];
+        $report = $request['report'];
+        $content = $request['content'];
+        
+        try
+        {
+            $data = $this->connection->select("select * from showceritakitadetail(?,?,?,?,?,?)",[$userid,$page,$tag,$periode,$report,$content]);
+
+            if($data) {
+                $this->status = 'Processing';
+                $this->message = 'Data has been process';
+                $this->data = $data;
+            } else{
+                $this->status;
+                $this->message;
+                $this->data;
+            }
+
+        }
+        catch(\Throwable $e){ 
+            $this->status = 'Error';
+            $this->data = null;
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+        }
+
+        for($index = 0; $index < count($data); $index++ ){
+            $data[$index]->comments = $this->connection->select("select * from showcomment(?)",[$data[$index]->idticket]);
+            for($comment = 0; $comment < count($data[$index]->comments); $comment++ ){
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?)",[$data[$index]->comments[$comment]->id_comment]);
+                $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
+            }
+            $data[$index]->likes = $this->connection->select("select * from showlike(?)",[$data[$index]->idticket]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?)",[$data[$index]->idticket]);
+            $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
         return [
