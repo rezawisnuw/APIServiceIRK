@@ -57,10 +57,12 @@ class CeritakitaModel extends Model
         }
 
         for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->created = date('Y-m-d H:i:s',strtotime($data[$index]->created));
-            $data[$index]->alias = substr($data[$index]->alias,3,8);
             $data[$index]->comments = $this->connection->select("select * from showcomment(?)",[$data[$index]->idticket]);
+            for($comment = 0; $comment < count($data[$index]->comments); $comment++ ){
+                $data[$index]->comments[$comment]->report_comment = $this->connection->select("select * from showreportcomment(?)",[$data[$index]->comments[$comment]->id_comment]);
+            }
             $data[$index]->likes = $this->connection->select("select * from showlike(?)",[$data[$index]->idticket]);
+            $data[$index]->report_ticket = $this->connection->select("select * from showreportticket(?)",[$data[$index]->idticket]);
         }
 
         return [
