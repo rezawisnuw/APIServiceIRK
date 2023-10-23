@@ -114,13 +114,14 @@ class CeritakitaModel extends Model
         $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
         $userid = $request['userid'];
         $tag = $request['tag'];
-        $periode = $request['periode'];
+        $periode1 = $request['periode1'];
+        $periode2 = $request['periode2'];
         $report = $request['report'];
         $content = $request['content'];
         
         try
         {
-            $data = $this->connection->select("select * from showceritakitadetail(?,?,?,?,?,?)",[$userid,$page,$tag,$periode,$report,$content]);
+            $data = $this->connection->select("select * from showceritakitadetail(?,?,?,?,?,?,?)",[$userid,$page,$tag,$periode1,$periode2,$report,$content]);
 
             if($data) {
                 $this->status = 'Processing';
