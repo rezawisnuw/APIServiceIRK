@@ -40,7 +40,7 @@ class MotivasiModel extends Model
             $data = $this->connection->select("select * from showmotivasilist(?,?)",[$userid,$page]);
 
             if($data) {
-                $this->status = 'Processing';
+                $this->status = $page != 0 ? 'Processing' : 'Success';
                 $this->message = 'Data has been process';
                 $this->data = $data;
             } else{
