@@ -104,7 +104,7 @@ class CommentModel extends Model
         $nik = $request['nik'];
         $comment = $request['comment'];
         $idreply = $request['idreply'];
-        $alias = base64_encode(microtime().$request['nik']);//substr(base64_encode(microtime().$request['nik']),3,8);
+        $alias = str_contains($request['alias'],'Admin') ? $request['alias'] : base64_encode(microtime().$request['nik']); //substr(base64_encode(microtime().$request['nik']),3,8);
         $parentreply = $request['parentreply'];
 
         try
