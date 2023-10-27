@@ -40,7 +40,7 @@ class IdeakuModel extends Model
             $data = $this->connection->select("select * from showideakulist(?,?)",[$userid,$page]);
 
             if($data) {
-                $this->status = 'Processing';
+                $this->status = $page != 0 ? 'Processing' : 'Success';
                 $this->message = 'Data has been process';
                 $this->data = $data;
             } else{

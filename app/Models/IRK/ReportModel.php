@@ -104,10 +104,11 @@ class ReportModel extends Model
         $report = $request['report'];
         $idticket = $request['idticket'];
         $tag = $request['tag'];
+        $alias = base64_encode(microtime().$request['nik']); //substr(base64_encode(microtime().$request['nik']),3,8);
 
         try
         {
-            $data = $this->connection->insert("CALL inputreportticket(?,?,?,?)", [$nik,$report,$idticket,$tag]);
+            $data = $this->connection->insert("CALL inputreportticket(?,?,?,?,?)", [$nik,$report,$idticket,$tag,$alias]);
 
             if($data) {
                 $this->$status = 'Success';
@@ -139,10 +140,11 @@ class ReportModel extends Model
         $report = $request['report'];
         $idcomment = $request['idcomment'];
         $tag = $request['tag'];
+        $alias = base64_encode(microtime().$request['nik']); //substr(base64_encode(microtime().$request['nik']),3,8);
 
         try
         {
-            $data = $this->connection->insert("CALL inputreportcomment(?,?,?,?)", [$nik,$report,$idcomment,$tag]);
+            $data = $this->connection->insert("CALL inputreportcomment(?,?,?,?,?)", [$nik,$report,$idcomment,$tag,$alias]);
 
             if($data) {
                 $this->$status = 'Success';
