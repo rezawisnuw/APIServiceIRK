@@ -10,7 +10,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use App\Helper\IRKHelper;
 
-class IdeakuModel extends Model
+class VersionModel extends Model
 {
     
 	private $status = 'Failed';

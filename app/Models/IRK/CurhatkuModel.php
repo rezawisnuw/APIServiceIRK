@@ -157,7 +157,7 @@ class CurhatkuModel extends Model
         $nik = $request->nik;
         $caption = $request->caption;
         $deskripsi = $request->deskripsi;
-        $alias = base64_encode(microtime().$request->nik); //substr(base64_encode(microtime().$request->nik),3,8);
+        $alias = str_contains($request->alias,'Admin') ? $request->alias : base64_encode(microtime().$request->nik); //substr(base64_encode(microtime().$request->nik),3,8);
         $gambar = isset($request->gambar) ? $request->gambar : '';
         $tag = 'curhatku'; //$request->tag;
 
