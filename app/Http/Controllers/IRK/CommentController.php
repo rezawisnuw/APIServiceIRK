@@ -51,12 +51,6 @@ class CommentController extends Controller
                 case 1:
                     $result = $this->model->showDataCommentTotal($formbody);
                     break;
-                case 2:
-                    $result = $this->model->showDataCommentCurhatku($formbody);
-                    break;
-                case 3:
-                    $result = $this->model->showDataCommentMotivasi($formbody);
-                    break;
                 default:
                     $result = collect([
                         'status'  => $this->status,
@@ -88,6 +82,9 @@ class CommentController extends Controller
                 case 1:
                     $result = $this->model->inputDataComment($formbody);
                     break;
+                case 2:
+                    $result = $this->model->inputDataReplyComment($formbody);
+                    break;
                 default:
                     $result = collect([
                         'status'  => $this->status,
@@ -118,6 +115,9 @@ class CommentController extends Controller
             switch ($codekey = $formbody['code']) {
                 case 1:
                     $result = $this->model->editDataComment($formbody);
+                    break;
+                case 2:
+                    $result = $this->model->editDataReplyComment($formbody);
                     break;
                 default:
                     $result = collect([
