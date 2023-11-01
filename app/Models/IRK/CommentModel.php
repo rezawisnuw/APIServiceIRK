@@ -40,13 +40,13 @@ class CommentModel extends Model
             $data = $this->connection->select("select * from showcomment(?)",[$idticket]);
 
             if($data) {
-                $this->$status = 'Success';
-                $this->$message = 'Data has been process';
-                $this->$data = $data;
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
             } else{
-                $this->$status;
-                $this->$message;
-                $this->$data;
+                $this->status;
+                $this->message;
+                $this->data;
             }
 
         }
@@ -57,9 +57,9 @@ class CommentModel extends Model
         }
 
         return [
-            'status'  => $this->$status,
-            'data' => $this->$data,
-            'message' => $this->$message
+            'status'  => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
         ];
     }
 
@@ -76,13 +76,13 @@ class CommentModel extends Model
             $data = $this->connection->insert("CALL inputcomment(?,?,?,?,?)", [$nik,$comment,$idticket,$alias,$tag]);
 
             if($data) {
-                $this->$status = 'Success';
-                $this->$message = 'Data has been process';
-                $this->$data = $data;
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
             } else{
-                $this->$status;
-                $this->$message;
-                $this->$data;
+                $this->status;
+                $this->message;
+                $this->data;
             }
 
         }
@@ -93,9 +93,9 @@ class CommentModel extends Model
         }
 
         return [
-            'status'  => $this->$status,
-            'data' => $this->$data,
-            'message' => $this->$message
+            'status'  => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
         ];
     }
 
@@ -112,13 +112,13 @@ class CommentModel extends Model
             $data = $this->connection->insert("CALL inputreplycomment(?,?,?,?,?)", [$nik,$comment,$idreply,$alias,$parentreply]);
 
             if($data) {
-                $this->$status = 'Success';
-                $this->$message = 'Data has been process';
-                $this->$data = $data;
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
             } else{
-                $this->$status;
-                $this->$message;
-                $this->$data;
+                $this->status;
+                $this->message;
+                $this->data;
             }
 
         }
@@ -129,9 +129,9 @@ class CommentModel extends Model
         }
 
         return [
-            'status'  => $this->$status,
-            'data' => $this->$data,
-            'message' => $this->$message
+            'status'  => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
         ];
     }
 
