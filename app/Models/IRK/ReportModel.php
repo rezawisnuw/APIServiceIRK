@@ -41,13 +41,13 @@ class ReportModel extends Model
             //$data = $this->connection->select("select * from showreportticket(?)",[$idticket]);
 
             if($data) {
-                $this->$status = 'Success';
-                $this->$message = 'Data has been process';
-                $this->$data = $data;
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
             } else{
-                $this->$status;
-                $this->$message;
-                $this->$data;
+                $this->status;
+                $this->message;
+                $this->data;
             }
 
         }
@@ -58,9 +58,9 @@ class ReportModel extends Model
         }
 
         return [
-            'status'  => $this->$status,
-            'data' => $this->$data,
-            'message' => $this->$message
+            'status'  => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
         ];
     }
 
@@ -75,13 +75,13 @@ class ReportModel extends Model
             //$data = $this->connection->select("select * from showreportcomment(?)",[$idcomment]);
 
             if($data) {
-                $this->$status = 'Success';
-                $this->$message = 'Data has been process';
-                $this->$data = $data;
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
             } else{
-                $this->$status;
-                $this->$message;
-                $this->$data;
+                $this->status;
+                $this->message;
+                $this->data;
             }
 
         }
@@ -92,9 +92,9 @@ class ReportModel extends Model
         }
 
         return [
-            'status'  => $this->$status,
-            'data' => $this->$data,
-            'message' => $this->$message
+            'status'  => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
         ];
     }
 
@@ -111,13 +111,13 @@ class ReportModel extends Model
             $data = $this->connection->insert("CALL inputreportticket(?,?,?,?,?)", [$nik,$report,$idticket,$tag,$alias]);
 
             if($data) {
-                $this->$status = 'Success';
-                $this->$message = 'Data has been process';
-                $this->$data = $data;
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
             } else{
-                $this->$status;
-                $this->$message;
-                $this->$data;
+                $this->status;
+                $this->message;
+                $this->data;
             }
 
         }
@@ -128,9 +128,9 @@ class ReportModel extends Model
         }
 
         return [
-            'status'  => $this->$status,
-            'data' => $this->$data,
-            'message' => $this->$message
+            'status'  => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
         ];
     }
 
@@ -147,13 +147,13 @@ class ReportModel extends Model
             $data = $this->connection->insert("CALL inputreportcomment(?,?,?,?,?)", [$nik,$report,$idcomment,$tag,$alias]);
 
             if($data) {
-                $this->$status = 'Success';
-                $this->$message = 'Data has been process';
-                $this->$data = $data;
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
             } else{
-                $this->$status;
-                $this->$message;
-                $this->$data;
+                $this->status;
+                $this->message;
+                $this->data;
             }
 
         }
@@ -164,9 +164,9 @@ class ReportModel extends Model
         }
 
         return [
-            'status'  => $this->$status,
-            'data' => $this->$data,
-            'message' => $this->$message
+            'status'  => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
         ];
     }
 

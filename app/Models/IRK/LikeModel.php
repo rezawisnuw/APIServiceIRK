@@ -40,13 +40,13 @@ class LikeModel extends Model
             $data = $this->connection->select("select * from showlike(?)",[$idticket]);
 
             if($data) {
-                $this->$status = 'Success';
-                $this->$message = 'Data has been process';
-                $this->$data = $data;
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
             } else{
-                $this->$status;
-                $this->$message;
-                $this->$data;
+                $this->status;
+                $this->message;
+                $this->data;
             }
 
         }
@@ -57,9 +57,9 @@ class LikeModel extends Model
         }
 
         return [
-            'status'  => $this->$status,
-            'data' => $this->$data,
-            'message' => $this->$message
+            'status'  => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
         ];
     }
 
@@ -76,13 +76,13 @@ class LikeModel extends Model
             $data = $this->connection->insert("CALL inputlike(?,?,?,?,?)", [$nik,$idticket,$tag,$alias,$userlike]);
 
             if($data) {
-                $this->$status = 'Success';
-                $this->$message = 'Data has been process';
-                $this->$data = $data;
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
             } else{
-                $this->$status;
-                $this->$message;
-                $this->$data;
+                $this->status;
+                $this->message;
+                $this->data;
             }
 
         }
@@ -93,9 +93,9 @@ class LikeModel extends Model
         }
 
         return [
-            'status'  => $this->$status,
-            'data' => $this->$data,
-            'message' => $this->$message
+            'status'  => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
         ];
     }
 
