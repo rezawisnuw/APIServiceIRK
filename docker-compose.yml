@@ -6,6 +6,9 @@ services:
       dockerfile: Dockerfile
     image: sd2developer/api-service-irk
     container_name: sd2-service-irk
+    networks:
+      portal-network:
+        ipv4_address: 172.18.0.3
     ports:
       - "8040:8040"
     volumes:
@@ -23,3 +26,6 @@ services:
       - "LBINFRA:103.116.234.13"
       - "LBINFRAPUBLIC:103.116.234.13"
 
+networks:
+  portal-network:
+    external: true
