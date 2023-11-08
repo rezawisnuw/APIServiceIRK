@@ -182,7 +182,7 @@ class CurhatkuModel extends Model
                     $data = $this->connection->insert("CALL inputceritakita(?,?,?,?,?,?)", [$nik,$caption,$deskripsi,$alias,$idimg.'.'.$imgextension,$tag]);
 
                     if($data) {
-                        $imgpath = $this->path.'/Ceritakita/Curhatku'.$idimg.'.'.$imgextension;
+                        $imgpath = $this->path.'/Ceritakita/Curhatku/'.$idimg.'.'.$imgextension;
 
                         $this->status = 'Success';
                         $this->message = 'Data has been process';
@@ -197,7 +197,7 @@ class CurhatkuModel extends Model
                 $data = $this->connection->insert("CALL inputceritakita(?,?,?,?,?,?)", [$nik,$caption,$deskripsi,$alias,$idimg.'.',$tag]);
                 
                 if($data) {
-                    $imgpath = $this->path.'/Ceritakita/Curhatku'.$idimg.'.';
+                    $imgpath = $this->path.'/Ceritakita/Curhatku/'.$idimg.'.';
 
                     $this->status = 'Success';
                     $this->message = 'Data has been process';

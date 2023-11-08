@@ -221,6 +221,11 @@ Route::group([
     Route::post('report/post',[IRK\ReportController::class, 'post']);
     Route::post('report/put',[IRK\ReportController::class, 'put']);
     Route::post('report/delete',[IRK\ReportController::class, 'delete']);
+    //Profile
+    Route::post('profile/get',[IRK\ProfileController::class, 'get']);
+    Route::post('profile/post',[IRK\ProfileController::class, 'post']);
+    Route::post('profile/put',[IRK\ProfileController::class, 'put']);
+    Route::post('profile/delete',[IRK\ProfileController::class, 'delete']);
     //Version
     Route::post('version/get',[IRK\VersionController::class, 'get']);
     Route::post('version/post',[IRK\VersionController::class, 'post']);
