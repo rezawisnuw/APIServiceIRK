@@ -69,10 +69,29 @@ class ProfileModel extends Model
 
     public function inputDataProfile($request)
     {
+        $param['list_sp'] = array([
+            'conn'=>'POR_DUMMY',
+            'payload'=>['nik' => $request['nik']],
+            'sp_name'=>'SP_GetAccessLevel',
+            'process_name'=>'GetAccessLevelResult'
+        ]);
+
+		$response = $this->helper->SPExecutor($param);
+        
+        if($response->status == 0){
+            return [
+                'status'  => $this->status,
+                'data' => 'SPExecutor is cannot be process',
+                'message' => $this->message
+            ];
+        }else{
+            $level = $response->result->GetAccessLevelResult[0]->role;
+        }
+
         $nik = $request['nik'];
         $nama = $request['nama'];
         $nohp = $request['nohp'];
-        $alias = $request['alias'];
+        $alias = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request['nik']); //substr(base64_encode(microtime().$request['nik']),3,8);
         $email = $request['email'];
         $kelamin = $request['kelamin'];
         $status = $request['status'];
@@ -82,9 +101,9 @@ class ProfileModel extends Model
             $data = $this->connection->insert("CALL inputuserstatus(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$email,$kelamin,$status]);
 
             if($data) {
-                $this->status = 'Success';
+                $this->status = isset($request['userid']) && !empty($request['userid']) ? 'Success' : 'Processing';
                 $this->message = 'Data has been process';
-                $this->data = $data;
+                $this->data = isset($request['userid']) && !empty($request['userid']) ? $data : $alias;
             } else{
                 $this->status;
                 $this->message;

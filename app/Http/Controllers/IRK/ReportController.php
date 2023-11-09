@@ -57,7 +57,7 @@ class ReportController extends Controller
                 default:
                     $result = collect([
                         'status'  => $this->status,
-                        'data' => $this->data,
+                        'data' => $codekey,
                         'message' => $this->message
                     ]);
             }
@@ -91,7 +91,7 @@ class ReportController extends Controller
                 default:
                     $result = collect([
                         'status'  => $this->status,
-                        'data' => $this->data,
+                        'data' => $codekey,
                         'message' => $this->message
                     ]);
             }

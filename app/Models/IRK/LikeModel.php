@@ -65,10 +65,29 @@ class LikeModel extends Model
 
     public function inputDataLike($request)
     {
+        $param['list_sp'] = array([
+            'conn'=>'POR_DUMMY',
+            'payload'=>['nik' => $request['nik']],
+            'sp_name'=>'SP_GetAccessLevel',
+            'process_name'=>'GetAccessLevelResult'
+        ]);
+
+		$response = $this->helper->SPExecutor($param);
+        
+        if($response->status == 0){
+            return [
+                'status'  => $this->status,
+                'data' => 'SPExecutor is cannot be process',
+                'message' => $this->message
+            ];
+        }else{
+            $level = $response->result->GetAccessLevelResult[0]->role;
+        }
+
         $nik = $request['nik'];
         $idticket = $request['idticket'];
         $tag = $request['tag'];
-        $alias = str_contains($request['alias'],'Admin') ? $request['alias'] : base64_encode(microtime().$request['nik']); //substr(base64_encode(microtime().$request['nik']),3,8);
+        $alias = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request['nik']); //substr(base64_encode(microtime().$request['nik']),3,8);
         $userlike = $request['userlike'];
 
         try

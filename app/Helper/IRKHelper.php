@@ -78,4 +78,27 @@ class IRKHelper
         return $arrayfile;
     }
 
+    public function SPExecutor($param){
+
+        $client = new Client(); 
+        $response = $client->post(
+            isset($param['list_sp']) && $param['list_sp'] != null ? 
+            'http://'.$this->Segment($this->request->route('slug'))['config'].'/SPExecutor/SpExecutorRest.svc/executev2' : 
+            'http://'.$this->Segment($this->request->route('slug'))['config'].'/SPExecutor/SpExecutorRest.svc/executev3' , 
+            [
+                'headers' => [
+                    'Content-Type' => 'text/plain'
+                ],
+                'body' => json_encode([
+                    'request' => $param
+                ])
+            ]
+        );
+        
+        $body = $response->getBody();
+        $result = json_decode($body);
+
+        return $result;
+    }
+
 }
