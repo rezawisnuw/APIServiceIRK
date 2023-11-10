@@ -51,6 +51,9 @@ class ProfileController extends Controller
                 case 1:
                     $result = $this->model->showDataProfile($formbody);
                     break;
+                case 2:
+                    $result = $this->model->showDataProfileSub($formbody);
+                    break;
                 default:
                     $result = collect([
                         'status'  => $this->status,

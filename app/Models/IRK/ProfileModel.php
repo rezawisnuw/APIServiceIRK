@@ -67,6 +67,73 @@ class ProfileModel extends Model
         ];
     }
 
+    public function showDataProfileSub($request)
+    {
+        $param['list_sp'] = array([
+            'conn'=>'POR_DUMMY',
+            'payload'=>['nik' => $request['nik']],
+            'sp_name'=>'SP_GetAccessLevel',
+            'process_name'=>'GetAccessLevelResult'
+        ]);
+
+		$response = $this->helper->SPExecutor($param);
+        
+        if($response->status == 0){
+            return [
+                'status'  => $this->status,
+                'data' => 'SPExecutor is cannot be process',
+                'message' => $this->message
+            ];
+        }else{
+            $level = $response->result->GetAccessLevelResult[0]->role;
+
+            if(str_contains($level,'Admin') == false){
+                return [
+                    'status'  => $this->status,
+                    'data' => $level,
+                    'message' => $this->message
+                ];
+            }
+        }
+
+        $status = $request['status'];
+        $kelamin = $request['kelamin'];
+        $periode1 = $request['periode1'];
+        $periode2 = $request['periode2'];
+        $idjabatan = $request['idjabatan'];
+        $idunit = $request['idunit'];
+        $idcabang = $request['idcabang'];
+        $iddepartemen = $request['iddepartemen'];
+        
+        try
+        {
+            $data = $this->connection->select("select * from showuserstatus(?,?,?,?,?,?,?,?,?)",
+            [$nik,$idjabatan,$idunit,$idcabang,$iddepartemen,$status,$kelamin,$periode1,$periode2]);
+
+            if($data) {
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
+            } else{
+                $this->status;
+                $this->message;
+                $this->data;
+            }
+
+        }
+        catch(\Throwable $e){ 
+            $this->status = 'Error';
+            $this->data = null;
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+        }
+
+        return [
+            'status'  => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
+        ];
+    }
+
     public function inputDataProfile($request)
     {
         $param['list_sp'] = array([
@@ -95,10 +162,20 @@ class ProfileModel extends Model
         $email = $request['email'];
         $kelamin = $request['kelamin'];
         $status = $request['status'];
+        $idjabatan = $request['idjabatan'];
+        $jabatan = $request['jabatan'];
+        $idunit = $request['idunit'];
+        $unit = $request['unit'];
+        $idcabang = $request['idcabang'];
+        $cabang = $request['cabang'];
+        $iddepartemen = $request['iddepartemen'];
+        $departemen = $request['departemen'];
 
         try
         {
-            $data = $this->connection->insert("CALL inputuserstatus(?,?,?,?,?,?,?)", [$nik,$nama,$nohp,$alias,$email,$kelamin,$status]);
+            $data = $this->connection->insert("CALL inputuserstatus(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+                [$nik,$nama,$nohp,$alias,$email,$kelamin,$status,$idjabatan,$jabatan,$idunit,$unit,$idcabang,$cabang,$iddepartemen,$departemen]
+            );
 
             if($data) {
                 $this->status = isset($request['userid']) && !empty($request['userid']) ? 'Success' : 'Processing';
