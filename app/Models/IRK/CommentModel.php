@@ -146,6 +146,8 @@ class CommentModel extends Model
                         'message' => $this->message
                     ];
                 }
+            }else{
+                $level = null;
             }
         }
         
