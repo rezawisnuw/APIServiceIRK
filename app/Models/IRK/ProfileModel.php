@@ -85,17 +85,22 @@ class ProfileModel extends Model
                 'message' => $this->message
             ];
         }else{
-            $level = $response->result->GetAccessLevelResult[0]->role;
 
-            if(str_contains($level,'Admin') == false){
-                return [
-                    'status'  => $this->status,
-                    'data' => $level,
-                    'message' => $this->message
-                ];
+            if(!empty($response->result->GetAccessLevelResult[0])){
+                $level = $response->result->GetAccessLevelResult[0]->role;
+
+                if(str_contains($level,'Admin') == false){
+                    return [
+                        'status'  => $this->status,
+                        'data' => $level,
+                        'message' => $this->message
+                    ];
+                }
             }
+            
         }
 
+        $nik = $request['nik'];
         $status = $request['status'];
         $kelamin = $request['kelamin'];
         $periode1 = $request['periode1'];
@@ -104,7 +109,7 @@ class ProfileModel extends Model
         $idunit = $request['idunit'];
         $idcabang = $request['idcabang'];
         $iddepartemen = $request['iddepartemen'];
-        
+      
         try
         {
             $data = $this->connection->select("select * from showuserstatus(?,?,?,?,?,?,?,?,?)",
