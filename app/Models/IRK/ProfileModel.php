@@ -159,7 +159,19 @@ class ProfileModel extends Model
                 'message' => $this->message
             ];
         }else{
-            $level = $response->result->GetAccessLevelResult[0]->role;
+            if(!empty($response->result->GetAccessLevelResult[0])){
+                $level = $response->result->GetAccessLevelResult[0]->role;
+
+                if(str_contains($level,'Admin') == false){
+                    return [
+                        'status'  => $this->status,
+                        'data' => $level,
+                        'message' => $this->message
+                    ];
+                }
+            }else{
+                $level = null;
+            }
         }
 
         $nik = $request['nik'];
