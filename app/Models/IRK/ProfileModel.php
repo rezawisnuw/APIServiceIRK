@@ -71,7 +71,7 @@ class ProfileModel extends Model
     {
         $param['list_sp'] = array([
             'conn'=>'POR_DUMMY',
-            'payload'=>['nik' => $request['nik']],
+            'payload'=>['nik' => $request['userid']],
             'sp_name'=>'SP_GetAccessLevel',
             'process_name'=>'GetAccessLevelResult'
         ]);
@@ -102,7 +102,6 @@ class ProfileModel extends Model
             
         }
 
-        $nik = $request['nik'];
         $status = $request['status'];
         $kelamin = $request['kelamin'];
         $periode1 = $request['periode1'];
@@ -114,8 +113,8 @@ class ProfileModel extends Model
       
         try
         {
-            $data = $this->connection->select("select * from showuserstatus(?,?,?,?,?,?,?,?,?)",
-            [$nik,$idjabatan,$idunit,$idcabang,$iddepartemen,$status,$kelamin,$periode1,$periode2]);
+            $data = $this->connection->select("select * from showuserstatus(?,?,?,?,?,?,?,?)",
+            [$idjabatan,$idunit,$idcabang,$iddepartemen,$status,$kelamin,$periode1,$periode2]);
 
             $dataaktif = array_filter($data, function ($item) {
                 return $item->akun == 'Active';
