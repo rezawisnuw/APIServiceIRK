@@ -155,47 +155,17 @@ class IdeakuModel extends Model
 
     public function inputDataIdeaku($request)
     {
-        $param['list_sp'] = array([
-            'conn'=>'POR_DUMMY',
-            'payload'=>['nik' => $request->nik],
-            'sp_name'=>'SP_GetAccessLevel',
-            'process_name'=>'GetAccessLevelResult'
-        ]);
-
-		$response = $this->helper->SPExecutor($param);
-        
-        if($response->status == 0){
-            return [
-                'status'  => $this->status,
-                'data' => 'SPExecutor is cannot be process',
-                'message' => $this->message
-            ];
-        }else{
-            if(!empty($response->result->GetAccessLevelResult[0])){
-                $level = $response->result->GetAccessLevelResult[0]->role;
-
-                if(str_contains($level,'Admin') == false){
-                    return [
-                        'status'  => $this->status,
-                        'data' => $level,
-                        'message' => $this->message
-                    ];
-                }
-            }else{
-                $level = null;
-            }
-        }
 
         $nik = $request->nik;
         $caption = $request->caption;
         $deskripsi = $request->deskripsi;
-        $alias = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request->nik); //substr(base64_encode(microtime().$request->nik),3,8);
+        $alias = base64_encode(microtime().$request->nik);
         $gambar = isset($request->gambar) ? $request->gambar : '';
         $tag = 'ideaku'; //$request->tag;
 
         try
         {
-            $idimg = str_contains($alias,'Admin') ? $alias : substr($alias,3,8);
+            $idimg = substr($alias,3,8);
 
             if(!empty($gambar)){
                 $imgformat = array("jpeg", "jpg", "png");

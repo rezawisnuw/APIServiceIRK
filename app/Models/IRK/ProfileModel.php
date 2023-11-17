@@ -102,6 +102,7 @@ class ProfileModel extends Model
             
         }
 
+        $rolelevel = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request['userid']);
         $status = $request['status'];
         $kelamin = $request['kelamin'];
         $periode1 = $request['periode1'];
@@ -113,8 +114,8 @@ class ProfileModel extends Model
       
         try
         {
-            $data = $this->connection->select("select * from showuserstatus(?,?,?,?,?,?,?,?)",
-            [$idjabatan,$idunit,$idcabang,$iddepartemen,$status,$kelamin,$periode1,$periode2]);
+            $data = $this->connection->select("select * from showuserstatus(?,?,?,?,?,?,?,?,?)",
+            [$rolelevel,$idjabatan,$idunit,$idcabang,$iddepartemen,$status,$kelamin,$periode1,$periode2]);
 
             $dataaktif = array_filter($data, function ($item) {
                 return $item->akun == 'Active';
@@ -125,7 +126,8 @@ class ProfileModel extends Model
 
             for($index = 0; $index < count($data); $index++ ){
                 $data[$index]->aktifcurhatku = array_sum(array_column($dataaktif,'ttlcurhatku'));
-                $data[$index]->aktifmotivasi = array_sum(array_column($dataaktif,'ttlmotivasi'));
+                $data[$index]->aktifideaku = array_sum(array_column($dataaktif,'ttlideaku'));
+                $data[$index]->aktifceritaku = array_sum(array_column($dataaktif,'ttlceritaku'));
                 $data[$index]->aktiflike = array_sum(array_column($dataaktif,'ttllike'));
                 $data[$index]->aktifcomment = array_sum(array_column($dataaktif,'ttlcomment'));
                 $data[$index]->aktifreport = array_sum(array_column($dataaktif,'ttlreport'));
@@ -135,7 +137,8 @@ class ProfileModel extends Model
                 $data[$index]->aktifberireport = array_sum(array_column($dataaktif,'rspreport'));
 
                 $data[$index]->terbatascurhatku = array_sum(array_column($dataterbatas,'ttlcurhatku'));
-                $data[$index]->terbatasmotivasi = array_sum(array_column($dataterbatas,'ttlmotivasi'));
+                $data[$index]->terbatasideaku = array_sum(array_column($dataterbatas,'ttlideaku'));
+                $data[$index]->terbatasceritaku = array_sum(array_column($dataterbatas,'ttlceritaku'));
                 $data[$index]->terbataslike = array_sum(array_column($dataterbatas,'ttllike'));
                 $data[$index]->terbatascomment = array_sum(array_column($dataterbatas,'ttlcomment'));
                 $data[$index]->terbatasreport = array_sum(array_column($dataterbatas,'ttlreport'));
@@ -205,7 +208,7 @@ class ProfileModel extends Model
         $nik = $request['nik'];
         $nama = $request['nama'];
         $nohp = $request['nohp'];
-        $alias = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request['nik']); //substr(base64_encode(microtime().$request['nik']),3,8);
+        $alias = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request['nik']);
         $email = $request['email'];
         $kelamin = $request['kelamin'];
         $status = $request['status'];

@@ -190,7 +190,7 @@ class MotivasiModel extends Model
         $nik = $request->nik;
         $caption = $request->caption;
         $deskripsi = $request->deskripsi;
-        $alias = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request->nik); //substr(base64_encode(microtime().$request->nik),3,8);
+        $alias = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request->nik);
         $gambar = isset($request->gambar) ? $request->gambar : '';
         $tag = 'motivasi'; //$request->tag;
 

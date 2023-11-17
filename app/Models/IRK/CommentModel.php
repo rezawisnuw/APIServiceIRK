@@ -99,7 +99,7 @@ class CommentModel extends Model
         $nik = $request['nik'];
         $comment = $request['comment'];
         $idticket = $request['idticket'];
-        $alias = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request['nik']); //substr(base64_encode(microtime().$request['nik']),3,8);
+        $alias = str_contains($level,'Admin') && $request['tag'] == 'motivasi' ? $level : base64_encode(microtime().$request['nik']);
         $tag = $request['tag'];
 
         try
@@ -166,7 +166,7 @@ class CommentModel extends Model
         $nik = $request['nik'];
         $comment = $request['comment'];
         $idreply = $request['idreply'];
-        $alias = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request['nik']); //substr(base64_encode(microtime().$request['nik']),3,8);
+        $alias = str_contains($level,'Admin') && $request['tag'] == 'motivasi' ? $level : base64_encode(microtime().$request['nik']);
         $parentreply = $request['parentreply'];
 
         try

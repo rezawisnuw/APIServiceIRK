@@ -99,7 +99,7 @@ class LikeModel extends Model
         $nik = $request['nik'];
         $idticket = $request['idticket'];
         $tag = $request['tag'];
-        $alias = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request['nik']); //substr(base64_encode(microtime().$request['nik']),3,8);
+        $alias = str_contains($level,'Admin') && $request['tag'] == 'motivasi' ? $level : base64_encode(microtime().$request['nik']);
         $userlike = $request['userlike'];
 
         try
