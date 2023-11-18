@@ -101,4 +101,27 @@ class IRKHelper
         return $result;
     }
 
+    public function NotificationPortal($param){
+
+        $data = [
+            'code'=>'1101',
+            'parm'=>$param['data']
+        ];
+
+        $client = new Client(); 
+        $response = $client->post(
+            'http://'.$this->Segment($this->request->route('slug'))['config'].'/PortalRESTService/PortalService.svc/portalRest' , 
+            [
+                RequestOptions::JSON => 
+				['req'=>$data]
+            ],
+            ['Content-Type' => 'application/json']
+        );
+        
+        $body = $response->getBody();
+        $result = json_decode($body);
+
+        return $result;
+    }
+
 }

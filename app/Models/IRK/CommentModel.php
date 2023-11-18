@@ -104,11 +104,30 @@ class CommentModel extends Model
 
         try
         {
+            
             $data = $this->connection->insert("CALL inputcomment(?,?,?,?,?)", [$nik,$comment,$idticket,$alias,$tag]);
 
             if($data) {
+
+                $target = $this->connection
+                ->table('CeritaKita')
+                ->select('employee','tag')
+                ->where('id_ticket','=',$idticket)
+                ->get()[0];
+
+                $body['data'] = [
+                    'nik'=>$target->employee,
+                    'apps'=>'Web Admin IRK',
+                    'nikLogin'=>$nik,
+                    'shortMessage'=>'Postingan tag '.$target->tag.' mu dibalas',
+                    'longMessage'=>$comment,
+                    'link'=>'portal/irk/transaksi/cerita-kita/redirect/'
+                ];
+
+                $response = $this->helper->NotificationPortal($body);
+
                 $this->status = 'Success';
-                $this->message = 'Data has been process';
+                $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan aktifkan izin notifikasi pada browser anda di halaman login terlebih dahulu';
                 $this->data = $data;
             } else{
                 $this->status;
@@ -174,8 +193,34 @@ class CommentModel extends Model
             $data = $this->connection->insert("CALL inputreplycomment(?,?,?,?,?)", [$nik,$comment,$idreply,$alias,$parentreply]);
 
             if($data) {
+                if($parentreply == 0){
+                    $target = $this->connection
+                    ->table('Comment')
+                    ->select('alias','nik_karyawan')
+                    ->where('id_comment','=',$idreply)
+                    ->get()[0];
+                }else{
+                    $target = $this->connection
+                    ->table('ReplyComment')
+                    ->select('alias','nik_karyawan')
+                    ->where('id_reply_comment','=',$idreply)
+                    ->get()[0];
+                }
+                
+               
+                $body['data'] = [
+                    'nik'=>$target->nik_karyawan,
+                    'apps'=>'Web Admin IRK',
+                    'nikLogin'=>$nik,
+                    'shortMessage'=>'Komentar alias '.substr($target->alias,3,8).' mu dibalas',
+                    'longMessage'=>$comment,
+                    'link'=>'portal/irk/transaksi/cerita-kita/redirect/'
+                ];
+
+                $response = $this->helper->NotificationPortal($body);
+
                 $this->status = 'Success';
-                $this->message = 'Data has been process';
+                $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan aktifkan izin notifikasi pada browser anda di halaman login terlebih dahulu';
                 $this->data = $data;
             } else{
                 $this->status;

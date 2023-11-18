@@ -107,9 +107,34 @@ class LikeModel extends Model
             $data = $this->connection->insert("CALL inputlike(?,?,?,?,?)", [$nik,$idticket,$tag,$alias,$userlike]);
 
             if($data) {
-                $this->status = 'Success';
-                $this->message = 'Data has been process';
-                $this->data = $data;
+
+                $target = $this->connection
+                ->table('CeritaKita')
+                ->select('CeritaKita.employee AS employee','CeritaKita.tag AS tag', 'Likes.like AS like')
+                ->leftJoin('Likes', 'Likes.id_ticket','=','CeritaKita.id_ticket')
+                ->where('CeritaKita.id_ticket','=',$idticket)
+                ->get()[0];
+
+                if($target->like == 1){
+                    $body['data'] = [
+                        'nik'=>$target->employee,
+                        'apps'=>'Web Admin IRK',
+                        'nikLogin'=>$nik,
+                        'shortMessage'=>$target->tag,
+                        'longMessage'=>'Seseorang menyukai postingan mu',
+                        'link'=>'portal/irk/transaksi/cerita-kita/redirect/'
+                    ];
+    
+                    $response = $this->helper->NotificationPortal($body);
+    
+                    $this->status = 'Success';
+                    $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan aktifkan izin notifikasi pada browser anda di halaman login terlebih dahulu';
+                    $this->data = $data;
+                }else{
+                    $this->status = 'Success';
+                    $this->message = 'Data has been process';
+                    $this->data = $data;
+                }
             } else{
                 $this->status;
                 $this->message;
