@@ -33,13 +33,13 @@ class ProfileModel extends Model
     public function showDataProfile($request)
     {
         
-        $nik = $request['nik'];
+        $userid = $request['userid'];
 
         try
         {   
             $data = $this->connection
             ->table('UserStatus')
-            ->where('nik','=',$nik)
+            ->where('nik','=',$userid)
             ->get();
             
             if($data) {
