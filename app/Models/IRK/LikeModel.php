@@ -144,7 +144,7 @@ class LikeModel extends Model
 
                 $toBase64 = base64_encode($toJson);
 
-                if($target->like == 1){
+                if($target->like === '1'){
                     $body['data'] = [
                         'nik'=>$target->employee,
                         'apps'=>'Web Admin IRK',
