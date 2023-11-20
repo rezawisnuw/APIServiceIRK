@@ -116,40 +116,42 @@ class LikeModel extends Model
                 ->leftJoin('Likes', 'Likes.id_ticket','=','CeritaKita.id_ticket')
                 ->where('CeritaKita.id_ticket','=',$idticket)
                 ->where('Likes.nik_karyawan','=',$nik)
-                ->get()[0];
+                ->where('Likes.like','=','1')
+                ->get();
 
-                $timestamp = $target->created_at;
+                if(count($target) > 0){
+                    
+                    $timestamp = $target[0]->created_at;
 
-                $carbonDate = Carbon::parse($timestamp);
+                    $carbonDate = Carbon::parse($timestamp);
 
-                $dateOnly = $carbonDate->toDateString();
+                    $dateOnly = $carbonDate->toDateString();
 
-                $bundle = $this->connection->select("select * from showceritakitadetail(?,?,?,?,?,?,?)",
-                        [$target->employee,0,$target->tag,$dateOnly,$dateOnly,empty($target->id_report) ? 'Tidak' : $target->id_report,$target->is_used]);
+                    $bundle = $this->connection->select("select * from showceritakitadetail(?,?,?,?,?,?,?)",
+                            [$target[0]->employee,0,$target[0]->tag,$dateOnly,$dateOnly,empty($target[0]->id_report) ? 'Tidak' : $target[0]->id_report,$target[0]->is_used]);
 
-                $filterBundle = collect($bundle)->where('idticket', $idticket);
+                    $filterBundle = collect($bundle)->where('idticket', $idticket);
 
-                for($index = 0; $index < count($filterBundle); $index++ ){
-                    $filterBundle[$index]->comments = $this->connection->select("select * from showcomment(?)",[$filterBundle[$index]->idticket]);
-                    for($comment = 0; $comment < count($filterBundle[$index]->comments); $comment++ ){
-                        $filterBundle[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?)",[$filterBundle[$index]->comments[$comment]->id_comment]);
-                        $filterBundle[$index]->report_comment = count($filterBundle[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
+                    for($index = 0; $index < count($filterBundle); $index++ ){
+                        $filterBundle[$index]->comments = $this->connection->select("select * from showcomment(?)",[$filterBundle[$index]->idticket]);
+                        for($comment = 0; $comment < count($filterBundle[$index]->comments); $comment++ ){
+                            $filterBundle[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?)",[$filterBundle[$index]->comments[$comment]->id_comment]);
+                            $filterBundle[$index]->report_comment = count($filterBundle[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
+                        }
+                        $filterBundle[$index]->likes = $this->connection->select("select * from showlike(?)",[$filterBundle[$index]->idticket]);
+                        $filterBundle[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?)",[$filterBundle[$index]->idticket]);
+                        $filterBundle[$index]->report_ticket = count($filterBundle[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
                     }
-                    $filterBundle[$index]->likes = $this->connection->select("select * from showlike(?)",[$filterBundle[$index]->idticket]);
-                    $filterBundle[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?)",[$filterBundle[$index]->idticket]);
-                    $filterBundle[$index]->report_ticket = count($filterBundle[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
-                }
 
-                $toJson = json_encode($filterBundle[0]);
+                    $toJson = json_encode($filterBundle[0]);
 
-                $toBase64 = base64_encode($toJson);
+                    $toBase64 = base64_encode($toJson);
 
-                if($target->like === '1'){
                     $body['data'] = [
-                        'nik'=>$target->employee,
+                        'nik'=>$target[0]->employee,
                         'apps'=>'Web Admin IRK',
                         'nikLogin'=>$nik,
-                        'shortMessage'=>'Like '.$target->tag,
+                        'shortMessage'=>'Like '.$target[0]->tag,
                         'longMessage'=>'Random alias menyukai postingan anda',
                         'link'=>'portal/irk/transaksi/cerita-kita/rincian/redirect/'.$toBase64
                     ];
