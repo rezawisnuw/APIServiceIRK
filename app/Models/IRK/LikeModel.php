@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Cookie;
-use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use App\Helper\IRKHelper;
@@ -109,49 +108,27 @@ class LikeModel extends Model
 
             if($data) {
 
+
                 $target = $this->connection
                 ->table('CeritaKita')
-                ->select('CeritaKita.employee AS employee','CeritaKita.tag AS tag','CeritaKita.created_at AS created_at','CeritaKita.is_used AS is_used','ReportTicket.id_report AS id_report', 'Likes.like AS like')
-                ->leftJoin('ReportTicket', 'ReportTicket.id_ticket','=','CeritaKita.id_ticket')
+                ->select('CeritaKita.employee AS employee','CeritaKita.tag AS tag', 'Likes.like AS like')
                 ->leftJoin('Likes', 'Likes.id_ticket','=','CeritaKita.id_ticket')
-                ->where('CeritaKita.id_ticket','=',$idticket)
+                ->where('Likes.id_ticket','=',$idticket)
                 ->where('Likes.nik_karyawan','=',$nik)
-                ->where('Likes.like','=','1')
-                ->get();
+                ->get()[0];
+                
+                $target->idticket = ["idticket" => $idticket];
 
-                if(count($target) > 0){
-                    
-                    $timestamp = $target[0]->created_at;
+                $toJson = json_encode($target->idticket);
 
-                    $carbonDate = Carbon::parse($timestamp);
+                $toBase64 = base64_encode($toJson);
 
-                    $dateOnly = $carbonDate->toDateString();
-
-                    $bundle = $this->connection->select("select * from showceritakitadetail(?,?,?,?,?,?,?)",
-                            [$target[0]->employee,0,$target[0]->tag,$dateOnly,$dateOnly,empty($target[0]->id_report) ? 'Tidak' : $target[0]->id_report,$target[0]->is_used]);
-
-                    $filterBundle = collect($bundle)->where('idticket', $idticket);
-
-                    for($index = 0; $index < count($filterBundle); $index++ ){
-                        $filterBundle[$index]->comments = $this->connection->select("select * from showcomment(?)",[$filterBundle[$index]->idticket]);
-                        for($comment = 0; $comment < count($filterBundle[$index]->comments); $comment++ ){
-                            $filterBundle[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?)",[$filterBundle[$index]->comments[$comment]->id_comment]);
-                            $filterBundle[$index]->report_comment = count($filterBundle[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
-                        }
-                        $filterBundle[$index]->likes = $this->connection->select("select * from showlike(?)",[$filterBundle[$index]->idticket]);
-                        $filterBundle[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?)",[$filterBundle[$index]->idticket]);
-                        $filterBundle[$index]->report_ticket = count($filterBundle[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
-                    }
-
-                    $toJson = json_encode($filterBundle[0]);
-
-                    $toBase64 = base64_encode($toJson);
-
+                if($target->like == 1){
                     $body['data'] = [
-                        'nik'=>$target[0]->employee,
+                        'nik'=>$target->employee,
                         'apps'=>'Web Admin IRK',
                         'nikLogin'=>$nik,
-                        'shortMessage'=>'Like '.$target[0]->tag,
+                        'shortMessage'=>'Like '.$target->tag,
                         'longMessage'=>'Random alias menyukai postingan anda',
                         'link'=>'portal/irk/transaksi/cerita-kita/rincian/redirect/'.$toBase64
                     ];
@@ -159,7 +136,7 @@ class LikeModel extends Model
                     $response = $this->helper->NotificationPortal($body);
     
                     $this->status = 'Success';
-                    $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan aktifkan izin notifikasi pada browser anda di halaman login terlebih dahulu';
+                    $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
                     $this->data = $data;
                 }else{
                     $this->status = 'Success';

@@ -30,7 +30,7 @@ class IdeakuController extends Controller
         //parent::__construct();
         
         $slug = $request->route('slug');
-		$this->slug = $slug;
+		$this->slug = $slug.'-temp';
 
         $model = new IdeakuModel($request, $slug);
         $this->model = $model;

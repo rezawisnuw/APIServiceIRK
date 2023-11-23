@@ -30,7 +30,7 @@ class CeritakitaController extends Controller
         //parent::__construct();
         
         $slug = $request->route('slug');
-		$this->slug = $slug;
+		$this->slug = $slug.'-temp';
 
         $model = new CeritakitaModel($request, $slug);
         $this->model = $model;

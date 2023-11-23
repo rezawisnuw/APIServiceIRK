@@ -211,7 +211,7 @@ class ProfileModel extends Model
         $alias = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request['nik']);
         $email = $request['email'];
         $kelamin = $request['kelamin'];
-        $status = $request['status'];
+        $status = empty($request['status']) ? 'Active' : $request['status'];
         $idjabatan = $request['idjabatan'];
         $jabatan = $request['jabatan'];
         $idunit = $request['idunit'];
@@ -220,11 +220,12 @@ class ProfileModel extends Model
         $cabang = $request['cabang'];
         $iddepartemen = $request['iddepartemen'];
         $departemen = $request['departemen'];
+        $platform = empty($request['platform']) ? 'Website' : $request['platform'];
 
         try
         {
-            $data = $this->connection->insert("CALL inputuserstatus(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
-                [$nik,$nama,$nohp,$alias,$email,$kelamin,$status,$idjabatan,$jabatan,$idunit,$unit,$idcabang,$cabang,$iddepartemen,$departemen]
+            $data = $this->connection->insert("CALL inputuserstatus(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+                [$nik,$nama,$nohp,$platform == 'Website' ? $alias : base64_encode(microtime().$nik),$email,$kelamin,$status,$idjabatan,$jabatan,$idunit,$unit,$idcabang,$cabang,$iddepartemen,$departemen,$platform]
             );
 
             if($data) {

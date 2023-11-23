@@ -40,7 +40,7 @@ class IRKHelper
         }else if($slug == 'live'){
             $setting['authorize'] = 'Authorization';
             $setting['config'] = config('app.URL_LIVE');
-            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK'));
+            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_TEMP'));
             $setting['path'] = 'Live';
         }else{
             $response = collect([

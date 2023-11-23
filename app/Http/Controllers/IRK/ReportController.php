@@ -30,7 +30,7 @@ class ReportController extends Controller
         //parent::__construct();
         
         $slug = $request->route('slug');
-		$this->slug = $slug;
+		$this->slug = $slug.'-temp';
 
         $model = new ReportModel($request, $slug);
         $this->model = $model;

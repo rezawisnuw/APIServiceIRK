@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Cookie;
-use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use App\Helper\IRKHelper;
@@ -146,34 +145,13 @@ class ReportModel extends Model
 
                 $target = $this->connection
                 ->table('CeritaKita')
-                ->select('CeritaKita.employee AS employee','CeritaKita.tag AS tag','CeritaKita.created_at AS created_at','CeritaKita.is_used AS is_used','ReportTicket.id_report AS id_report')
-                ->leftJoin('ReportTicket', 'ReportTicket.id_ticket','=','CeritaKita.id_ticket')
-                ->where('CeritaKita.id_ticket','=',$idticket)
+                ->select('employee','tag')
+                ->where('id_ticket','=',$idticket)
                 ->get()[0];
 
-                $timestamp = $target->created_at;
+                $target->idticket = ["idticket" => $idticket];
 
-                $carbonDate = Carbon::parse($timestamp);
-
-                $dateOnly = $carbonDate->toDateString();
-
-                $bundle = $this->connection->select("select * from showceritakitadetail(?,?,?,?,?,?,?)",
-                        [$target->employee,0,$target->tag,$dateOnly,$dateOnly,empty($target->id_report) ? 'Tidak' : $target->id_report,$target->is_used]);
-
-                $filterBundle = collect($bundle)->where('idticket', $idticket);
-
-                for($index = 0; $index < count($filterBundle); $index++ ){
-                    $filterBundle[$index]->comments = $this->connection->select("select * from showcomment(?)",[$filterBundle[$index]->idticket]);
-                    for($comment = 0; $comment < count($filterBundle[$index]->comments); $comment++ ){
-                        $filterBundle[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?)",[$filterBundle[$index]->comments[$comment]->id_comment]);
-                        $filterBundle[$index]->report_comment = count($filterBundle[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
-                    }
-                    $filterBundle[$index]->likes = $this->connection->select("select * from showlike(?)",[$filterBundle[$index]->idticket]);
-                    $filterBundle[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?)",[$filterBundle[$index]->idticket]);
-                    $filterBundle[$index]->report_ticket = count($filterBundle[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
-                }
-
-                $toJson = json_encode($filterBundle[0]);
+                $toJson = json_encode($target->idticket);
 
                 $toBase64 = base64_encode($toJson);
 
@@ -183,13 +161,13 @@ class ReportModel extends Model
                     'nikLogin'=>$nik,
                     'shortMessage'=>'Report Content '.$target->tag,
                     'longMessage'=>'Random alias melaporkan postingan anda',
-                    'link'=>'portal/irk/transaksi/cerita-kita/rincian/redirect/'.$toBase64
+                    'link'=>'portal/irk/transaksi/cerita-kita/rincian/redirect/'.$$toBase64
                 ];
 
                 $response = $this->helper->NotificationPortal($body);
 
                 $this->status = 'Success';
-                $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan aktifkan izin notifikasi pada browser anda di halaman login terlebih dahulu';
+                $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
                 $this->data = $data;
             } else{
                 $this->status;
@@ -257,36 +235,14 @@ class ReportModel extends Model
             if($data) {
 
                 $target = $this->connection
-                ->table('CeritaKita')
-                ->select('CeritaKita.employee AS employee','CeritaKita.tag AS tag','CeritaKita.created_at AS created_at','CeritaKita.is_used AS is_used','ReportTicket.id_report AS id_report','Comment.nik_karyawan AS nik_karyawan')
-                ->leftJoin('ReportTicket', 'ReportTicket.id_ticket','=','CeritaKita.id_ticket')
-                ->leftJoin('Comment', 'Comment.id_ticket','=','Comment.id_ticket')
-                ->where('CeritaKita.id_ticket','=',$idticket)
+                ->table('Comment')
+                ->select('nik_karyawan','tag')
+                ->where('id_ticket','=',$idticket)
                 ->get()[0];
 
-                $timestamp = $target->created_at;
+                $target->idticket = ["idticket" => $idticket];
 
-                $carbonDate = Carbon::parse($timestamp);
-
-                $dateOnly = $carbonDate->toDateString();
-
-                $bundle = $this->connection->select("select * from showceritakitadetail(?,?,?,?,?,?,?)",
-                        [$target->employee,0,$target->tag,$dateOnly,$dateOnly,empty($target->id_report) ? 'Tidak' : $target->id_report,$target->is_used]);
-
-                $filterBundle = collect($bundle)->where('idticket', $idticket);
-
-                for($index = 0; $index < count($filterBundle); $index++ ){
-                    $filterBundle[$index]->comments = $this->connection->select("select * from showcomment(?)",[$filterBundle[$index]->idticket]);
-                    for($comment = 0; $comment < count($filterBundle[$index]->comments); $comment++ ){
-                        $filterBundle[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?)",[$filterBundle[$index]->comments[$comment]->id_comment]);
-                        $filterBundle[$index]->report_comment = count($filterBundle[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
-                    }
-                    $filterBundle[$index]->likes = $this->connection->select("select * from showlike(?)",[$filterBundle[$index]->idticket]);
-                    $filterBundle[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?)",[$filterBundle[$index]->idticket]);
-                    $filterBundle[$index]->report_ticket = count($filterBundle[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
-                }
-
-                $toJson = json_encode($filterBundle[0]);
+                $toJson = json_encode($target->idticket);
 
                 $toBase64 = base64_encode($toJson);
 
@@ -302,7 +258,7 @@ class ReportModel extends Model
                 $response = $this->helper->NotificationPortal($body);
 
                 $this->status = 'Success';
-                $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan aktifkan izin notifikasi pada browser anda di halaman login terlebih dahulu';
+                $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
                 $this->data = $data;
             } else{
                 $this->status;
