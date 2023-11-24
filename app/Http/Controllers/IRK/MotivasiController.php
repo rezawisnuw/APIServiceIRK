@@ -30,7 +30,7 @@ class MotivasiController extends Controller
         //parent::__construct();
         
         $slug = $request->route('slug');
-		$this->slug = $slug.'-temp';
+		$this->slug = $slug.'/v1';
 
         $model = new MotivasiModel($request, $slug);
         $this->model = $model;

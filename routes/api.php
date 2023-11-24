@@ -179,7 +179,7 @@ Route::group(['middleware' => ['cors']], function() {
 //-----------------------START NEW SCHEME-----------------------------------------
 //IRK
 Route::group([
-	'prefix' => '{slug}-temp', 
+	'prefix' => '{slug}/v1', 
 	'where' => [
 		'slug' => 'dev|stag|live'
 	],

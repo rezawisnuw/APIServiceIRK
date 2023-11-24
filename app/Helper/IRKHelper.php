@@ -30,17 +30,17 @@ class IRKHelper
         if($slug == 'dev'){
             $setting['authorize'] = 'Authorization-dev';
             $setting['config'] = config('app.URL_DEV');
-            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_DEV'));
+            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_V1_DEV'));
             $setting['path'] = 'Dev';
         }else if($slug == 'stag'){
             $setting['authorize'] = 'Authorization-stag';
             $setting['config'] = config('app.URL_STAG');
-            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_STAG'));
+            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_V1_STAG'));
             $setting['path'] = 'Stag';
         }else if($slug == 'live'){
             $setting['authorize'] = 'Authorization';
             $setting['config'] = config('app.URL_LIVE');
-            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_TEMP'));
+            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_V1'));
             $setting['path'] = 'Live';
         }else{
             $response = collect([
