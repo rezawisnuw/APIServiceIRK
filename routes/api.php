@@ -181,7 +181,7 @@ Route::group(['middleware' => ['cors']], function() {
 Route::group([
 	'prefix' => '{slug}/v1', 
 	'where' => [
-		'slug' => 'dev|stag|live'
+		'slug' => 'dev|stag'
 	],
 	'middleware' => 'cors'
 ], function () {
