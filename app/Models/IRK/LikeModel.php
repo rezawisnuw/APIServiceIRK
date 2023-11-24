@@ -92,6 +92,17 @@ class LikeModel extends Model
                         'message' => $this->message
                     ];
                 }
+
+                $activity = $this->connection
+                ->table('UserStatus')
+                ->select('platforms')
+                ->where('nik','=',$request['nik'])
+                ->orderBy('log','desc')
+                ->take(1)
+                ->get();
+
+                $platform = $activity[0]->platforms;
+
             }else{
                 $level = null;
             }
@@ -100,7 +111,7 @@ class LikeModel extends Model
         $nik = $request['nik'];
         $idticket = $request['idticket'];
         $tag = $request['tag'];
-        $alias = str_contains($level,'Admin') && $request['tag'] == 'motivasi' ? $level : base64_encode(microtime().$request['nik']);
+        $alias = str_contains($level,'Admin') && $platform == 'Website' ? $level : base64_encode(microtime().$request['nik']);
         $userlike = $request['userlike'];
 
         try

@@ -92,6 +92,17 @@ class CommentModel extends Model
                         'message' => $this->message
                     ];
                 }
+
+                $activity = $this->connection
+                ->table('UserStatus')
+                ->select('platforms')
+                ->where('nik','=',$request['nik'])
+                ->orderBy('log','desc')
+                ->take(1)
+                ->get();
+
+                $platform = $activity[0]->platforms;
+
             }else{
                 $level = null;
             }
@@ -100,7 +111,7 @@ class CommentModel extends Model
         $nik = $request['nik'];
         $comment = $request['comment'];
         $idticket = $request['idticket'];
-        $alias = str_contains($level,'Admin') && $request['tag'] == 'motivasi' ? $level : base64_encode(microtime().$request['nik']);
+        $alias = str_contains($level,'Admin') && $platform == 'Website' ? $level : base64_encode(microtime().$request['nik']);
         $tag = $request['tag'];
 
         try
@@ -184,6 +195,17 @@ class CommentModel extends Model
                         'message' => $this->message
                     ];
                 }
+
+                $activity = $this->connection
+                ->table('UserStatus')
+                ->select('platforms')
+                ->where('nik','=',$request['nik'])
+                ->orderBy('log','desc')
+                ->take(1)
+                ->get();
+
+                $platform = $activity[0]->platforms;
+
             }else{
                 $level = null;
             }
@@ -192,7 +214,7 @@ class CommentModel extends Model
         $nik = $request['nik'];
         $comment = $request['comment'];
         $idreply = $request['idreply'];
-        $alias = str_contains($level,'Admin') && $request['tag'] == 'motivasi' ? $level : base64_encode(microtime().$request['nik']);
+        $alias = str_contains($level,'Admin') && $platform == 'Website' ? $level : base64_encode(microtime().$request['nik']);
         $parentreply = $request['parentreply'];
 
         try
