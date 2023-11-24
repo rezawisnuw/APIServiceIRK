@@ -220,7 +220,7 @@ class ProfileModel extends Model
         $cabang = $request['cabang'];
         $iddepartemen = $request['iddepartemen'];
         $departemen = $request['departemen'];
-        $platform = empty($request['platform']) ? 'Website' : $request['platform'];
+        $platform = $request['platform'];
 
         try
         {

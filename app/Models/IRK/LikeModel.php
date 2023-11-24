@@ -33,11 +33,12 @@ class LikeModel extends Model
     public function showDataLikeTotal($request)
     {
         $idticket = $request['idticket'];
+        $userid = $request['userid'];
 
         try
         {
 
-            $data = $this->connection->select("select * from showlike(?)",[$idticket]);
+            $data = $this->connection->select("select * from showlike(?,?)",[$idticket,$userid]);
 
             if($data) {
                 $this->status = 'Success';

@@ -33,11 +33,12 @@ class CommentModel extends Model
     public function showDataCommentTotal($request)
     {
         $idticket = $request['idticket'];
+        $userid = $request['userid'];
 
         try
         {
 
-            $data = $this->connection->select("select * from showcomment(?)",[$idticket]);
+            $data = $this->connection->select("select * from showcomment(?,?)",[$idticket,$userid]);
 
             if($data) {
                 $this->status = 'Success';

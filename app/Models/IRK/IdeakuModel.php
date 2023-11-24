@@ -57,13 +57,13 @@ class IdeakuModel extends Model
         }
 
         for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->comments = $this->connection->select("select * from showcomment(?)",[$data[$index]->idticket]);
+            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)",[$data[$index]->idticket, $userid]);
             for($comment = 0; $comment < count($data[$index]->comments); $comment++ ){
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?)",[$data[$index]->comments[$comment]->id_comment]);
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)",[$data[$index]->comments[$comment]->id_comment, $userid]);
                 $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
-            $data[$index]->likes = $this->connection->select("select * from showlike(?)",[$data[$index]->idticket]);
-            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?)",[$data[$index]->idticket]);
+            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)",[$data[$index]->idticket, $userid]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)",[$data[$index]->idticket, $userid]);
             $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
@@ -101,13 +101,13 @@ class IdeakuModel extends Model
         }
 
         for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->comments = $this->connection->select("select * from showcomment(?)",[$data[$index]->idticket]);
+            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)",[$data[$index]->idticket, $userid]);
             for($comment = 0; $comment < count($data[$index]->comments); $comment++ ){
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?)",[$data[$index]->comments[$comment]->id_comment]);
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)",[$data[$index]->comments[$comment]->id_comment, $userid]);
                 $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
-            $data[$index]->likes = $this->connection->select("select * from showlike(?)",[$data[$index]->idticket]);
-            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?)",[$data[$index]->idticket]);
+            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)",[$data[$index]->idticket, $userid]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)",[$data[$index]->idticket, $userid]);
             $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 

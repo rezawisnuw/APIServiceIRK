@@ -34,11 +34,10 @@ class ReportModel extends Model
     {
         try
         {
-            $data = $this->connection
-            ->table('ReportTicket')
-            ->get();
+            $idticket = $request['idticket'];
+            $userid = $request['userid'];
 
-            //$data = $this->connection->select("select * from showreportticket(?)",[$idticket]);
+            $data = $this->connection->select("select * from showreportticket(?,?)",[$idticket,$userid]);
 
             if($data) {
                 $this->status = 'Success';
@@ -68,11 +67,10 @@ class ReportModel extends Model
     {
         try
         {
-            $data = $this->connection
-            ->table('ReportComment')
-            ->get();
+            $idcomment = $request['idcomment'];
+            $userid = $request['userid'];
 
-            //$data = $this->connection->select("select * from showreportcomment(?)",[$idcomment]);
+            $data = $this->connection->select("select * from showreportcomment(?,?)",[$idcomment,$userid]);
 
             if($data) {
                 $this->status = 'Success';
