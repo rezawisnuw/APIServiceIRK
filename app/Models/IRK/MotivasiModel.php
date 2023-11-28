@@ -196,7 +196,7 @@ class MotivasiModel extends Model
 
         try
         {
-            $idimg = str_contains($alias,'Admin') ? $alias : substr($alias,3,8);
+            $idimg = str_contains($alias,'Admin') ? substr(base64_encode(microtime().$request->nik),3,8) : substr($alias,3,8);
 
             if(!empty($gambar)){
                 $imgformat = array("jpeg", "jpg", "png");
