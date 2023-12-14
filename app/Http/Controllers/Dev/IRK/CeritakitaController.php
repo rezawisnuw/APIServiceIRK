@@ -19,6 +19,7 @@ use PHPUnit\Framework\Exception;
 
 class CeritakitaController extends Controller
 {
+
     private $status = 'Error';
     private $data = null;
     private $message = 'Process is not found';

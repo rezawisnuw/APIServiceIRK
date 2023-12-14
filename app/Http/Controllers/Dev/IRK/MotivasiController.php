@@ -76,11 +76,12 @@ class MotivasiController extends Controller
             file_put_contents($tmpFilePath, $b64filedecode);
             $tmpFile = new File($tmpFilePath);
             $file = new UploadedFile(
-                $tmpFile->getPathname(),
-                $tmpFile->getFilename(),
-                $tmpFile->getMimeType(),
-                0,
-                true // Mark it as test, since the file isn't from real HTTP POST.
+                $tmpFile->getPathname(),    // Temporary file path on the server
+                $tmpFile->getFilename(),    // Original file name
+                $tmpFile->getMimeType(),    // MIME type
+                $tmpFile->getSize(),        // File size
+                0,                          // Manually setting error code to 0
+                true                        // Setting the test flag to true
             );
             array_push($arrayfile, $file);
             //return response()->json($arrayfile[0]->extension());

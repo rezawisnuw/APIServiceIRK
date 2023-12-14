@@ -15,11 +15,16 @@ return [
     'URL_GCP_LARAVEL_SERVICELB' => env('CONNECTION_TO_GCP_LARAVELSERVICELB'),
     'URL_PGSQLLOCAL' => env('CONNECTION_TO_PGSQLLOCAL'),
     'URL_PGSQLGCP_IRK' => env('CONNECTION_TO_PGSQLGCP_IRK'),
-    'URL_PGSQLGCP_IRK_STAG' => env('CONNECTION_TO_PGSQLGCP_IRK_STAG'),
-    'URL_PGSQLGCP_IRK_DEV' => env('CONNECTION_TO_PGSQLGCP_IRK_DEV'),
+    'URL_PGSQLGCP_IRK_V1' => env('CONNECTION_TO_PGSQLGCP_IRK_V1'),
+    'URL_PGSQLGCP_IRK_V1_STAG' => env('CONNECTION_TO_PGSQLGCP_IRK_V1_STAG'),
+    'URL_PGSQLGCP_IRK_V1_DEV' => env('CONNECTION_TO_PGSQLGCP_IRK_V1_DEV'),
     'URL_UPLOADFILE_CONFIDENTAL' => env('PATH_UPLOADFILE_CONFIDENTAL'),
     'URL_UPLOADFILE_CONFIDENTAL_DEV' => env('PATH_UPLOADFILE_CONFIDENTAL'),
     'URL_UPLOADFILE_NONCONFIDENTAL' => env('PATH_UPLOADFILE_NONCONFIDENTAL'),
+    'URL_DBPRESENSI_DUMMY' => env('CONNECTION_TO_DBPRESENSI_DUMMY'),
+
+    'domain' => env('DOMAIN_NAME'),
+    'subdomain' => env('SUB_DOMAIN_NAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -32,7 +37,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -202,6 +207,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Barryvdh\Debugbar\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -227,6 +233,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'IRKHelper' => App\Helper\IRKHelper::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class
     ])->toArray(),
 
 ];
