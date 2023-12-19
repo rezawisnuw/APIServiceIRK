@@ -34,9 +34,10 @@ class VersionModel extends Model
                 ->table('AppVersion')
                 ->select('os_type', 'version_code', 'version_name')
                 ->where('os_type', '=', $ostype)
-                ->get();
+                ->get()
+                ->all();
 
-            if (is_array($data)) {
+            if ($data) {
                 $this->status = 'Success';
                 $this->message = 'Data has been process';
                 $this->data = $data[0];
