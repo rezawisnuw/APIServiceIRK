@@ -3,19 +3,13 @@
 namespace App\Models\IRK;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Cookie;
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
 use App\Helper\IRKHelper;
 
 class ReportModel extends Model
 {
-    
-	private $status = 'Failed';
-    private $message = 'Data is cannot be process';
-    private $data = [];
+
+    private $status = 'Failed', $message = 'Data is cannot be process', $data = [];
 
     public function __construct(Request $request, $slug)
     {
@@ -24,7 +18,7 @@ class ReportModel extends Model
 
         $helper = new IRKHelper($request);
         $this->helper = $helper;
-        
+
         $segment = $helper->Segment($slug);
         $this->connection = $segment['connection'];
         $this->path = $segment['path'];
@@ -32,32 +26,30 @@ class ReportModel extends Model
 
     public function showDataReportTicket($request)
     {
-        try
-        {
+        try {
             $idticket = $request['idticket'];
             $userid = $request['userid'];
 
-            $data = $this->connection->select("select * from showreportticket(?,?)",[$idticket,$userid]);
+            $data = $this->connection->select("select * from showreportticket(?,?)", [$idticket, $userid]);
 
-            if($data) {
+            if (is_array($data)) {
                 $this->status = 'Success';
                 $this->message = 'Data has been process';
                 $this->data = $data;
-            } else{
+            } else {
                 $this->status;
                 $this->message;
                 $this->data;
             }
 
-        }
-        catch(\Throwable $e){ 
+        } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
-            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
         return [
-            'status'  => $this->status,
+            'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message
         ];
@@ -65,32 +57,30 @@ class ReportModel extends Model
 
     public function showDataReportComment($request)
     {
-        try
-        {
+        try {
             $idcomment = $request['idcomment'];
             $userid = $request['userid'];
 
-            $data = $this->connection->select("select * from showreportcomment(?,?)",[$idcomment,$userid]);
+            $data = $this->connection->select("select * from showreportcomment(?,?)", [$idcomment, $userid]);
 
-            if($data) {
+            if (is_array($data)) {
                 $this->status = 'Success';
                 $this->message = 'Data has been process';
                 $this->data = $data;
-            } else{
+            } else {
                 $this->status;
                 $this->message;
                 $this->data;
             }
 
-        }
-        catch(\Throwable $e){ 
+        } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
-            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
         return [
-            'status'  => $this->status,
+            'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message
         ];
@@ -99,43 +89,43 @@ class ReportModel extends Model
     public function inputDataReportTicket($request)
     {
         $param['list_sp'] = array([
-            'conn'=>'POR_DUMMY',
-            'payload'=>['nik' => $request['nik']],
-            'sp_name'=>'SP_GetAccessLevel',
-            'process_name'=>'GetAccessLevelResult'
+            'conn' => 'POR_DUMMY',
+            'payload' => ['nik' => $request['nik']],
+            'sp_name' => 'SP_GetAccessLevel',
+            'process_name' => 'GetAccessLevelResult'
         ]);
 
-		$response = $this->helper->SPExecutor($param);
-        
-        if($response->status == 0){
+        $response = $this->helper->SPExecutor($param);
+
+        if ($response->status == 0) {
             return [
-                'status'  => $this->status,
+                'status' => $this->status,
                 'data' => 'SPExecutor is cannot be process',
                 'message' => $this->message
             ];
-        }else{
-            if(!empty($response->result->GetAccessLevelResult[0])){
+        } else {
+            if (!empty($response->result->GetAccessLevelResult[0])) {
                 $level = $response->result->GetAccessLevelResult[0]->role;
 
-                if(str_contains($level,'Admin') == false){
+                if (str_contains($level, 'Admin') == false) {
                     return [
-                        'status'  => $this->status,
+                        'status' => $this->status,
                         'data' => $level,
                         'message' => $this->message
                     ];
                 }
 
                 $activity = $this->connection
-                ->table('UserStatus')
-                ->select('platforms')
-                ->where('nik','=',$request['nik'])
-                ->orderBy('log','desc')
-                ->take(1)
-                ->get();
+                    ->table('UserStatus')
+                    ->select('platforms')
+                    ->where('nik', '=', $request['nik'])
+                    ->orderBy('log', 'desc')
+                    ->take(1)
+                    ->get();
 
                 $platform = $activity[0]->platforms;
 
-            }else{
+            } else {
                 $level = null;
             }
         }
@@ -144,19 +134,18 @@ class ReportModel extends Model
         $report = $request['report'];
         $idticket = $request['idticket'];
         $tag = $request['tag'];
-        $alias = str_contains($level,'Admin') && $platform == 'Website' ? $level : base64_encode(microtime().$request['nik']);
+        $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
 
-        try
-        {
-            $data = $this->connection->insert("CALL inputreportticket(?,?,?,?,?)", [$nik,$report,$idticket,$tag,$alias]);
+        try {
+            $data = $this->connection->insert("CALL inputreportticket(?,?,?,?,?)", [$nik, $report, $idticket, $tag, $alias]);
 
-            if($data) {
+            if ($data) {
 
                 $target = $this->connection
-                ->table('CeritaKita')
-                ->select('employee','tag')
-                ->where('id_ticket','=',$idticket)
-                ->get()[0];
+                    ->table('CeritaKita')
+                    ->select('employee', 'tag')
+                    ->where('id_ticket', '=', $idticket)
+                    ->get()[0];
 
                 $target->idticket = ["idticket" => $idticket];
 
@@ -165,12 +154,12 @@ class ReportModel extends Model
                 $toBase64 = base64_encode($toJson);
 
                 $body['data'] = [
-                    'nik'=>$target->employee,
-                    'apps'=>'Web Admin IRK',
-                    'nikLogin'=>$nik,
-                    'shortMessage'=>'Report Content '.$target->tag,
-                    'longMessage'=>'Random alias melaporkan postingan anda',
-                    'link'=>'portal/irk/transaksi/cerita-kita/rincian/redirect/'.$$toBase64
+                    'nik' => $target->employee,
+                    'apps' => 'Web Admin IRK',
+                    'nikLogin' => $nik,
+                    'shortMessage' => 'Report Content ' . $target->tag,
+                    'longMessage' => 'Random alias melaporkan postingan anda',
+                    'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $$toBase64
                 ];
 
                 $response = $this->helper->NotificationPortal($body);
@@ -178,21 +167,20 @@ class ReportModel extends Model
                 $this->status = 'Success';
                 $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
                 $this->data = $data;
-            } else{
+            } else {
                 $this->status;
                 $this->message;
                 $this->data;
             }
 
-        }
-        catch(\Throwable $e){ 
+        } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
-            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
         return [
-            'status'  => $this->status,
+            'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message
         ];
@@ -201,78 +189,75 @@ class ReportModel extends Model
     public function inputDataReportComment($request)
     {
         $param['list_sp'] = array([
-            'conn'=>'POR_DUMMY',
-            'payload'=>['nik' => $request['nik']],
-            'sp_name'=>'SP_GetAccessLevel',
-            'process_name'=>'GetAccessLevelResult'
+            'conn' => 'POR_DUMMY',
+            'payload' => ['nik' => $request['nik']],
+            'sp_name' => 'SP_GetAccessLevel',
+            'process_name' => 'GetAccessLevelResult'
         ]);
 
-		$response = $this->helper->SPExecutor($param);
-        
-        if($response->status == 0){
+        $response = $this->helper->SPExecutor($param);
+
+        if ($response->status == 0) {
             return [
-                'status'  => $this->status,
+                'status' => $this->status,
                 'data' => 'SPExecutor is cannot be process',
                 'message' => $this->message
             ];
-        }else{
-            if(!empty($response->result->GetAccessLevelResult[0])){
+        } else {
+            if (!empty($response->result->GetAccessLevelResult[0])) {
                 $level = $response->result->GetAccessLevelResult[0]->role;
 
-                if(str_contains($level,'Admin') == false){
+                if (str_contains($level, 'Admin') == false) {
                     return [
-                        'status'  => $this->status,
+                        'status' => $this->status,
                         'data' => $level,
                         'message' => $this->message
                     ];
                 }
 
                 $activity = $this->connection
-                ->table('UserStatus')
-                ->select('platforms')
-                ->where('nik','=',$request['nik'])
-                ->orderBy('log','desc')
-                ->take(1)
-                ->get();
+                    ->table('UserStatus')
+                    ->select('platforms')
+                    ->where('nik', '=', $request['nik'])
+                    ->orderBy('log', 'desc')
+                    ->take(1)
+                    ->get();
 
                 $platform = $activity[0]->platforms;
 
-            }else{
+            } else {
                 $level = null;
             }
         }
-        
+
         $nik = $request['nik'];
         $report = $request['report'];
         $idcomment = $request['idcomment'];
         $tag = $request['tag'];
-        $alias = str_contains($level,'Admin') && $platform == 'Website' ? $level : base64_encode(microtime().$request['nik']);
+        $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
 
-        try
-        {
-            $data = $this->connection->insert("CALL inputreportcomment(?,?,?,?,?)", [$nik,$report,$idcomment,$tag,$alias]);
+        try {
+            $data = $this->connection->insert("CALL inputreportcomment(?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias]);
 
-            if($data) {
+            if ($data) {
 
                 $target = $this->connection
-                ->table('Comment')
-                ->select('nik_karyawan','tag')
-                ->where('id_ticket','=',$idticket)
-                ->get()[0];
-
-                $target->idticket = ["idticket" => $idticket];
+                    ->table('Comment')
+                    ->select('nik_karyawan', 'tag', 'id_ticket')
+                    ->where('id_comment', '=', $idcomment)
+                    ->get()[0];
 
                 $toJson = json_encode($target->idticket);
 
                 $toBase64 = base64_encode($toJson);
 
                 $body['data'] = [
-                    'nik'=>$target->nik_karyawan,
-                    'apps'=>'Web Admin IRK',
-                    'nikLogin'=>$nik,
-                    'shortMessage'=>'Report Comment '.$target->tag,
-                    'longMessage'=>'Random alias melaporkan komentar anda',
-                    'link'=>'portal/irk/transaksi/cerita-kita/rincian/redirect/'.$toBase64
+                    'nik' => $target->nik_karyawan,
+                    'apps' => 'Web Admin IRK',
+                    'nikLogin' => $nik,
+                    'shortMessage' => 'Report Comment ' . $target->tag,
+                    'longMessage' => 'Random alias melaporkan komentar anda',
+                    'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
                 ];
 
                 $response = $this->helper->NotificationPortal($body);
@@ -280,21 +265,20 @@ class ReportModel extends Model
                 $this->status = 'Success';
                 $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
                 $this->data = $data;
-            } else{
+            } else {
                 $this->status;
                 $this->message;
                 $this->data;
             }
 
-        }
-        catch(\Throwable $e){ 
+        } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
-            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
         return [
-            'status'  => $this->status,
+            'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message
         ];

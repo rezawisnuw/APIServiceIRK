@@ -5,17 +5,12 @@ namespace App\Models\IRK;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Cookie;
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
 use App\Helper\IRKHelper;
 
 class MotivasiModel extends Model
 {
-    
-	private $status = 'Failed';
-    private $message = 'Data is cannot be process';
-    private $data = [];
+
+    private $status = 'Failed', $message = 'Data is cannot be process', $data = [];
 
     public function __construct(Request $request, $slug)
     {
@@ -24,7 +19,7 @@ class MotivasiModel extends Model
 
         $helper = new IRKHelper($request);
         $this->helper = $helper;
-        
+
         $segment = $helper->Segment($slug);
         $this->connection = $segment['connection'];
         $this->path = $segment['path'];
@@ -34,41 +29,39 @@ class MotivasiModel extends Model
     {
         $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
         $userid = $request['userid'];
-        
-        try
-        {
-            $data = $this->connection->select("select * from showmotivasilist(?,?)",[$userid,$page]);
 
-            if($data) {
+        try {
+            $data = $this->connection->select("select * from showmotivasilist(?,?)", [$userid, $page]);
+
+            if (is_array($data)) {
                 $this->status = $page != 0 ? 'Processing' : 'Success';
                 $this->message = 'Data has been process';
                 $this->data = $data;
-            } else{
+            } else {
                 $this->status;
                 $this->message;
                 $this->data;
             }
 
-        }
-        catch(\Throwable $e){ 
+        } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
-            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
-        for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)",[$data[$index]->idticket, $userid]);
-            for($comment = 0; $comment < count($data[$index]->comments); $comment++ ){
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)",[$data[$index]->comments[$comment]->id_comment, $userid]);
+        for ($index = 0; $index < count($data); $index++) {
+            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)", [$data[$index]->idticket, $userid]);
+            for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
                 $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
-            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)",[$data[$index]->idticket, $userid]);
-            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)",[$data[$index]->idticket, $userid]);
+            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)", [$data[$index]->idticket, $userid]);
             $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
         return [
-            'status'  => $this->status,
+            'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message
         ];
@@ -79,40 +72,38 @@ class MotivasiModel extends Model
         $userid = $request['userid'];
         $idticket = $request['idticket'];
 
-        try
-        {
-            $data = $this->connection->select("select * from showmotivasidetail(?,?)",[$userid,$idticket]);
+        try {
+            $data = $this->connection->select("select * from showmotivasidetail(?,?)", [$userid, $idticket]);
 
-            if($data) {
+            if (is_array($data)) {
                 $this->status = 'Processing';
                 $this->message = 'Data has been process';
                 $this->data = $data;
-            } else{
+            } else {
                 $this->status;
                 $this->message;
                 $this->data;
             }
 
-        }
-        catch(\Throwable $e){ 
+        } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
-            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
-        for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)",[$data[$index]->idticket, $userid]);
-            for($comment = 0; $comment < count($data[$index]->comments); $comment++ ){
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)",[$data[$index]->comments[$comment]->id_comment, $userid]);
+        for ($index = 0; $index < count($data); $index++) {
+            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)", [$data[$index]->idticket, $userid]);
+            for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
                 $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
-            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)",[$data[$index]->idticket, $userid]);
-            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)",[$data[$index]->idticket, $userid]);
+            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)", [$data[$index]->idticket, $userid]);
             $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
         return [
-            'status'  => $this->status,
+            'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message
         ];
@@ -121,33 +112,31 @@ class MotivasiModel extends Model
     public function showDataMotivasiTotal($request)
     {
 
-        try
-        {
+        try {
             $data = $this->connection
-            ->table('CeritaKita')
-            ->select(DB::raw('count(*) as ttldatamotivasi'))  
-            ->where('tag','=','motivasi')
-            ->get();
+                ->table('CeritaKita')
+                ->select(DB::raw('count(*) as ttldatamotivasi'))
+                ->where('tag', '=', 'motivasi')
+                ->get();
 
-            if($data) {
+            if (is_array($data)) {
                 $this->status = 'Success';
                 $this->message = 'Data has been process';
                 $this->data = $data[0]->ttldatamotivasi;
-            } else{
+            } else {
                 $this->status;
                 $this->message;
                 $this->data;
             }
 
-        }
-        catch(\Throwable $e){ 
+        } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
-            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
         return [
-            'status'  => $this->status,
+            'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message
         ];
@@ -155,82 +144,81 @@ class MotivasiModel extends Model
 
     public function inputDataMotivasi($request)
     {
-        
+
         $param['list_sp'] = array([
-            'conn'=>'POR_DUMMY',
-            'payload'=>['nik' => $request->nik],
-            'sp_name'=>'SP_GetAccessLevel',
-            'process_name'=>'GetAccessLevelResult'
+            'conn' => 'POR_DUMMY',
+            'payload' => ['nik' => $request->nik],
+            'sp_name' => 'SP_GetAccessLevel',
+            'process_name' => 'GetAccessLevelResult'
         ]);
 
-		$response = $this->helper->SPExecutor($param);
-        
-        if($response->status == 0){
+        $response = $this->helper->SPExecutor($param);
+
+        if ($response->status == 0) {
             return [
-                'status'  => $this->status,
+                'status' => $this->status,
                 'data' => 'SPExecutor is cannot be process',
                 'message' => $this->message
             ];
-        }else{
-            if(!empty($response->result->GetAccessLevelResult[0])){
+        } else {
+            if (!empty($response->result->GetAccessLevelResult[0])) {
                 $level = $response->result->GetAccessLevelResult[0]->role;
 
-                if(str_contains($level,'Admin') == false){
+                if (str_contains($level, 'Admin') == false) {
                     return [
-                        'status'  => $this->status,
+                        'status' => $this->status,
                         'data' => $level,
                         'message' => $this->message
                     ];
                 }
-            }else{
+            } else {
                 $level = null;
             }
         }
-        
+
         $nik = $request->nik;
         $caption = $request->caption;
         $deskripsi = $request->deskripsi;
-        $alias = str_contains($level,'Admin') ? $level : base64_encode(microtime().$request->nik);
+        $alias = str_contains($level, 'Admin') ? $level : base64_encode(microtime() . $request->nik);
         $gambar = isset($request->gambar) ? $request->gambar : '';
         $tag = 'motivasi'; //$request->tag;
 
-        try
-        {
-            $idimg = str_contains($alias,'Admin') ? substr(base64_encode(microtime().$request->nik),3,8) : substr($alias,3,8);
+        try {
+            $idimg = str_contains($alias, 'Admin') ? substr(base64_encode(microtime() . $request->nik), 3, 8) : substr($alias, 3, 8);
 
-            if(!empty($gambar)){
+            if (!empty($gambar)) {
                 $imgformat = array("jpeg", "jpg", "png");
-                
-                if ($gambar->getSize() > 1048576 || !in_array($gambar->extension(), $imgformat)){
+
+                if ($gambar->getSize() > 1048576 || !in_array($gambar->extension(), $imgformat)) {
                     return [
-                        'status'  => 'File Error',
+                        'status' => 'File Error',
                         'data' => $this->data,
                         'message' => 'Format File dan Size tidak sesuai',
                         'code' => 200
                     ];
-                }else{
-                    
+                } else {
+
                     $imgextension = $gambar->extension();
 
-                    $data = $this->connection->insert("CALL inputceritakita(?,?,?,?,?,?)", [$nik,$caption,$deskripsi,$alias,$idimg.'.'.$imgextension,$tag]);
+                    $data = $this->connection->insert("CALL inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag]);
 
-                    if($data) {
-                        $imgpath = $this->path.'/Ceritakita/Motivasi/'.$idimg.'.'.$imgextension;
+                    if ($data) {
+                        $imgpath = $this->path . '/Ceritakita/Motivasi/' . $idimg . '.' . $imgextension;
 
                         $this->status = 'Success';
                         $this->message = 'Data has been process';
                         $this->data = $imgpath;
-                    } else{
+                    } else {
                         $this->status;
                         $this->message;
                         $this->data;
                     }
                 }
-            } else{
-                $data = $this->connection->insert("CALL inputceritakita(?,?,?,?,?,?)", [$nik,$caption,$deskripsi,$alias,$idimg.'.',$tag]);
-                
-                if($data) {
-                    $imgpath = $this->path.'/Ceritakita/Motivasi/'.$idimg.'.';
+            } else {
+                $data = $this->connection->insert("CALL inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag]);
+
+                if ($data) {
+                    $imgpath = $this->path . '/Ceritakita/Motivasi/' . $idimg . '.';
 
                     $this->status = 'Success';
                     $this->message = 'Data has been process';
@@ -239,15 +227,14 @@ class MotivasiModel extends Model
 
             }
 
-        }
-        catch(\Throwable $e){ 
+        } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
-            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
         return [
-            'status'  => $this->status,
+            'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message
         ];

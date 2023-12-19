@@ -5,17 +5,12 @@ namespace App\Models\IRK;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Cookie;
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
 use App\Helper\IRKHelper;
 
 class CeritakitaModel extends Model
 {
-    
-	private $status = 'Failed';
-    private $message = 'Data is cannot be process';
-    private $data = [];
+
+    private $status = 'Failed', $message = 'Data is cannot be process', $data = [];
 
     public function __construct(Request $request, $slug)
     {
@@ -24,7 +19,7 @@ class CeritakitaModel extends Model
 
         $helper = new IRKHelper($request);
         $this->helper = $helper;
-        
+
         $segment = $helper->Segment($slug);
         $this->connection = $segment['connection'];
         $this->path = $segment['path'];
@@ -34,41 +29,39 @@ class CeritakitaModel extends Model
     {
         $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
         $userid = $request['userid'];
-        
-        try
-        {
-            $data = $this->connection->select("select * from showceritakitalist(?,?)",[$userid,$page]);
 
-            if($data) {
+        try {
+            $data = $this->connection->select("select * from showceritakitalist(?,?)", [$userid, $page]);
+
+            if (is_array($data)) {
                 $this->status = $page != 0 ? 'Processing' : 'Success';
                 $this->message = 'Data has been process';
                 $this->data = $data;
-            } else{
+            } else {
                 $this->status;
                 $this->message;
                 $this->data;
             }
 
-        }
-        catch(\Throwable $e){ 
+        } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
-            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
-        for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)",[$data[$index]->idticket, $userid]);
-            for($comment = 0; $comment < count($data[$index]->comments); $comment++ ){
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)",[$data[$index]->comments[$comment]->id_comment, $userid]);
+        for ($index = 0; $index < count($data); $index++) {
+            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)", [$data[$index]->idticket, $userid]);
+            for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
                 $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
-            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)",[$data[$index]->idticket, $userid]);
-            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)",[$data[$index]->idticket, $userid]);
+            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)", [$data[$index]->idticket, $userid]);
             $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
         return [
-            'status'  => $this->status,
+            'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message
         ];
@@ -77,32 +70,30 @@ class CeritakitaModel extends Model
     public function showDataCeritakitaTotal($request)
     {
 
-        try
-        {
+        try {
             $data = $this->connection
-            ->table('CeritaKita')
-            ->select(DB::raw('count(*) as ttldataceritakita'))  
-            ->get();
+                ->table('CeritaKita')
+                ->select(DB::raw('count(*) as ttldataceritakita'))
+                ->get();
 
-            if($data) {
+            if (is_array($data)) {
                 $this->status = 'Success';
                 $this->message = 'Data has been process';
                 $this->data = $data[0]->ttldataceritakita;
-            } else{
+            } else {
                 $this->status;
                 $this->message;
                 $this->data;
             }
 
-        }
-        catch(\Throwable $e){ 
+        } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
-            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
         return [
-            'status'  => $this->status,
+            'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message
         ];
@@ -118,41 +109,39 @@ class CeritakitaModel extends Model
         $periode2 = $request['periode2'];
         $report = $request['report'];
         $content = $request['content'];
-        
-        try
-        {
-            $data = $this->connection->select("select * from showceritakitadetail(?,?,?,?,?,?,?)",[$userid,$page,$tag,$periode1,$periode2,$report,$content]);
 
-            if($data) {
+        try {
+            $data = $this->connection->select("select * from showceritakitadetail(?,?,?,?,?,?,?)", [$userid, $page, $tag, $periode1, $periode2, $report, $content]);
+
+            if (is_array($data)) {
                 $this->status = $page != 0 ? 'Processing' : 'Success';
                 $this->message = 'Data has been process';
                 $this->data = $data;
-            } else{
+            } else {
                 $this->status;
                 $this->message;
                 $this->data;
             }
 
-        }
-        catch(\Throwable $e){ 
+        } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
-            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
-        for($index = 0; $index < count($data); $index++ ){
-            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)",[$data[$index]->idticket, $userid]);
-            for($comment = 0; $comment < count($data[$index]->comments); $comment++ ){
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)",[$data[$index]->comments[$comment]->id_comment, $userid]);
+        for ($index = 0; $index < count($data); $index++) {
+            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)", [$data[$index]->idticket, $userid]);
+            for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
                 $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
-            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)",[$data[$index]->idticket, $userid]);
-            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)",[$data[$index]->idticket, $userid]);
+            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)", [$data[$index]->idticket, $userid]);
             $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
         return [
-            'status'  => $this->status,
+            'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message
         ];
@@ -165,29 +154,27 @@ class CeritakitaModel extends Model
         $idticket = $request['idticket'];
         $tag = $request['tag'];
 
-        try
-        {
-            $data = $this->connection->insert("CALL editceritakita(?,?,?)", [$nik,$idticket,$tag]);
+        try {
+            $data = $this->connection->insert("CALL editceritakita(?,?,?)", [$nik, $idticket, $tag]);
 
-            if($data) {
+            if ($data) {
                 $this->status = 'Success';
                 $this->message = 'Data has been process';
                 $this->data = $data;
-            } else{
+            } else {
                 $this->status;
                 $this->message;
                 $this->data;
             }
 
-        }
-        catch(\Throwable $e){ 
+        } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
-            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = '.$e->getMessage() : 'Error Database = '.$e->getMessage();
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
         return [
-            'status'  => $this->status,
+            'status' => $this->status,
             'data' => $this->data,
             'message' => $this->message
         ];
