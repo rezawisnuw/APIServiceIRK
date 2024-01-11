@@ -117,7 +117,8 @@ class IdeakuModel extends Model
                 ->table('CeritaKita')
                 ->select(DB::raw('count(*) as ttldataideaku'))
                 ->where('tag', '=', 'ideaku')
-                ->get();
+                ->get()
+                ->all();
 
             if (is_array($data)) {
                 $this->status = 'Success';

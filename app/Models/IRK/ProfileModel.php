@@ -33,7 +33,8 @@ class ProfileModel extends Model
             $data = $this->connection
                 ->table('UserStatus')
                 ->where('nik', '=', $userid)
-                ->get();
+                ->get()
+                ->all();
 
             if (is_array($data)) {
                 $this->status = 'Success';

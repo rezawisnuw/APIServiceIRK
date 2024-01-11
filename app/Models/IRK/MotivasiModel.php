@@ -117,7 +117,8 @@ class MotivasiModel extends Model
                 ->table('CeritaKita')
                 ->select(DB::raw('count(*) as ttldatamotivasi'))
                 ->where('tag', '=', 'motivasi')
-                ->get();
+                ->get()
+                ->all();
 
             if (is_array($data)) {
                 $this->status = 'Success';

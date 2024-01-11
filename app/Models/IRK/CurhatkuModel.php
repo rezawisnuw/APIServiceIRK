@@ -117,7 +117,8 @@ class CurhatkuModel extends Model
                 ->table('CeritaKita')
                 ->select(DB::raw('count(*) as ttldatacurhatku'))
                 ->where('tag', '=', 'curhatku')
-                ->get();
+                ->get()
+                ->all();
 
             if (is_array($data)) {
                 $this->status = 'Success';

@@ -74,7 +74,8 @@ class CeritakitaModel extends Model
             $data = $this->connection
                 ->table('CeritaKita')
                 ->select(DB::raw('count(*) as ttldataceritakita'))
-                ->get();
+                ->get()
+                ->all();
 
             if (is_array($data)) {
                 $this->status = 'Success';
