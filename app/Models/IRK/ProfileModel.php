@@ -33,13 +33,15 @@ class ProfileModel extends Model
             $data = $this->connection
                 ->table('UserStatus')
                 ->where('nik', '=', $userid)
+                ->orderBy('log', 'desc')
+                ->take(1)
                 ->get()
                 ->all();
 
             if (is_array($data)) {
                 $this->status = 'Success';
                 $this->message = 'Data has been process';
-                $this->data = $data[0];
+                $this->data = $data;
             } else {
                 $this->status;
                 $this->message;
