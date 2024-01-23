@@ -68,7 +68,7 @@ class VersionModel extends Model
         $versionapp = $request['version_name'];
 
         try {
-            $data = $this->connection->insert("CALL public. public.inputappversion(?,?,?)", [$ostype, $versioncode, $versionapp]);
+            $data = $this->connection->insert("CALL public.inputappversion(?,?,?)", [$ostype, $versioncode, $versionapp]);
 
             if ($data) {
                 $this->status = 'Success';

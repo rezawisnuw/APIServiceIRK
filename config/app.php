@@ -29,9 +29,6 @@ return [
     'domain' => env('DOMAIN_NAME'),
     'subdomain' => env('SUB_DOMAIN_NAME'),
 
-    'domain' => env('DOMAIN_NAME'),
-    'subdomain' => env('SUB_DOMAIN_NAME'),
-
     /*
     |--------------------------------------------------------------------------
     | Application Name
