@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\IRK;
+namespace App\Http\Controllers\IRK_v2;
 
 use Illuminate\Http\Request;
-use App\Models\IRK\CommentModel;
+use App\Models\IRK_v2\IdeakuModel;
 use App\Helper\IRKHelper;
 
-class CommentController extends Controller
+class IdeakuController extends Controller
 {
     private $status = 'Failed', $data = [], $message = 'Process is not found', $model, $helper;
 
@@ -16,9 +16,10 @@ class CommentController extends Controller
         //parent::__construct();
 
         $slug = $request->route('slug');
-        $this->slug = 'v1/' . $slug;
+        $x = $request->route('x');
+        $this->base = 'v' . $x . '/' . $slug;
 
-        $model = new CommentModel($request, $slug);
+        $model = new IdeakuModel($request, $slug);
         $this->model = $model;
 
         $helper = new IRKHelper($request);
@@ -35,7 +36,13 @@ class CommentController extends Controller
 
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = $this->model->showDataCommentTotal($formbody);
+                    $result = $this->model->showDataIdeaku($formbody);
+                    break;
+                case 2:
+                    $result = $this->model->showDataIdeakuSingle($formbody);
+                    break;
+                case 3:
+                    $result = $this->model->showDataIdeakuTotal($formbody);
                     break;
                 default:
                     $result = collect([
@@ -58,17 +65,26 @@ class CommentController extends Controller
 
     public function post(Request $request)
     {
-        $formbody = $request->data;
         $codekey = null;
+
+        $datadecode = json_decode($request->data[0]);
+
+        if (isset($request->file)) {
+            $filedecode = json_decode($request->file);
+            $b64filedecode = base64_decode($filedecode);
+
+            $arrayfile = $this->helper->BlobtoFile($b64filedecode);
+            //return response()->json($arrayfile[0]->extension());
+            isset($datadecode->gambar) && !empty($datadecode->gambar) ? $datadecode->gambar = $arrayfile[0] : $datadecode->gambar = '';
+        }
+
+        $formbody = $datadecode;
 
         try {
 
-            switch ($codekey = $formbody['code']) {
+            switch ($codekey = $formbody->code) {
                 case 1:
-                    $result = $this->model->inputDataComment($formbody);
-                    break;
-                case 2:
-                    $result = $this->model->inputDataReplyComment($formbody);
+                    $result = $this->model->inputDataIdeaku($formbody);
                     break;
                 default:
                     $result = collect([
@@ -91,35 +107,7 @@ class CommentController extends Controller
 
     public function put(Request $request)
     {
-        $formbody = $request->data;
-        $codekey = null;
 
-        try {
-
-            switch ($codekey = $formbody['code']) {
-                case 1:
-                    $result = $this->model->editDataComment($formbody);
-                    break;
-                case 2:
-                    $result = $this->model->editDataReplyComment($formbody);
-                    break;
-                default:
-                    $result = collect([
-                        'status' => $this->status,
-                        'data' => $codekey,
-                        'message' => $this->message
-                    ]);
-            }
-
-        } catch (\Throwable $e) {
-            $result = collect([
-                'status' => 'Error',
-                'data' => null,
-                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage() . ' On Switch Case = ' . $codekey
-            ]);
-        }
-
-        return response()->json($result);
     }
 
     public function delete(Request $request)

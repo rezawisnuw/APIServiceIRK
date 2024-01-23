@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\IRK;
+namespace App\Http\Controllers\IRK_v1;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;

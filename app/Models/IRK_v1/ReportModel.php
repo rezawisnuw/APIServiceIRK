@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\IRK;
+namespace App\Models\IRK_v1;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -30,7 +30,7 @@ class ReportModel extends Model
             $idticket = $request['idticket'];
             $userid = $request['userid'];
 
-            $data = $this->connection->select("select * from showreportticket(?,?)", [$idticket, $userid]);
+            $data = $this->connection->select("select * from public.showreportticket(?,?)", [$idticket, $userid]);
 
             if (is_array($data)) {
                 $this->status = 'Success';
@@ -61,7 +61,7 @@ class ReportModel extends Model
             $idcomment = $request['idcomment'];
             $userid = $request['userid'];
 
-            $data = $this->connection->select("select * from showreportcomment(?,?)", [$idcomment, $userid]);
+            $data = $this->connection->select("select * from public.showreportcomment(?,?)", [$idcomment, $userid]);
 
             if (is_array($data)) {
                 $this->status = 'Success';
@@ -137,7 +137,7 @@ class ReportModel extends Model
         $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
 
         try {
-            $data = $this->connection->insert("CALL inputreportticket(?,?,?,?,?)", [$nik, $report, $idticket, $tag, $alias]);
+            $data = $this->connection->insert("CALL public.inputreportticket(?,?,?,?,?)", [$nik, $report, $idticket, $tag, $alias]);
 
             if ($data) {
 
@@ -237,7 +237,7 @@ class ReportModel extends Model
         $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
 
         try {
-            $data = $this->connection->insert("CALL inputreportcomment(?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias]);
+            $data = $this->connection->insert("CALL public.inputreportcomment(?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias]);
 
             if ($data) {
 

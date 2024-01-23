@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\IRK;
+namespace App\Http\Controllers\IRK_v1;
 
 use Illuminate\Http\Request;
-use App\Models\IRK\ReportModel;
+use App\Models\IRK_v1\LikeModel;
 use App\Helper\IRKHelper;
 
-class ReportController extends Controller
+class LikeController extends Controller
 {
     private $status = 'Failed', $data = [], $message = 'Process is not found', $model, $helper;
 
@@ -16,9 +16,10 @@ class ReportController extends Controller
         //parent::__construct();
 
         $slug = $request->route('slug');
-        $this->slug = 'v1/' . $slug;
+        $x = $request->route('x');
+        $this->base = 'v' . $x . '/' . $slug;
 
-        $model = new ReportModel($request, $slug);
+        $model = new LikeModel($request, $slug);
         $this->model = $model;
 
         $helper = new IRKHelper($request);
@@ -35,10 +36,7 @@ class ReportController extends Controller
 
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = $this->model->showDataReportTicket($formbody);
-                    break;
-                case 2:
-                    $result = $this->model->showDataReportComment($formbody);
+                    $result = $this->model->showDataLikeTotal($formbody);
                     break;
                 default:
                     $result = collect([
@@ -68,10 +66,7 @@ class ReportController extends Controller
 
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = $this->model->inputDataReportTicket($formbody);
-                    break;
-                case 2:
-                    $result = $this->model->inputDataReportComment($formbody);
+                    $result = $this->model->inputDataLike($formbody);
                     break;
                 default:
                     $result = collect([

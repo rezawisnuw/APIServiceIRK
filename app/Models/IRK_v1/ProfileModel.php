@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\IRK;
+namespace App\Models\IRK_v1;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -108,7 +108,7 @@ class ProfileModel extends Model
         $iddepartemen = $request['iddepartemen'];
 
         try {
-            $data = $this->connection->select("select * from showuserstatus(?,?,?,?,?,?,?,?,?)",
+            $data = $this->connection->select("select * from public.showuserstatus(?,?,?,?,?,?,?,?,?)",
                 [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $status, $kelamin, $periode1, $periode2]);
 
             $dataaktif = array_filter($data, function ($item) {
@@ -216,7 +216,7 @@ class ProfileModel extends Model
         $platform = $request['platform'];
 
         try {
-            $data = $this->connection->insert("CALL inputuserstatus(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            $data = $this->connection->insert("CALL public.inputuserstatus(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 [$nik, $nama, $nohp, $platform == 'Website' ? $alias : base64_encode(microtime() . $nik), $email, $kelamin, $status, $idjabatan, $jabatan, $idunit, $unit, $idcabang, $cabang, $iddepartemen, $departemen, $platform]
             );
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\IRK;
+namespace App\Http\Controllers\IRK_v2;
 
 use Illuminate\Http\Request;
-use App\Models\IRK\CurhatkuModel;
+use App\Models\IRK_v2\CeritakitaModel;
 use App\Helper\IRKHelper;
 
-class CurhatkuController extends Controller
+class CeritakitaController extends Controller
 {
     private $status = 'Failed', $data = [], $message = 'Process is not found', $model, $helper;
 
@@ -16,9 +16,10 @@ class CurhatkuController extends Controller
         //parent::__construct();
 
         $slug = $request->route('slug');
-        $this->slug = 'v1/' . $slug;
+        $x = $request->route('x');
+        $this->base = 'v' . $x . '/' . $slug;
 
-        $model = new CurhatkuModel($request, $slug);
+        $model = new CeritakitaModel($request, $slug);
         $this->model = $model;
 
         $helper = new IRKHelper($request);
@@ -28,7 +29,6 @@ class CurhatkuController extends Controller
 
     public function get(Request $request)
     {
-
         $formbody = $request->data;
         $codekey = null;
 
@@ -36,13 +36,13 @@ class CurhatkuController extends Controller
 
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = $this->model->showDataCurhatku($formbody);
+                    $result = $this->model->showDataCeritakita($formbody);
                     break;
                 case 2:
-                    $result = $this->model->showDataCurhatkuSingle($formbody);
+                    $result = $this->model->showDataCeritakitaTotal($formbody);
                     break;
                 case 3:
-                    $result = $this->model->showDataCurhatkuTotal($formbody);
+                    $result = $this->model->showDataCeritakitaSub($formbody);
                     break;
                 default:
                     $result = collect([
@@ -67,7 +67,7 @@ class CurhatkuController extends Controller
     {
         $codekey = null;
 
-        $datadecode = json_decode($request->data);
+        $datadecode = json_decode($request->data[0]);
 
         if (isset($request->file)) {
             $filedecode = json_decode($request->file);
@@ -84,7 +84,7 @@ class CurhatkuController extends Controller
 
             switch ($codekey = $formbody->code) {
                 case 1:
-                    $result = $this->model->inputDataCurhatku($formbody);
+                    $result = $this->model->inputDataCeritakita($formbody);
                     break;
                 default:
                     $result = collect([
@@ -107,7 +107,32 @@ class CurhatkuController extends Controller
 
     public function put(Request $request)
     {
+        $formbody = $request->data;
+        $codekey = null;
 
+        try {
+
+            switch ($codekey = $formbody['code']) {
+                case 1:
+                    $result = $this->model->editDataContentCeritakita($formbody);
+                    break;
+                default:
+                    $result = collect([
+                        'status' => $this->status,
+                        'data' => $codekey,
+                        'message' => $this->message
+                    ]);
+            }
+
+        } catch (\Throwable $e) {
+            $result = collect([
+                'status' => 'Error',
+                'data' => null,
+                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage() . ' On Switch Case = ' . $codekey
+            ]);
+        }
+
+        return response()->json($result);
     }
 
     public function delete(Request $request)

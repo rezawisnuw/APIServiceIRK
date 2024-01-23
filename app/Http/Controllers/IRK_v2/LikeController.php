@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\IRK;
+namespace App\Http\Controllers\IRK_v2;
 
 use Illuminate\Http\Request;
-use App\Models\IRK\LikeModel;
+use App\Models\IRK_v2\LikeModel;
 use App\Helper\IRKHelper;
 
 class LikeController extends Controller
@@ -16,7 +16,8 @@ class LikeController extends Controller
         //parent::__construct();
 
         $slug = $request->route('slug');
-        $this->slug = 'v1/' . $slug;
+        $x = $request->route('x');
+        $this->base = 'v' . $x . '/' . $slug;
 
         $model = new LikeModel($request, $slug);
         $this->model = $model;

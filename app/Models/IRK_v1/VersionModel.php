@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\IRK;
+namespace App\Models\IRK_v1;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -68,7 +68,7 @@ class VersionModel extends Model
         $versionapp = $request['version_name'];
 
         try {
-            $data = $this->connection->insert("CALL inputappversion(?,?,?)", [$ostype, $versioncode, $versionapp]);
+            $data = $this->connection->insert("CALL public. public.inputappversion(?,?,?)", [$ostype, $versioncode, $versionapp]);
 
             if ($data) {
                 $this->status = 'Success';

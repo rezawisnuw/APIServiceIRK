@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\IRK;
+namespace App\Http\Controllers\IRK_v2;
 
 use Illuminate\Http\Request;
-use App\Models\IRK\IdeakuModel;
+use App\Models\IRK_v2\CurhatkuModel;
 use App\Helper\IRKHelper;
 
-class IdeakuController extends Controller
+class CurhatkuController extends Controller
 {
     private $status = 'Failed', $data = [], $message = 'Process is not found', $model, $helper;
 
@@ -16,9 +16,10 @@ class IdeakuController extends Controller
         //parent::__construct();
 
         $slug = $request->route('slug');
-        $this->slug = 'v1/' . $slug;
+        $x = $request->route('x');
+        $this->base = 'v' . $x . '/' . $slug;
 
-        $model = new IdeakuModel($request, $slug);
+        $model = new CurhatkuModel($request, $slug);
         $this->model = $model;
 
         $helper = new IRKHelper($request);
@@ -28,6 +29,7 @@ class IdeakuController extends Controller
 
     public function get(Request $request)
     {
+
         $formbody = $request->data;
         $codekey = null;
 
@@ -35,13 +37,13 @@ class IdeakuController extends Controller
 
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = $this->model->showDataIdeaku($formbody);
+                    $result = $this->model->showDataCurhatku($formbody);
                     break;
                 case 2:
-                    $result = $this->model->showDataIdeakuSingle($formbody);
+                    $result = $this->model->showDataCurhatkuSingle($formbody);
                     break;
                 case 3:
-                    $result = $this->model->showDataIdeakuTotal($formbody);
+                    $result = $this->model->showDataCurhatkuTotal($formbody);
                     break;
                 default:
                     $result = collect([
@@ -66,7 +68,7 @@ class IdeakuController extends Controller
     {
         $codekey = null;
 
-        $datadecode = json_decode($request->data);
+        $datadecode = json_decode($request->data[0]);
 
         if (isset($request->file)) {
             $filedecode = json_decode($request->file);
@@ -83,7 +85,7 @@ class IdeakuController extends Controller
 
             switch ($codekey = $formbody->code) {
                 case 1:
-                    $result = $this->model->inputDataIdeaku($formbody);
+                    $result = $this->model->inputDataCurhatku($formbody);
                     break;
                 default:
                     $result = collect([
@@ -97,7 +99,7 @@ class IdeakuController extends Controller
             $result = collect([
                 'status' => 'Error',
                 'data' => null,
-                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage() . ' On Switch Case = ' . $codekey
+                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage() . ' Switch Case = ' . $codekey
             ]);
         }
 

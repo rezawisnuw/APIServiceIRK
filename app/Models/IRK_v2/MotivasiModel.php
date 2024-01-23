@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\IRK;
+namespace App\Models\IRK_v2;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +31,7 @@ class MotivasiModel extends Model
         $userid = $request['userid'];
 
         try {
-            $data = $this->connection->select("select * from showmotivasilist(?,?)", [$userid, $page]);
+            $data = $this->connection->select("select * from public_v2.showmotivasilist(?,?)", [$userid, $page]);
 
             if (is_array($data)) {
                 $this->status = $page != 0 ? 'Processing' : 'Success';
@@ -50,13 +50,13 @@ class MotivasiModel extends Model
         }
 
         for ($index = 0; $index < count($data); $index++) {
-            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->comments = $this->connection->select("select * from public_v2.showcomment(?,?)", [$data[$index]->idticket, $userid]);
             for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
                 $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
-            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)", [$data[$index]->idticket, $userid]);
-            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->likes = $this->connection->select("select * from public_v2.showlike(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from public_v2.showreportticket(?,?)", [$data[$index]->idticket, $userid]);
             $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
@@ -73,7 +73,7 @@ class MotivasiModel extends Model
         $idticket = $request['idticket'];
 
         try {
-            $data = $this->connection->select("select * from showmotivasidetail(?,?)", [$userid, $idticket]);
+            $data = $this->connection->select("select * from public_v2.showmotivasidetail(?,?)", [$userid, $idticket]);
 
             if (is_array($data)) {
                 $this->status = 'Processing';
@@ -92,13 +92,13 @@ class MotivasiModel extends Model
         }
 
         for ($index = 0; $index < count($data); $index++) {
-            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->comments = $this->connection->select("select * from public_v2.showcomment(?,?)", [$data[$index]->idticket, $userid]);
             for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
                 $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
-            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)", [$data[$index]->idticket, $userid]);
-            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->likes = $this->connection->select("select * from public_v2.showlike(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from public_v2.showreportticket(?,?)", [$data[$index]->idticket, $userid]);
             $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
@@ -201,7 +201,7 @@ class MotivasiModel extends Model
 
                     $imgextension = $gambar->extension();
 
-                    $data = $this->connection->insert("CALL inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag]);
+                    $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag]);
 
                     if ($data) {
                         $imgpath = $this->path . '/Ceritakita/Motivasi/' . $idimg . '.' . $imgextension;
@@ -216,7 +216,7 @@ class MotivasiModel extends Model
                     }
                 }
             } else {
-                $data = $this->connection->insert("CALL inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag]);
+                $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag]);
 
                 if ($data) {
                     $imgpath = $this->path . '/Ceritakita/Motivasi/' . $idimg . '.';

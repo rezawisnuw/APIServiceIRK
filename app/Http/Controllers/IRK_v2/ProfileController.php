@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\IRK;
+namespace App\Http\Controllers\IRK_v2;
 
 use Illuminate\Http\Request;
-use App\Models\IRK\VersionModel;
+use App\Models\IRK_v2\ProfileModel;
 use App\Helper\IRKHelper;
 
-class VersionController extends Controller
+class ProfileController extends Controller
 {
     private $status = 'Failed', $data = [], $message = 'Process is not found', $model, $helper;
 
@@ -16,9 +16,10 @@ class VersionController extends Controller
         //parent::__construct();
 
         $slug = $request->route('slug');
-        $this->slug = 'v1/' . $slug;
+        $x = $request->route('x');
+        $this->base = 'v' . $x . '/' . $slug;
 
-        $model = new Versionmodel($request, $slug);
+        $model = new ProfileModel($request, $slug);
         $this->model = $model;
 
         $helper = new IRKHelper($request);
@@ -35,7 +36,10 @@ class VersionController extends Controller
 
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = $this->model->showDataAppVersion($formbody);
+                    $result = $this->model->showDataProfile($formbody);
+                    break;
+                case 2:
+                    $result = $this->model->showDataProfileSub($formbody);
                     break;
                 default:
                     $result = collect([
@@ -65,7 +69,7 @@ class VersionController extends Controller
 
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = $this->model->inputDataAppVersion($formbody);
+                    $result = $this->model->inputDataProfile($formbody);
                     break;
                 default:
                     $result = collect([

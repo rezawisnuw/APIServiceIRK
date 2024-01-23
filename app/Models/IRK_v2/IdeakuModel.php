@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\IRK;
+namespace App\Models\IRK_v2;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Helper\IRKHelper;
 
-class CurhatkuModel extends Model
+class IdeakuModel extends Model
 {
 
     private $status = 'Failed', $message = 'Data is cannot be process', $data = [];
@@ -25,13 +25,13 @@ class CurhatkuModel extends Model
         $this->path = $segment['path'];
     }
 
-    public function showDataCurhatku($request)
+    public function showDataIdeaku($request)
     {
         $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
         $userid = $request['userid'];
 
         try {
-            $data = $this->connection->select("select * from showcurhatkulist(?,?)", [$userid, $page]);
+            $data = $this->connection->select("select * from public_v2.showideakulist(?,?)", [$userid, $page]);
 
             if (is_array($data)) {
                 $this->status = $page != 0 ? 'Processing' : 'Success';
@@ -50,13 +50,13 @@ class CurhatkuModel extends Model
         }
 
         for ($index = 0; $index < count($data); $index++) {
-            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->comments = $this->connection->select("select * from public_v2.showcomment(?,?)", [$data[$index]->idticket, $userid]);
             for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
                 $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
-            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)", [$data[$index]->idticket, $userid]);
-            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->likes = $this->connection->select("select * from public_v2.showlike(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from public_v2.showreportticket(?,?)", [$data[$index]->idticket, $userid]);
             $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
@@ -67,13 +67,13 @@ class CurhatkuModel extends Model
         ];
     }
 
-    public function showDataCurhatkuSingle($request)
+    public function showDataIdeakuSingle($request)
     {
         $userid = $request['userid'];
         $idticket = $request['idticket'];
 
         try {
-            $data = $this->connection->select("select * from showcurhatkudetail(?,?)", [$userid, $idticket]);
+            $data = $this->connection->select("select * from public_v2.showideakudetail(?,?)", [$userid, $idticket]);
 
             if (is_array($data)) {
                 $this->status = 'Processing';
@@ -92,13 +92,13 @@ class CurhatkuModel extends Model
         }
 
         for ($index = 0; $index < count($data); $index++) {
-            $data[$index]->comments = $this->connection->select("select * from showcomment(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->comments = $this->connection->select("select * from public_v2.showcomment(?,?)", [$data[$index]->idticket, $userid]);
             for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
+                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
                 $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
             }
-            $data[$index]->likes = $this->connection->select("select * from showlike(?,?)", [$data[$index]->idticket, $userid]);
-            $data[$index]->report_ticketlist = $this->connection->select("select * from showreportticket(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->likes = $this->connection->select("select * from public_v2.showlike(?,?)", [$data[$index]->idticket, $userid]);
+            $data[$index]->report_ticketlist = $this->connection->select("select * from public_v2.showreportticket(?,?)", [$data[$index]->idticket, $userid]);
             $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
         }
 
@@ -109,21 +109,21 @@ class CurhatkuModel extends Model
         ];
     }
 
-    public function showDataCurhatkuTotal($request)
+    public function showDataIdeakuTotal($request)
     {
 
         try {
             $data = $this->connection
                 ->table('CeritaKita')
-                ->select(DB::raw('count(*) as ttldatacurhatku'))
-                ->where('tag', '=', 'curhatku')
+                ->select(DB::raw('count(*) as ttldataideaku'))
+                ->where('tag', '=', 'ideaku')
                 ->get()
                 ->all();
 
             if (is_array($data)) {
                 $this->status = 'Success';
                 $this->message = 'Data has been process';
-                $this->data = $data[0]->ttldatacurhatku;
+                $this->data = $data[0]->ttldataideaku;
             } else {
                 $this->status;
                 $this->message;
@@ -143,7 +143,7 @@ class CurhatkuModel extends Model
         ];
     }
 
-    public function inputDataCurhatku($request)
+    public function inputDataIdeaku($request)
     {
 
         $nik = $request->nik;
@@ -151,7 +151,7 @@ class CurhatkuModel extends Model
         $deskripsi = $request->deskripsi;
         $alias = base64_encode(microtime() . $request->nik);
         $gambar = isset($request->gambar) ? $request->gambar : '';
-        $tag = 'curhatku'; //$request->tag;
+        $tag = 'ideaku'; //$request->tag;
 
         try {
             $idimg = substr($alias, 3, 8);
@@ -170,10 +170,10 @@ class CurhatkuModel extends Model
 
                     $imgextension = $gambar->extension();
 
-                    $data = $this->connection->insert("CALL inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag]);
+                    $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag]);
 
                     if ($data) {
-                        $imgpath = $this->path . '/Ceritakita/Curhatku/' . $idimg . '.' . $imgextension;
+                        $imgpath = $this->path . '/Ceritakita/Ideaku/' . $idimg . '.' . $imgextension;
 
                         $this->status = 'Success';
                         $this->message = 'Data has been process';
@@ -185,10 +185,10 @@ class CurhatkuModel extends Model
                     }
                 }
             } else {
-                $data = $this->connection->insert("CALL inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag]);
+                $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag]);
 
                 if ($data) {
-                    $imgpath = $this->path . '/Ceritakita/Curhatku/' . $idimg . '.';
+                    $imgpath = $this->path . '/Ceritakita/Ideaku/' . $idimg . '.';
 
                     $this->status = 'Success';
                     $this->message = 'Data has been process';

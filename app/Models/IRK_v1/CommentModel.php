@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\IRK;
+namespace App\Models\IRK_v1;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -31,7 +31,7 @@ class CommentModel extends Model
 
         try {
 
-            $data = $this->connection->select("select * from showcomment(?,?)", [$idticket, $userid]);
+            $data = $this->connection->select("select * from public.showcomment(?,?)", [$idticket, $userid]);
 
             if (is_array($data)) {
                 $this->status = 'Success';
@@ -108,7 +108,7 @@ class CommentModel extends Model
 
         try {
 
-            $data = $this->connection->insert("CALL inputcomment(?,?,?,?,?)", [$nik, $comment, $idticket, $alias, $tag]);
+            $data = $this->connection->insert("CALL public.inputcomment(?,?,?,?,?)", [$nik, $comment, $idticket, $alias, $tag]);
 
             if ($data) {
 
@@ -208,7 +208,7 @@ class CommentModel extends Model
         $parentreply = $request['parentreply'];
 
         try {
-            $data = $this->connection->insert("CALL inputreplycomment(?,?,?,?,?)", [$nik, $comment, $idreply, $alias, $parentreply]);
+            $data = $this->connection->insert("CALL public.inputreplycomment(?,?,?,?,?)", [$nik, $comment, $idreply, $alias, $parentreply]);
 
             if ($data) {
                 $target = $this->connection
@@ -262,7 +262,7 @@ class CommentModel extends Model
         $tag = $request['tag'];
 
         try {
-            $data = $this->connection->insert("CALL editcomment(?,?,?)", [$nik, $idcomment, $tag]);
+            $data = $this->connection->insert("CALL public.editcomment(?,?,?)", [$nik, $idcomment, $tag]);
 
             if ($data) {
                 $this->status = 'Success';
@@ -294,7 +294,7 @@ class CommentModel extends Model
         $idreplycomment = $request['idreplycomment'];
 
         try {
-            $data = $this->connection->insert("CALL editreplycomment(?,?)", [$nik, $idreplycomment]);
+            $data = $this->connection->insert("CALL public.editreplycomment(?,?)", [$nik, $idreplycomment]);
 
             if ($data) {
                 $this->status = 'Success';

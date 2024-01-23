@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\IRK;
+namespace App\Http\Controllers\IRK_v2;
 
 use Illuminate\Http\Request;
-use App\Models\IRK\MotivasiModel;
+use App\Models\IRK_v2\VersionModel;
 use App\Helper\IRKHelper;
 
-class MotivasiController extends Controller
+class VersionController extends Controller
 {
     private $status = 'Failed', $data = [], $message = 'Process is not found', $model, $helper;
 
@@ -16,9 +16,10 @@ class MotivasiController extends Controller
         //parent::__construct();
 
         $slug = $request->route('slug');
-        $this->slug = 'v1/' . $slug;
+        $x = $request->route('x');
+        $this->base = 'v' . $x . '/' . $slug;
 
-        $model = new MotivasiModel($request, $slug);
+        $model = new Versionmodel($request, $slug);
         $this->model = $model;
 
         $helper = new IRKHelper($request);
@@ -28,7 +29,6 @@ class MotivasiController extends Controller
 
     public function get(Request $request)
     {
-
         $formbody = $request->data;
         $codekey = null;
 
@@ -36,13 +36,7 @@ class MotivasiController extends Controller
 
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = $this->model->showDataMotivasi($formbody);
-                    break;
-                case 2:
-                    $result = $this->model->showDataMotivasiSingle($formbody);
-                    break;
-                case 3:
-                    $result = $this->model->showDataMotivasiTotal($formbody);
+                    $result = $this->model->showDataAppVersion($formbody);
                     break;
                 default:
                     $result = collect([
@@ -65,26 +59,14 @@ class MotivasiController extends Controller
 
     public function post(Request $request)
     {
+        $formbody = $request->data;
         $codekey = null;
-
-        $datadecode = json_decode($request->data);
-
-        if (isset($request->file)) {
-            $filedecode = json_decode($request->file);
-            $b64filedecode = base64_decode($filedecode);
-
-            $arrayfile = $this->helper->BlobtoFile($b64filedecode);
-            //return response()->json($arrayfile[0]->extension());
-            isset($datadecode->gambar) && !empty($datadecode->gambar) ? $datadecode->gambar = $arrayfile[0] : $datadecode->gambar = '';
-        }
-
-        $formbody = $datadecode;
 
         try {
 
-            switch ($codekey = $formbody->code) {
+            switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = $this->model->inputDataMotivasi($formbody);
+                    $result = $this->model->inputDataAppVersion($formbody);
                     break;
                 default:
                     $result = collect([
@@ -98,7 +80,7 @@ class MotivasiController extends Controller
             $result = collect([
                 'status' => 'Error',
                 'data' => null,
-                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage() . ' Switch Case = ' . $codekey
+                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage() . ' On Switch Case = ' . $codekey
             ]);
         }
 

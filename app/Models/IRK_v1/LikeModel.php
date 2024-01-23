@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\IRK;
+namespace App\Models\IRK_v1;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -31,7 +31,7 @@ class LikeModel extends Model
 
         try {
 
-            $data = $this->connection->select("select * from showlike(?,?)", [$idticket, $userid]);
+            $data = $this->connection->select("select * from public.showlike(?,?)", [$idticket, $userid]);
 
             if (is_array($data)) {
                 $this->status = 'Success';
@@ -107,7 +107,7 @@ class LikeModel extends Model
         $userlike = $request['userlike'];
 
         try {
-            $data = $this->connection->insert("CALL inputlike(?,?,?,?,?)", [$nik, $idticket, $tag, $alias, $userlike]);
+            $data = $this->connection->insert("CALL public.inputlike(?,?,?,?,?)", [$nik, $idticket, $tag, $alias, $userlike]);
 
             if ($data) {
 

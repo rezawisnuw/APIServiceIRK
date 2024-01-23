@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\IRK;
+namespace App\Http\Controllers\IRK_v1;
 
 use Illuminate\Http\Request;
-use App\Models\IRK\CeritakitaModel;
+use App\Models\IRK_v1\CeritakitaModel;
 use App\Helper\IRKHelper;
 
 class CeritakitaController extends Controller
@@ -16,7 +16,8 @@ class CeritakitaController extends Controller
         //parent::__construct();
 
         $slug = $request->route('slug');
-        $this->slug = 'v1/' . $slug;
+        $x = $request->route('x');
+        $this->base = 'v' . $x . '/' . $slug;
 
         $model = new CeritakitaModel($request, $slug);
         $this->model = $model;
@@ -66,7 +67,7 @@ class CeritakitaController extends Controller
     {
         $codekey = null;
 
-        $datadecode = json_decode($request->data);
+        $datadecode = json_decode($request->data[0]);
 
         if (isset($request->file)) {
             $filedecode = json_decode($request->file);

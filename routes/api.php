@@ -128,7 +128,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     //IRK
 //     // Route::group(['prefix' => 'live'], function () {
 //     //     Route::post('auth',[Live\AuthController::class, 'Authentication']);
-        
+
 //     //     //Ceritakita
 //     //     Route::post('ceritakita/get',[Live\IRK\CeritakitaController::class, 'get']);
 //     //     Route::post('ceritakita/post',[Live\IRK\CeritakitaController::class, 'post']);
@@ -177,59 +177,220 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 //-----------------------START NEW SCHEME-----------------------------------------
-//IRK
+//IRK Endpoint
+// Route::group([
+//     'prefix' => '{slug}',
+//     'where' => [
+//         'slug' => 'dev|stag|live'
+//     ],
+//     'middleware' => 'cors'
+// ], function () {
+
+//     //Ceritakita
+//     Route::post('ceritakita/get', [IRK\CeritakitaController::class, 'get']);
+//     Route::post('ceritakita/post', [IRK\CeritakitaController::class, 'post']);
+//     Route::post('ceritakita/put', [IRK\CeritakitaController::class, 'put']);
+//     Route::post('ceritakita/delete', [IRK\CeritakitaController::class, 'delete']);
+//     //Curhatku
+//     Route::post('curhatku/get', [IRK\CurhatkuController::class, 'get']);
+//     Route::post('curhatku/post', [IRK\CurhatkuController::class, 'post']);
+//     Route::post('curhatku/put', [IRK\CurhatkuController::class, 'put']);
+//     Route::post('curhatku/delete', [IRK\CurhatkuController::class, 'delete']);
+//     //Motivasi
+//     Route::post('motivasi/get', [IRK\MotivasiController::class, 'get']);
+//     Route::post('motivasi/post', [IRK\MotivasiController::class, 'post']);
+//     Route::post('motivasi/put', [IRK\MotivasiController::class, 'put']);
+//     Route::post('motivasi/delete', [IRK\MotivasiController::class, 'delete']);
+//     //Ideaku
+//     Route::post('ideaku/get', [IRK\IdeakuController::class, 'get']);
+//     Route::post('ideaku/post', [IRK\IdeakuController::class, 'post']);
+//     Route::post('ideaku/put', [IRK\IdeakuController::class, 'put']);
+//     Route::post('ideaku/delete', [IRK\IdeakuController::class, 'delete']);
+//     //Comment
+//     Route::post('comment/get', [IRK\CommentController::class, 'get']);
+//     Route::post('comment/post', [IRK\CommentController::class, 'post']);
+//     Route::post('comment/put', [IRK\CommentController::class, 'put']);
+//     Route::post('comment/delete', [IRK\CommentController::class, 'delete']);
+//     //Like
+//     Route::post('like/get', [IRK\LikeController::class, 'get']);
+//     Route::post('like/post', [IRK\LikeController::class, 'post']);
+//     Route::post('like/put', [IRK\LikeController::class, 'put']);
+//     Route::post('like/delete', [IRK\LikeController::class, 'delete']);
+//     //Report
+//     Route::post('report/get', [IRK\ReportController::class, 'get']);
+//     Route::post('report/post', [IRK\ReportController::class, 'post']);
+//     Route::post('report/put', [IRK\ReportController::class, 'put']);
+//     Route::post('report/delete', [IRK\ReportController::class, 'delete']);
+//     //Profile
+//     Route::post('profile/get', [IRK\ProfileController::class, 'get']);
+//     Route::post('profile/post', [IRK\ProfileController::class, 'post']);
+//     Route::post('profile/put', [IRK\ProfileController::class, 'put']);
+//     Route::post('profile/delete', [IRK\ProfileController::class, 'delete']);
+//     //Version
+//     Route::post('version/get', [IRK\VersionController::class, 'get']);
+//     Route::post('version/post', [IRK\VersionController::class, 'post']);
+//     Route::post('version/put', [IRK\VersionController::class, 'put']);
+//     Route::post('version/delete', [IRK\VersionController::class, 'delete']);
+
+// });
+//-----------------------END NEW SCHEME-----------------------------------------
+
+
+
+
+//-----------------------START SCHEME VERSE-----------------------------------------
+//IRK Endpoint
 Route::group([
-	'prefix' => 'v1/{slug}', 
-	'where' => [
-		'slug' => 'dev|stag|live'
-	],
-	'middleware' => 'cors'
+    'prefix' => 'v{x}/{slug}',
+    'where' => [
+        'slug' => 'dev|stag|live',
+        'x' => '[1-9]+'
+    ],
+    'middleware' => 'cors'
 ], function () {
 
-    //Ceritakita
-    Route::post('ceritakita/get',[IRK\CeritakitaController::class, 'get']);
-    Route::post('ceritakita/post',[IRK\CeritakitaController::class, 'post']);
-    Route::post('ceritakita/put',[IRK\CeritakitaController::class, 'put']);
-    Route::post('ceritakita/delete',[IRK\CeritakitaController::class, 'delete']);
-    //Curhatku
-    Route::post('curhatku/get',[IRK\CurhatkuController::class, 'get']);
-    Route::post('curhatku/post',[IRK\CurhatkuController::class, 'post']);
-    Route::post('curhatku/put',[IRK\CurhatkuController::class, 'put']);
-    Route::post('curhatku/delete',[IRK\CurhatkuController::class, 'delete']);
-    //Motivasi
-    Route::post('motivasi/get',[IRK\MotivasiController::class, 'get']);
-    Route::post('motivasi/post',[IRK\MotivasiController::class, 'post']);
-    Route::post('motivasi/put',[IRK\MotivasiController::class, 'put']);
-    Route::post('motivasi/delete',[IRK\MotivasiController::class, 'delete']);
-    //Ideaku
-    Route::post('ideaku/get',[IRK\IdeakuController::class, 'get']);
-    Route::post('ideaku/post',[IRK\IdeakuController::class, 'post']);
-    Route::post('ideaku/put',[IRK\IdeakuController::class, 'put']);
-    Route::post('ideaku/delete',[IRK\IdeakuController::class, 'delete']);
-    //Comment
-    Route::post('comment/get',[IRK\CommentController::class, 'get']);
-    Route::post('comment/post',[IRK\CommentController::class, 'post']);
-    Route::post('comment/put',[IRK\CommentController::class, 'put']);
-    Route::post('comment/delete',[IRK\CommentController::class, 'delete']);
-    //Like
-    Route::post('like/get',[IRK\LikeController::class, 'get']);
-    Route::post('like/post',[IRK\LikeController::class, 'post']);
-    Route::post('like/put',[IRK\LikeController::class, 'put']);
-    Route::post('like/delete',[IRK\LikeController::class, 'delete']);
-    //Report
-    Route::post('report/get',[IRK\ReportController::class, 'get']);
-    Route::post('report/post',[IRK\ReportController::class, 'post']);
-    Route::post('report/put',[IRK\ReportController::class, 'put']);
-    Route::post('report/delete',[IRK\ReportController::class, 'delete']);
-    //Profile
-    Route::post('profile/get',[IRK\ProfileController::class, 'get']);
-    Route::post('profile/post',[IRK\ProfileController::class, 'post']);
-    Route::post('profile/put',[IRK\ProfileController::class, 'put']);
-    Route::post('profile/delete',[IRK\ProfileController::class, 'delete']);
-    //Version
-    Route::post('version/get',[IRK\VersionController::class, 'get']);
-    Route::post('version/post',[IRK\VersionController::class, 'post']);
-    Route::post('version/put',[IRK\VersionController::class, 'put']);
-    Route::post('version/delete',[IRK\VersionController::class, 'delete']);
+    //Version Endpoint
+    Route::group(['prefix' => 'version'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\VersionController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\VersionController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\VersionController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\VersionController")->delete(request());
+        });
+    });
 
+    //Ceritakita Endpoint
+    Route::group(['prefix' => 'ceritakita'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CeritakitaController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CeritakitaController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CeritakitaController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CeritakitaController")->delete(request());
+        });
+    });
+
+    //Curhatku Endpoint
+    Route::group(['prefix' => 'curhatku'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CurhatkuController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CurhatkuController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CurhatkuController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CurhatkuController")->delete(request());
+        });
+    });
+
+    //Motivasi Endpoint
+    Route::group(['prefix' => 'motivasi'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\MotivasiController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\MotivasiController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\MotivasiController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\MotivasiController")->delete(request());
+        });
+    });
+
+    //Ideaku Endpoint
+    Route::group(['prefix' => 'ideaku'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\IdeakuController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\IdeakuController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\IdeakuController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\IdeakuController")->delete(request());
+        });
+    });
+
+    //Comment Endpoint
+    Route::group(['prefix' => 'comment'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CommentController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CommentController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CommentController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CommentController")->delete(request());
+        });
+    });
+
+    //Like Endpoint
+    Route::group(['prefix' => 'like'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\LikeController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\LikeController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\LikeController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\LikeController")->delete(request());
+        });
+    });
+
+    //Report Endpoint
+    Route::group(['prefix' => 'report'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\ReportController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\ReportController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\ReportController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\ReportController")->delete(request());
+        });
+    });
+
+    //Profile Endpoint
+    Route::group(['prefix' => 'profile'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\ProfileController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\ProfileController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\ProfileController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\ProfileController")->delete(request());
+        });
+    });
 });
+//-----------------------END SCHEME VERSE-----------------------------------------
