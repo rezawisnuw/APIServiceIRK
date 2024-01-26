@@ -28,17 +28,17 @@ class IRKHelper
         if ($slug == 'dev') {
             $setting['authorize'] = 'Authorization-dev';
             $setting['config'] = config('app.URL_DEV');
-            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_V1_DEV'));
+            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_V' . $this->request->route('x') . '_DEV'));
             $setting['path'] = 'Dev';
         } else if ($slug == 'stag') {
             $setting['authorize'] = 'Authorization-stag';
             $setting['config'] = config('app.URL_STAG');
-            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_V1_STAG'));
+            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_V' . $this->request->route('x') . '_STAG'));
             $setting['path'] = 'Stag';
         } else if ($slug == 'live') {
             $setting['authorize'] = 'Authorization';
             $setting['config'] = config('app.URL_LIVE');
-            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_V1'));
+            $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_V' . $this->request->route('x') . ''));
             $setting['path'] = 'Live';
         } else {
             $response = collect([
@@ -134,8 +134,7 @@ class IRKHelper
             'https://ai.hrindomaret.com/get_recommendation',
             [
                 RequestOptions::JSON => $postBody
-            ],
-            ['Content-Type' => 'application/json']
+            ]
         );
         $body = $response->getBody();
         $result = json_decode($body);

@@ -26,10 +26,11 @@ class ReportModel extends Model
 
     public function showDataReportTicket($request)
     {
-        try {
-            $idticket = $request['idticket'];
-            $userid = $request['userid'];
+        $idticket = $request['idticket'];
+        $userid = $request['userid'];
 
+        try {
+            $data = [];
             $data = $this->connection->select("select * from public_v2.showreportticket(?,?)", [$idticket, $userid]);
 
             if (is_array($data)) {
@@ -57,10 +58,11 @@ class ReportModel extends Model
 
     public function showDataReportComment($request)
     {
-        try {
-            $idcomment = $request['idcomment'];
-            $userid = $request['userid'];
+        $idcomment = $request['idcomment'];
+        $userid = $request['userid'];
 
+        try {
+            $data = [];
             $data = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$idcomment, $userid]);
 
             if (is_array($data)) {

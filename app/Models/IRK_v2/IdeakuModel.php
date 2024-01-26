@@ -31,6 +31,7 @@ class IdeakuModel extends Model
         $userid = $request['userid'];
 
         try {
+            $data = [];
             $data = $this->connection->select("select * from public_v2.showideakulist(?,?)", [$userid, $page]);
 
             if (is_array($data)) {
@@ -73,6 +74,7 @@ class IdeakuModel extends Model
         $idticket = $request['idticket'];
 
         try {
+            $data = [];
             $data = $this->connection->select("select * from public_v2.showideakudetail(?,?)", [$userid, $idticket]);
 
             if (is_array($data)) {
@@ -113,6 +115,7 @@ class IdeakuModel extends Model
     {
 
         try {
+            $data = [];
             $data = $this->connection
                 ->table('CeritaKita')
                 ->select(DB::raw('count(*) as ttldataideaku'))

@@ -30,7 +30,7 @@ class CommentModel extends Model
         $userid = $request['userid'];
 
         try {
-
+            $data = [];
             $data = $this->connection->select("select * from public_v2.showcomment(?,?)", [$idticket, $userid]);
 
             if (is_array($data)) {

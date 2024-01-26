@@ -30,6 +30,7 @@ class VersionModel extends Model
         $ostype = $request['os_type'];
 
         try {
+            $data = [];
             $data = $this->connection
                 ->table('AppVersion')
                 ->select('os_type', 'version_code', 'version_name')

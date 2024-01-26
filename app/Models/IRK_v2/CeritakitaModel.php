@@ -31,6 +31,7 @@ class CeritakitaModel extends Model
         $userid = $request['userid'];
 
         try {
+            $data = [];
             $data = $this->connection->select("select * from public_v2.showceritakitalist(?,?)", [$userid, $page]);
 
             if (is_array($data)) {
@@ -71,6 +72,7 @@ class CeritakitaModel extends Model
     {
 
         try {
+            $data = [];
             $data = $this->connection
                 ->table('CeritaKita')
                 ->select(DB::raw('count(*) as ttldataceritakita'))
@@ -114,6 +116,7 @@ class CeritakitaModel extends Model
         $userstatus = $request['userstatus'];
 
         try {
+            $data = [];
             $data = $this->connection->select("select * from public_v2.showceritakitadetail(?,?,?,?,?,?,?,?,?)", [$userid, $page, $tag, $periode1, $periode2, $report, $content, $follow, $userstatus]);
 
             if (is_array($data)) {

@@ -30,6 +30,7 @@ class ProfileModel extends Model
         $userid = $request['userid'];
 
         try {
+            $data = [];
             $data = $this->connection
                 ->table('UserStatus')
                 ->where('nik', '=', $userid)
@@ -108,6 +109,7 @@ class ProfileModel extends Model
         $iddepartemen = $request['iddepartemen'];
 
         try {
+            $data = [];
             $data = $this->connection->select("select * from public_v2.showuserstatus(?,?,?,?,?,?,?,?,?)",
                 [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $status, $kelamin, $periode1, $periode2]);
 
