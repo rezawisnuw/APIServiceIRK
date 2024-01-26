@@ -137,7 +137,7 @@ class ReportModel extends Model
         $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
 
         try {
-            $data = $this->connection->insert("CALL public.inputreportticket(?,?,?,?,?)", [$nik, $report, $idticket, $tag, $alias]);
+            $data = $this->connection->insert("CALL public.inputreportticket(?,?,?,?,?,?)", [$nik, $report, $idticket, $tag, $alias, $platform]);
 
             if ($data) {
 
@@ -237,7 +237,7 @@ class ReportModel extends Model
         $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
 
         try {
-            $data = $this->connection->insert("CALL public.inputreportcomment(?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias]);
+            $data = $this->connection->insert("CALL public.inputreportcomment(?,?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias, $platform]);
 
             if ($data) {
 

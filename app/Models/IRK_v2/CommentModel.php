@@ -108,7 +108,7 @@ class CommentModel extends Model
 
         try {
 
-            $data = $this->connection->insert("CALL public.inputcomment(?,?,?,?,?)", [$nik, $comment, $idticket, $alias, $tag]);
+            $data = $this->connection->insert("CALL public.inputcomment(?,?,?,?,?,?)", [$nik, $comment, $idticket, $alias, $tag, $platform]);
 
             if ($data) {
 
@@ -208,7 +208,7 @@ class CommentModel extends Model
         $parentreply = $request['parentreply'];
 
         try {
-            $data = $this->connection->insert("CALL public.inputreplycomment(?,?,?,?,?)", [$nik, $comment, $idreply, $alias, $parentreply]);
+            $data = $this->connection->insert("CALL public.inputreplycomment(?,?,?,?,?,?)", [$nik, $comment, $idreply, $alias, $parentreply, $platform]);
 
             if ($data) {
                 $target = $this->connection

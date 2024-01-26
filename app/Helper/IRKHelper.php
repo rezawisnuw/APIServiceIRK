@@ -123,4 +123,23 @@ class IRKHelper
         return $result;
     }
 
+    public function RecommenderSystem($userid, $page)
+    {
+        $result = '';
+        $client = new Client();
+        $postBody['nik'] = $userid;
+        $postBody['page'] = $page;
+
+        $response = $client->post(
+            'https://ai.hrindomaret.com/get_recommendation',
+            [
+                RequestOptions::JSON => $postBody
+            ],
+            ['Content-Type' => 'application/json']
+        );
+        $body = $response->getBody();
+        $result = json_decode($body);
+
+        return $result;
+    }
 }

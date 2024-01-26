@@ -44,6 +44,9 @@ class CeritakitaController extends Controller
                 case 3:
                     $result = $this->model->showDataCeritakitaSub($formbody);
                     break;
+                case 4:
+                    $result = $this->model->showRekomendasiCeritakita($formbody);
+                    break;
                 default:
                     $result = collect([
                         'status' => $this->status,

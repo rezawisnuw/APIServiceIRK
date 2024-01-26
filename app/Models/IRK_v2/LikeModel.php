@@ -107,7 +107,7 @@ class LikeModel extends Model
         $userlike = $request['userlike'];
 
         try {
-            $data = $this->connection->insert("CALL public.inputlike(?,?,?,?,?)", [$nik, $idticket, $tag, $alias, $userlike]);
+            $data = $this->connection->insert("CALL public.inputlike(?,?,?,?,?,?)", [$nik, $idticket, $tag, $alias, $userlike, $platform]);
 
             if ($data) {
 

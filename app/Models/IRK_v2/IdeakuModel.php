@@ -145,6 +145,14 @@ class IdeakuModel extends Model
 
     public function inputDataIdeaku($request)
     {
+        $activity = $this->connection
+            ->table('UserStatus')
+            ->select('platforms')
+            ->where('nik', '=', $request->nik)
+            ->orderBy('log', 'desc')
+            ->take(1)
+            ->get()
+            ->all();
 
         $nik = $request->nik;
         $caption = $request->caption;
@@ -152,6 +160,7 @@ class IdeakuModel extends Model
         $alias = base64_encode(microtime() . $request->nik);
         $gambar = isset($request->gambar) ? $request->gambar : '';
         $tag = 'ideaku'; //$request->tag;
+        $platform = $activity->platforms;
 
         try {
             $idimg = substr($alias, 3, 8);
@@ -170,7 +179,7 @@ class IdeakuModel extends Model
 
                     $imgextension = $gambar->extension();
 
-                    $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag]);
+                    $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag, $platform]);
 
                     if ($data) {
                         $imgpath = $this->path . '/Ceritakita/Ideaku/' . $idimg . '.' . $imgextension;
@@ -185,7 +194,7 @@ class IdeakuModel extends Model
                     }
                 }
             } else {
-                $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag]);
+                $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag, $platform]);
 
                 if ($data) {
                     $imgpath = $this->path . '/Ceritakita/Ideaku/' . $idimg . '.';

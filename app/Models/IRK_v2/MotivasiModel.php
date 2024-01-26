@@ -177,12 +177,23 @@ class MotivasiModel extends Model
             }
         }
 
+        $activity = $this->connection
+            ->table('UserStatus')
+            ->select('platforms')
+            ->where('nik', '=', $request->nik)
+            ->orderBy('log', 'desc')
+            ->take(1)
+            ->get()
+            ->all();
+
         $nik = $request->nik;
         $caption = $request->caption;
         $deskripsi = $request->deskripsi;
         $alias = str_contains($level, 'Admin') ? $level : base64_encode(microtime() . $request->nik);
         $gambar = isset($request->gambar) ? $request->gambar : '';
         $tag = 'motivasi'; //$request->tag;
+        $platform = $activity->platforms;
+
 
         try {
             $idimg = str_contains($alias, 'Admin') ? substr(base64_encode(microtime() . $request->nik), 3, 8) : substr($alias, 3, 8);
@@ -201,7 +212,7 @@ class MotivasiModel extends Model
 
                     $imgextension = $gambar->extension();
 
-                    $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag]);
+                    $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag, $platform]);
 
                     if ($data) {
                         $imgpath = $this->path . '/Ceritakita/Motivasi/' . $idimg . '.' . $imgextension;
@@ -216,7 +227,7 @@ class MotivasiModel extends Model
                     }
                 }
             } else {
-                $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag]);
+                $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag, $platform]);
 
                 if ($data) {
                     $imgpath = $this->path . '/Ceritakita/Motivasi/' . $idimg . '.';
