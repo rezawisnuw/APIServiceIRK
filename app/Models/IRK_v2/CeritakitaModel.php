@@ -74,7 +74,7 @@ class CeritakitaModel extends Model
         try {
             $data = [];
             $data = $this->connection
-                ->table('CeritaKita')
+                ->table('public_v2.CeritaKita')
                 ->select(DB::raw('count(*) as ttldataceritakita'))
                 ->get()
                 ->all();
@@ -161,7 +161,7 @@ class CeritakitaModel extends Model
         $tag = $request['tag'];
 
         try {
-            $data = $this->connection->insert("CALL public.editceritakita(?,?,?)", [$nik, $idticket, $tag]);
+            $data = $this->connection->insert("CALL public_v2.editceritakita(?,?,?)", [$nik, $idticket, $tag]);
 
             if ($data) {
                 $this->status = 'Success';

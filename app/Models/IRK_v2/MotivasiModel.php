@@ -117,7 +117,7 @@ class MotivasiModel extends Model
         try {
             $data = [];
             $data = $this->connection
-                ->table('CeritaKita')
+                ->table('public_v2.CeritaKita')
                 ->select(DB::raw('count(*) as ttldatamotivasi'))
                 ->where('tag', '=', 'motivasi')
                 ->get()
@@ -181,7 +181,7 @@ class MotivasiModel extends Model
         }
 
         $activity = $this->connection
-            ->table('UserStatus')
+            ->table('public_v2.UserStatus')
             ->select('platforms')
             ->where('nik', '=', $request->nik)
             ->orderBy('log', 'desc')
@@ -215,7 +215,7 @@ class MotivasiModel extends Model
 
                     $imgextension = $gambar->extension();
 
-                    $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag, $platform]);
+                    $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag, $platform]);
 
                     if ($data) {
                         $imgpath = $this->path . '/Ceritakita/Motivasi/' . $idimg . '.' . $imgextension;
@@ -230,7 +230,7 @@ class MotivasiModel extends Model
                     }
                 }
             } else {
-                $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag, $platform]);
+                $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag, $platform]);
 
                 if ($data) {
                     $imgpath = $this->path . '/Ceritakita/Motivasi/' . $idimg . '.';

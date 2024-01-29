@@ -86,7 +86,7 @@ class LikeModel extends Model
                 }
 
                 $activity = $this->connection
-                    ->table('UserStatus')
+                    ->table('public_v2.UserStatus')
                     ->select('platforms')
                     ->where('nik', '=', $request['nik'])
                     ->orderBy('log', 'desc')
@@ -107,13 +107,13 @@ class LikeModel extends Model
         $userlike = $request['userlike'];
 
         try {
-            $data = $this->connection->insert("CALL public.inputlike(?,?,?,?,?,?)", [$nik, $idticket, $tag, $alias, $userlike, $platform]);
+            $data = $this->connection->insert("CALL public_v2.inputlike(?,?,?,?,?,?)", [$nik, $idticket, $tag, $alias, $userlike, $platform]);
 
             if ($data) {
 
 
                 $target = $this->connection
-                    ->table('CeritaKita')
+                    ->table('public_v2.CeritaKita')
                     ->select('CeritaKita.employee AS employee', 'CeritaKita.tag AS tag', 'Likes.like AS like')
                     ->leftJoin('Likes', 'Likes.id_ticket', '=', 'CeritaKita.id_ticket')
                     ->where('Likes.id_ticket', '=', $idticket)

@@ -39,7 +39,10 @@ class ProfileController extends Controller
                     $result = $this->model->showDataProfile($formbody);
                     break;
                 case 2:
-                    $result = $this->model->showDataProfileSub($formbody);
+                    $result = $this->model->showDataProfileSubReport($formbody);
+                    break;
+                case 2:
+                    $result = $this->model->showDataProfileSubUser($formbody);
                     break;
                 default:
                     $result = collect([
@@ -92,7 +95,32 @@ class ProfileController extends Controller
 
     public function put(Request $request)
     {
+        $formbody = $request->data;
+        $codekey = null;
 
+        try {
+
+            switch ($codekey = $formbody['code']) {
+                case 1:
+                    $result = $this->model->editDataUserStatusProfile($formbody);
+                    break;
+                default:
+                    $result = collect([
+                        'status' => $this->status,
+                        'data' => $codekey,
+                        'message' => $this->message
+                    ]);
+            }
+
+        } catch (\Throwable $e) {
+            $result = collect([
+                'status' => 'Error',
+                'data' => null,
+                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage() . ' On Switch Case = ' . $codekey
+            ]);
+        }
+
+        return response()->json($result);
     }
 
     public function delete(Request $request)

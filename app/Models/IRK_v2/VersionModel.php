@@ -32,7 +32,7 @@ class VersionModel extends Model
         try {
             $data = [];
             $data = $this->connection
-                ->table('AppVersion')
+                ->table('public_v2.AppVersion')
                 ->select('os_type', 'version_code', 'version_name')
                 ->where('os_type', '=', $ostype)
                 ->get()

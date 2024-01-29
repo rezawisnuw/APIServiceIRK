@@ -117,7 +117,7 @@ class IdeakuModel extends Model
         try {
             $data = [];
             $data = $this->connection
-                ->table('CeritaKita')
+                ->table('public_v2.CeritaKita')
                 ->select(DB::raw('count(*) as ttldataideaku'))
                 ->where('tag', '=', 'ideaku')
                 ->get()
@@ -149,7 +149,7 @@ class IdeakuModel extends Model
     public function inputDataIdeaku($request)
     {
         $activity = $this->connection
-            ->table('UserStatus')
+            ->table('public_v2.UserStatus')
             ->select('platforms')
             ->where('nik', '=', $request->nik)
             ->orderBy('log', 'desc')
@@ -182,7 +182,7 @@ class IdeakuModel extends Model
 
                     $imgextension = $gambar->extension();
 
-                    $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag, $platform]);
+                    $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag, $platform]);
 
                     if ($data) {
                         $imgpath = $this->path . '/Ceritakita/Ideaku/' . $idimg . '.' . $imgextension;
@@ -197,7 +197,7 @@ class IdeakuModel extends Model
                     }
                 }
             } else {
-                $data = $this->connection->insert("CALL public.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag, $platform]);
+                $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag, $platform]);
 
                 if ($data) {
                     $imgpath = $this->path . '/Ceritakita/Ideaku/' . $idimg . '.';

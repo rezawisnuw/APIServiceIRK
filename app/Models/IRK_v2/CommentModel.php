@@ -86,7 +86,7 @@ class CommentModel extends Model
                 }
 
                 $activity = $this->connection
-                    ->table('UserStatus')
+                    ->table('public_v2.UserStatus')
                     ->select('platforms')
                     ->where('nik', '=', $request['nik'])
                     ->orderBy('log', 'desc')
@@ -108,12 +108,12 @@ class CommentModel extends Model
 
         try {
 
-            $data = $this->connection->insert("CALL public.inputcomment(?,?,?,?,?,?)", [$nik, $comment, $idticket, $alias, $tag, $platform]);
+            $data = $this->connection->insert("CALL public_v2.inputcomment(?,?,?,?,?,?)", [$nik, $comment, $idticket, $alias, $tag, $platform]);
 
             if ($data) {
 
                 $target = $this->connection
-                    ->table('CeritaKita')
+                    ->table('public_v2.CeritaKita')
                     ->select('employee', 'tag')
                     ->where('id_ticket', '=', $idticket)
                     ->get()[0];
@@ -187,7 +187,7 @@ class CommentModel extends Model
                 }
 
                 $activity = $this->connection
-                    ->table('UserStatus')
+                    ->table('public_v2.UserStatus')
                     ->select('platforms')
                     ->where('nik', '=', $request['nik'])
                     ->orderBy('log', 'desc')
@@ -208,11 +208,11 @@ class CommentModel extends Model
         $parentreply = $request['parentreply'];
 
         try {
-            $data = $this->connection->insert("CALL public.inputreplycomment(?,?,?,?,?,?)", [$nik, $comment, $idreply, $alias, $parentreply, $platform]);
+            $data = $this->connection->insert("CALL public_v2.inputreplycomment(?,?,?,?,?,?)", [$nik, $comment, $idreply, $alias, $parentreply, $platform]);
 
             if ($data) {
                 $target = $this->connection
-                    ->table('Comment')
+                    ->table('public_v2.Comment')
                     ->select('tag', 'nik_karyawan', 'id_ticket')
                     ->where($parentreply == 0 ? 'id_comment' : 'id_reply_comment', '=', $idreply)
                     ->get()[0];
@@ -262,7 +262,7 @@ class CommentModel extends Model
         $tag = $request['tag'];
 
         try {
-            $data = $this->connection->insert("CALL public.editcomment(?,?,?)", [$nik, $idcomment, $tag]);
+            $data = $this->connection->insert("CALL public_v2.editcomment(?,?,?)", [$nik, $idcomment, $tag]);
 
             if ($data) {
                 $this->status = 'Success';
@@ -294,7 +294,7 @@ class CommentModel extends Model
         $idreplycomment = $request['idreplycomment'];
 
         try {
-            $data = $this->connection->insert("CALL public.editreplycomment(?,?)", [$nik, $idreplycomment]);
+            $data = $this->connection->insert("CALL public_v2.editreplycomment(?,?)", [$nik, $idreplycomment]);
 
             if ($data) {
                 $this->status = 'Success';

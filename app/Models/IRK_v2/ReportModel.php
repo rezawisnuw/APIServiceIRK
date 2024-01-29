@@ -118,7 +118,7 @@ class ReportModel extends Model
                 }
 
                 $activity = $this->connection
-                    ->table('UserStatus')
+                    ->table('public_v2.UserStatus')
                     ->select('platforms')
                     ->where('nik', '=', $request['nik'])
                     ->orderBy('log', 'desc')
@@ -139,12 +139,12 @@ class ReportModel extends Model
         $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
 
         try {
-            $data = $this->connection->insert("CALL public.inputreportticket(?,?,?,?,?,?)", [$nik, $report, $idticket, $tag, $alias, $platform]);
+            $data = $this->connection->insert("CALL public_v2.inputreportticket(?,?,?,?,?,?)", [$nik, $report, $idticket, $tag, $alias, $platform]);
 
             if ($data) {
 
                 $target = $this->connection
-                    ->table('CeritaKita')
+                    ->table('public_v2.CeritaKita')
                     ->select('employee', 'tag')
                     ->where('id_ticket', '=', $idticket)
                     ->get()[0];
@@ -218,7 +218,7 @@ class ReportModel extends Model
                 }
 
                 $activity = $this->connection
-                    ->table('UserStatus')
+                    ->table('public_v2.UserStatus')
                     ->select('platforms')
                     ->where('nik', '=', $request['nik'])
                     ->orderBy('log', 'desc')
@@ -239,12 +239,12 @@ class ReportModel extends Model
         $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
 
         try {
-            $data = $this->connection->insert("CALL public.inputreportcomment(?,?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias, $platform]);
+            $data = $this->connection->insert("CALL public_v2.inputreportcomment(?,?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias, $platform]);
 
             if ($data) {
 
                 $target = $this->connection
-                    ->table('Comment')
+                    ->table('public_v2.Comment')
                     ->select('nik_karyawan', 'tag', 'id_ticket')
                     ->where('id_comment', '=', $idcomment)
                     ->get()[0];
