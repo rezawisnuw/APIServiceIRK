@@ -41,7 +41,7 @@ class ProfileController extends Controller
                 case 2:
                     $result = $this->model->showDataProfileSubReport($formbody);
                     break;
-                case 2:
+                case 3:
                     $result = $this->model->showDataProfileSubUser($formbody);
                     break;
                 default:
