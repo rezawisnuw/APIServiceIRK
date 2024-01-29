@@ -214,37 +214,6 @@ class ProfileModel extends Model
             $data = $this->connection->select("select * from public_v2.showuserstatusprofile(?,?,?,?,?,?)",
                 [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $status]);
 
-            $dataaktif = array_filter($data, function ($item) {
-                return $item->akun == 'Active';
-            });
-            $dataterbatas = array_filter($data, function ($item) {
-                return $item->akun == 'Inactive';
-            });
-
-            for ($index = 0; $index < count($data); $index++) {
-                $data[$index]->aktifcurhatku = array_sum(array_column($dataaktif, 'ttlcurhatku'));
-                $data[$index]->aktifideaku = array_sum(array_column($dataaktif, 'ttlideaku'));
-                $data[$index]->aktifceritaku = array_sum(array_column($dataaktif, 'ttlceritaku'));
-                $data[$index]->aktiflike = array_sum(array_column($dataaktif, 'ttllike'));
-                $data[$index]->aktifcomment = array_sum(array_column($dataaktif, 'ttlcomment'));
-                $data[$index]->aktifreport = array_sum(array_column($dataaktif, 'ttlreport'));
-                $data[$index]->aktifremove = array_sum(array_column($dataaktif, 'ttlremove'));
-                $data[$index]->aktifberilike = array_sum(array_column($dataaktif, 'rsplike'));
-                $data[$index]->aktifbericomment = array_sum(array_column($dataaktif, 'rspcomment'));
-                $data[$index]->aktifberireport = array_sum(array_column($dataaktif, 'rspreport'));
-
-                $data[$index]->terbatascurhatku = array_sum(array_column($dataterbatas, 'ttlcurhatku'));
-                $data[$index]->terbatasideaku = array_sum(array_column($dataterbatas, 'ttlideaku'));
-                $data[$index]->terbatasceritaku = array_sum(array_column($dataterbatas, 'ttlceritaku'));
-                $data[$index]->terbataslike = array_sum(array_column($dataterbatas, 'ttllike'));
-                $data[$index]->terbatascomment = array_sum(array_column($dataterbatas, 'ttlcomment'));
-                $data[$index]->terbatasreport = array_sum(array_column($dataterbatas, 'ttlreport'));
-                $data[$index]->terbatasremove = array_sum(array_column($dataterbatas, 'ttlremove'));
-                $data[$index]->terbatasberilike = array_sum(array_column($dataterbatas, 'rsplike'));
-                $data[$index]->terbatasbericomment = array_sum(array_column($dataterbatas, 'rspcomment'));
-                $data[$index]->terbatasberireport = array_sum(array_column($dataterbatas, 'rspreport'));
-            }
-
             if (is_array($data)) {
                 $this->status = 'Success';
                 $this->message = 'Data has been process';
