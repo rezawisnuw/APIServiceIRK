@@ -208,11 +208,12 @@ class ProfileModel extends Model
         $idunit = $request['idunit'];
         $idcabang = $request['idcabang'];
         $iddepartemen = $request['iddepartemen'];
+        $nik = $request['nik'];
 
         try {
             $data = [];
-            $data = $this->connection->select("select * from public_v2.showuserstatusprofile(?,?,?,?,?,?)",
-                [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $status]);
+            $data = $this->connection->select("select * from public_v2.showuserstatusprofile(?,?,?,?,?,?,?)",
+                [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $status, $nik]);
 
             if (is_array($data)) {
                 $this->status = 'Success';
