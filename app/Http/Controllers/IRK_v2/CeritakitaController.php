@@ -119,6 +119,9 @@ class CeritakitaController extends Controller
                 case 1:
                     $result = $this->model->editDataContentCeritakita($formbody);
                     break;
+                case 2:
+                    $result = $this->model->editDataResponseAdmin($formbody);
+                    break;
                 default:
                     $result = collect([
                         'status' => $this->status,
