@@ -68,7 +68,7 @@ class CurhatkuController extends Controller
     {
         $codekey = null;
 
-        $datadecode = json_decode($request->data[0]);
+        $datadecode = json_decode($request->data);
 
         if (isset($request->file)) {
             $filedecode = json_decode($request->file);

@@ -195,7 +195,7 @@ class MotivasiModel extends Model
         $alias = str_contains($level, 'Admin') ? $level : base64_encode(microtime() . $request->nik);
         $gambar = isset($request->gambar) ? $request->gambar : '';
         $tag = 'motivasi'; //$request->tag;
-        $platform = $activity->platforms;
+        $platform = $activity[0]->platforms;
 
 
         try {

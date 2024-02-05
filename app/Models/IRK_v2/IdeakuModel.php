@@ -163,7 +163,7 @@ class IdeakuModel extends Model
         $alias = base64_encode(microtime() . $request->nik);
         $gambar = isset($request->gambar) ? $request->gambar : '';
         $tag = 'ideaku'; //$request->tag;
-        $platform = $activity->platforms;
+        $platform = $activity[0]->platforms;
 
         try {
             $idimg = substr($alias, 3, 8);
