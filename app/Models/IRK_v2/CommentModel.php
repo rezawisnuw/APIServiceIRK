@@ -145,31 +145,31 @@ class CommentModel extends Model
 
             if ($data) {
 
-                $target = $this->connection
-                    ->table('public_v2.CeritaKita')
-                    ->select('employee', 'tag')
-                    ->where('id_ticket', '=', $idticket)
-                    ->get()[0];
+                // $target = $this->connection
+                //     ->table('public_v2.CeritaKita')
+                //     ->select('employee', 'tag')
+                //     ->where('id_ticket', '=', $idticket)
+                //     ->get()[0];
 
-                $target->idticket = ["idticket" => $idticket];
+                // $target->idticket = ["idticket" => $idticket];
 
-                $toJson = json_encode($target->idticket);
+                // $toJson = json_encode($target->idticket);
 
-                $toBase64 = base64_encode($toJson);
+                // $toBase64 = base64_encode($toJson);
 
-                $body['data'] = [
-                    'nik' => $target->employee,
-                    'apps' => 'Web Admin IRK',
-                    'nikLogin' => $nik,
-                    'shortMessage' => 'Comment ' . $target->tag,
-                    'longMessage' => 'Random alias mengomentari postingan anda',
-                    'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
-                ];
+                // $body['data'] = [
+                //     'nik' => $target->employee,
+                //     'apps' => 'Web Admin IRK',
+                //     'nikLogin' => $nik,
+                //     'shortMessage' => 'Comment ' . $target->tag,
+                //     'longMessage' => 'Random alias mengomentari postingan anda',
+                //     'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
+                // ];
 
-                $response = $this->helper->NotificationPortal($body);
+                // $response = $this->helper->NotificationPortal($body);
 
                 $this->status = 'Success';
-                $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
+                $this->message = 'firebase notification still on maintenance'; //$response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
                 $this->data = $data;
             } else {
                 $this->status;
@@ -241,32 +241,33 @@ class CommentModel extends Model
         $parentreply = $request['parentreply'];
 
         try {
+
             $data = $this->connection->insert("CALL public_v2.inputreplycomment(?,?,?,?,?,?)", [$nik, $comment, $idreply, $alias, $parentreply, $platform]);
 
             if ($data) {
-                $target = $this->connection
-                    ->table('public_v2.Comment')
-                    ->select('tag', 'nik_karyawan', 'id_ticket')
-                    ->where($parentreply == 0 ? 'id_comment' : 'id_reply_comment', '=', $idreply)
-                    ->get()[0];
+                // $target = $this->connection
+                //     ->table('public_v2.Comment')
+                //     ->select('tag', 'nik_karyawan', 'id_ticket')
+                //     ->where($parentreply == 0 ? 'id_comment' : 'id_reply_comment', '=', $idreply)
+                //     ->get()[0];
 
-                $toJson = json_encode($target->id_ticket);
+                // $toJson = json_encode($target->id_ticket);
 
-                $toBase64 = base64_encode($toJson);
+                // $toBase64 = base64_encode($toJson);
 
-                $body['data'] = [
-                    'nik' => $target->nik_karyawan,
-                    'apps' => 'Web Admin IRK',
-                    'nikLogin' => $nik,
-                    'shortMessage' => 'Reply Comment ' . $target->tag,
-                    'longMessage' => 'Random alias membalas komentar anda',
-                    'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
-                ];
+                // $body['data'] = [
+                //     'nik' => $target->nik_karyawan,
+                //     'apps' => 'Web Admin IRK',
+                //     'nikLogin' => $nik,
+                //     'shortMessage' => 'Reply Comment ' . $target->tag,
+                //     'longMessage' => 'Random alias membalas komentar anda',
+                //     'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
+                // ];
 
-                $response = $this->helper->NotificationPortal($body);
+                // $response = $this->helper->NotificationPortal($body);
 
                 $this->status = 'Success';
-                $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktifasi izin notifikasi pada browser anda terlebih dahulu';
+                $this->message = 'firebase notification still on maintenance'; //$response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktifasi izin notifikasi pada browser anda terlebih dahulu';
                 $this->data = $data;
             } else {
                 $this->status;
