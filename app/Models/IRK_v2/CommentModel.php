@@ -24,7 +24,7 @@ class CommentModel extends Model
         $this->path = $segment['path'];
     }
 
-    public function showDataCommentTotal($request)
+    public function showDataComment($request)
     {
         $idticket = $request['idticket'];
         $userid = $request['userid'];
@@ -32,6 +32,39 @@ class CommentModel extends Model
         try {
             $data = [];
             $data = $this->connection->select("select * from public_v2.showcomment(?,?)", [$idticket, $userid]);
+
+            if (is_array($data)) {
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
+            } else {
+                $this->status;
+                $this->message;
+                $this->data;
+            }
+
+        } catch (\Throwable $e) {
+            $this->status = 'Error';
+            $this->data = null;
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
+        }
+
+        return [
+            'status' => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
+        ];
+    }
+
+    public function showDataReplyComment($request)
+    {
+        $idcomment = $request['idcomment'];
+        $parentreply = $request['parentreply'];
+        $userid = $request['userid'];
+
+        try {
+            $data = [];
+            $data = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$idcomment, $parentreply, $userid]);
 
             if (is_array($data)) {
                 $this->status = 'Success';

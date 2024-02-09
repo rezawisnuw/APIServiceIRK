@@ -36,7 +36,10 @@ class CommentController extends Controller
 
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = $this->model->showDataCommentTotal($formbody);
+                    $result = $this->model->showDataComment($formbody);
+                    break;
+                case 2:
+                    $result = $this->model->showDataReplyComment($formbody);
                     break;
                 default:
                     $result = collect([

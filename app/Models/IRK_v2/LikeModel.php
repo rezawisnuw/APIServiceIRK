@@ -24,7 +24,7 @@ class LikeModel extends Model
         $this->path = $segment['path'];
     }
 
-    public function showDataLikeTotal($request)
+    public function showDataLike($request)
     {
         $idticket = $request['idticket'];
         $userid = $request['userid'];

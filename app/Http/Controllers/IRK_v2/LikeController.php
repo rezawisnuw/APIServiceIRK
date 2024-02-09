@@ -36,7 +36,7 @@ class LikeController extends Controller
 
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = $this->model->showDataLikeTotal($formbody);
+                    $result = $this->model->showDataLike($formbody);
                     break;
                 default:
                     $result = collect([
