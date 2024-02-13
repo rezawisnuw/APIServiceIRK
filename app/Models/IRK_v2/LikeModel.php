@@ -110,40 +110,42 @@ class LikeModel extends Model
             $data = $this->connection->insert("CALL public_v2.inputlike(?,?,?,?,?,?)", [$nik, $idticket, $tag, $alias, $userlike, $platform]);
 
             if ($data) {
-                // $target = $this->connection
-                //     ->table('public_v2.CeritaKita')
-                //     ->select('CeritaKita.employee AS employee', 'CeritaKita.tag AS tag', 'Likes.like AS like')
-                //     ->leftJoin('Likes', 'Likes.id_ticket', '=', 'CeritaKita.id_ticket')
-                //     ->where('Likes.id_ticket', '=', $idticket)
-                //     ->where('Likes.nik_karyawan', '=', $nik)
-                //     ->get()[0];
 
-                // $target->idticket = ["idticket" => $idticket];
 
-                // $toJson = json_encode($target->idticket);
+                $target = $this->connection
+                    ->table('public_v2.CeritaKita')
+                    ->select('CeritaKita.employee AS employee', 'CeritaKita.tag AS tag', 'Likes.like AS like')
+                    ->leftJoin('Likes', 'Likes.id_ticket', '=', 'CeritaKita.id_ticket')
+                    ->where('Likes.id_ticket', '=', $idticket)
+                    ->where('Likes.nik_karyawan', '=', $nik)
+                    ->get()[0];
 
-                // $toBase64 = base64_encode($toJson);
+                $target->idticket = ["idticket" => $idticket];
 
-                // if ($target->like == 1) {
-                //     $body['data'] = [
-                //         'nik' => $target->employee,
-                //         'apps' => 'Web Admin IRK',
-                //         'nikLogin' => $nik,
-                //         'shortMessage' => 'Like ' . $target->tag,
-                //         'longMessage' => 'Random alias menyukai postingan anda',
-                //         'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
-                //     ];
+                $toJson = json_encode($target->idticket);
 
-                //     $response = $this->helper->NotificationPortal($body);
+                $toBase64 = base64_encode($toJson);
 
-                $this->status = 'Success';
-                $this->message = 'firebase notification still on maintenance'; //$response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
-                $this->data = $data;
-                // } else {
-                //     $this->status = 'Success';
-                //     $this->message = 'Data has been process';
-                //     $this->data = $data;
-                // }
+                if ($target->like == 1) {
+                    $body['data'] = [
+                        'nik' => $target->employee,
+                        'apps' => 'Web Admin IRK',
+                        'nikLogin' => $nik,
+                        'shortMessage' => 'Like ' . $target->tag,
+                        'longMessage' => 'Random alias menyukai postingan anda',
+                        'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
+                    ];
+
+                    $response = $this->helper->NotificationPortal($body);
+
+                    $this->status = 'Success';
+                    $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
+                    $this->data = $data;
+                } else {
+                    $this->status = 'Success';
+                    $this->message = 'Data has been process';
+                    $this->data = $data;
+                }
             } else {
                 $this->status;
                 $this->message;

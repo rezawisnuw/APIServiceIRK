@@ -61,10 +61,10 @@ class MotivasiModel extends Model
                         $data[$index]->report_commentlist = [];
                         $data[$index]->report_comment = 'Tidak';
                     }
-                    if (count($this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment + 1, $userid])) > 0) {
-                        $data[$index]->comments[$comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment + 1, $userid]);
+                    if (count($this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment, $userid])) > 0) {
+                        $data[$index]->comments[$comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment, $userid]);
                         for ($child_comment = 0; $child_comment < count($data[$index]->comments[$comment]->child_comments); $child_comment++) {
-                            $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $child_comment + 1, $userid]);
+                            $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $child_comment, $userid]);
                             $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $userid]);
                             $data[$index]->comments[$comment]->report_comment = count($data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
                         }
@@ -133,10 +133,10 @@ class MotivasiModel extends Model
                         $data[$index]->report_commentlist = [];
                         $data[$index]->report_comment = 'Tidak';
                     }
-                    if (count($this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment + 1, $userid])) > 0) {
-                        $data[$index]->comments[$comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment + 1, $userid]);
+                    if (count($this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment, $userid])) > 0) {
+                        $data[$index]->comments[$comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment, $userid]);
                         for ($child_comment = 0; $child_comment < count($data[$index]->comments[$comment]->child_comments); $child_comment++) {
-                            $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $child_comment + 1, $userid]);
+                            $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $child_comment, $userid]);
                             $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $userid]);
                             $data[$index]->comments[$comment]->report_comment = count($data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
                         }
