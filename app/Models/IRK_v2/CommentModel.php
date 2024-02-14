@@ -254,7 +254,7 @@ class CommentModel extends Model
                 } else {
                     $temptarget = $this->connection
                         ->table('public_v2.ReplyComment')
-                        ->select('id_reply_comment', 'reply_id_comment', 'parent_comment')
+                        ->select('id_reply_comment', 'reply_to_id', 'parent_comment')
                         ->where('id_reply_comment', '=', $idreply)
                         ->where('parent_comment', '=', $parentreply - 1)
                         ->get()[0];
@@ -262,7 +262,7 @@ class CommentModel extends Model
                     $target = $this->connection
                         ->table('public_v2.Comment')
                         ->select('tag', 'nik_karyawan', 'id_ticket')
-                        ->where('id_comment', '=', $temptarget->reply_id_comment)
+                        ->where('id_comment', '=', $temptarget->reply_to_id)
                         ->get()[0];
                 }
 
