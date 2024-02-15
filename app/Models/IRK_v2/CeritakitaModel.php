@@ -64,9 +64,23 @@ class CeritakitaModel extends Model
                     if (count($this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment, $userid])) > 0) {
                         $data[$index]->comments[$comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment, $userid]);
                         for ($child_comment = 0; $child_comment < count($data[$index]->comments[$comment]->child_comments); $child_comment++) {
-                            $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $child_comment, $userid]);
-                            $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $userid]);
-                            $data[$index]->comments[$comment]->report_comment = count($data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
+                            if (count($this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $child_comment, $userid])) > 0) {
+                                $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $child_comment, $userid]);
+                                for ($child_comment_closed = 0; $child_comment_closed < count($data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments); $child_comment_closed++) {
+                                    $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments[$child_comment_closed]->child_comments = [];
+                                    $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments[$child_comment_closed]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments[$child_comment_closed]->id_comment, $userid]);
+                                    $data[$index]->comments[$comment]->report_comment = count($data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments[$child_comment_closed]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
+                                }
+                            } else {
+                                $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = [];
+                            }
+                            if (count($this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $userid])) > 0) {
+                                $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $userid]);
+                                $data[$index]->comments[$comment]->report_comment = 'Ya';
+                            } else {
+                                $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = [];
+                                $data[$index]->comments[$comment]->report_comment = 'Tidak';
+                            }
                         }
                     } else {
                         $data[$index]->comments[$comment]->child_comments = [];
@@ -179,9 +193,23 @@ class CeritakitaModel extends Model
                     if (count($this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment, $userid])) > 0) {
                         $data[$index]->comments[$comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment, $userid]);
                         for ($child_comment = 0; $child_comment < count($data[$index]->comments[$comment]->child_comments); $child_comment++) {
-                            $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $child_comment, $userid]);
-                            $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $userid]);
-                            $data[$index]->comments[$comment]->report_comment = count($data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
+                            if (count($this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $child_comment, $userid])) > 0) {
+                                $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $child_comment, $userid]);
+                                for ($child_comment_closed = 0; $child_comment_closed < count($data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments); $child_comment_closed++) {
+                                    $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments[$child_comment_closed]->child_comments = [];
+                                    $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments[$child_comment_closed]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments[$child_comment_closed]->id_comment, $userid]);
+                                    $data[$index]->comments[$comment]->report_comment = count($data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments[$child_comment_closed]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
+                                }
+                            } else {
+                                $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = [];
+                            }
+                            if (count($this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $userid])) > 0) {
+                                $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $userid]);
+                                $data[$index]->comments[$comment]->report_comment = 'Ya';
+                            } else {
+                                $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = [];
+                                $data[$index]->comments[$comment]->report_comment = 'Tidak';
+                            }
                         }
                     } else {
                         $data[$index]->comments[$comment]->child_comments = [];
@@ -304,15 +332,69 @@ class CeritakitaModel extends Model
             $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
         }
 
+        // for ($index = 0; $index < count($data); $index++) {
+        //     $data[$index]->comments = $this->connection->select("select * from public_v2.showcomment(?,?)", [$data[$index]->idticket, $userid]);
+        //     for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
+        //         $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
+        //         $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
+        //     }
+        //     $data[$index]->likes = $this->connection->select("select * from public_v2.showlike(?,?)", [$data[$index]->idticket, $userid]);
+        //     $data[$index]->report_ticketlist = $this->connection->select("select * from public_v2.showreportticket(?,?)", [$data[$index]->idticket, $userid]);
+        //     $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
+        // }
+
         for ($index = 0; $index < count($data); $index++) {
-            $data[$index]->comments = $this->connection->select("select * from public_v2.showcomment(?,?)", [$data[$index]->idticket, $userid]);
-            for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
-                $data[$index]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
+            if (count($this->connection->select("select * from public_v2.showcomment(?,?)", [$data[$index]->idticket, $userid])) > 0) {
+                $data[$index]->comments = $this->connection->select("select * from public_v2.showcomment(?,?)", [$data[$index]->idticket, $userid]);
+                for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
+                    if (count($this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid])) > 0) {
+                        $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->id_comment, $userid]);
+                        $data[$index]->report_comment = 'Ya';
+                    } else {
+                        $data[$index]->report_commentlist = [];
+                        $data[$index]->report_comment = 'Tidak';
+                    }
+                    if (count($this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment, $userid])) > 0) {
+                        $data[$index]->comments[$comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $comment, $userid]);
+                        for ($child_comment = 0; $child_comment < count($data[$index]->comments[$comment]->child_comments); $child_comment++) {
+                            if (count($this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $child_comment, $userid])) > 0) {
+                                $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $child_comment, $userid]);
+                                for ($child_comment_closed = 0; $child_comment_closed < count($data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments); $child_comment_closed++) {
+                                    $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments[$child_comment_closed]->child_comments = [];
+                                    $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments[$child_comment_closed]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments[$child_comment_closed]->id_comment, $userid]);
+                                    $data[$index]->comments[$comment]->report_comment = count($data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments[$child_comment_closed]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
+                                }
+                            } else {
+                                $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = [];
+                            }
+                            if (count($this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $userid])) > 0) {
+                                $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$data[$index]->comments[$comment]->child_comments[$child_comment]->id_comment, $userid]);
+                                $data[$index]->comments[$comment]->report_comment = 'Ya';
+                            } else {
+                                $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = [];
+                                $data[$index]->comments[$comment]->report_comment = 'Tidak';
+                            }
+                        }
+                    } else {
+                        $data[$index]->comments[$comment]->child_comments = [];
+                    }
+                }
+            } else {
+                $data[$index]->comments = [];
             }
-            $data[$index]->likes = $this->connection->select("select * from public_v2.showlike(?,?)", [$data[$index]->idticket, $userid]);
-            $data[$index]->report_ticketlist = $this->connection->select("select * from public_v2.showreportticket(?,?)", [$data[$index]->idticket, $userid]);
-            $data[$index]->report_ticket = count($data[$index]->report_ticketlist) > 0 ? 'Ya' : 'Tidak';
+            if (count($this->connection->select("select * from public_v2.showlike(?,?)", [$data[$index]->idticket, $userid])) > 0) {
+                $data[$index]->likes = $this->connection->select("select * from public_v2.showlike(?,?)", [$data[$index]->idticket, $userid]);
+            } else {
+                $data[$index]->likes = [];
+            }
+            if (count($this->connection->select("select * from public_v2.showreportticket(?,?)", [$data[$index]->idticket, $userid])) > 0) {
+                $data[$index]->report_ticketlist = $this->connection->select("select * from public_v2.showreportticket(?,?)", [$data[$index]->idticket, $userid]);
+                $data[$index]->report_ticket = 'Ya';
+            } else {
+                $data[$index]->report_ticketlist = [];
+                $data[$index]->report_ticket = 'Tidak';
+            }
+
         }
 
         return [
