@@ -239,10 +239,11 @@ class CommentModel extends Model
         $idreply = $request['idreply'];
         $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
         $parentreply = $request['parentreply'];
+        $idcomment = $request['idcomment'];
 
         try {
 
-            $data = $this->connection->insert("CALL public_v2.inputreplycomment(?,?,?,?,?,?)", [$nik, $comment, $idreply, $alias, $parentreply, $platform]);
+            $data = $this->connection->insert("CALL public_v2.inputreplycomment(?,?,?,?,?,?,?)", [$nik, $comment, $idreply, $idcomment, $alias, $parentreply, $platform]);
 
             if ($data) {
                 if ($parentreply == 0) {
@@ -252,17 +253,24 @@ class CommentModel extends Model
                         ->where('id_comment', '=', $idreply)
                         ->get()[0];
                 } else {
-                    $temptarget = $this->connection
-                        ->table('public_v2.ReplyComment')
-                        ->select('id_reply_comment', 'reply_to_id', 'parent_comment')
-                        ->where('id_reply_comment', '=', $idreply)
-                        ->where('parent_comment', '=', $parentreply - 1)
-                        ->get()[0];
+                    // $temptarget = $this->connection
+                    //     ->table('public_v2.ReplyComment')
+                    //     ->select('id_reply_comment', 'reply_to_id', 'parent_comment', 'id_parent_comment')
+                    //     ->where('id_reply_comment', '=', $idreply)
+                    //     ->where('parent_comment', '=', $parentreply - 1)
+                    //     ->where('reply_to_id', '=', $idcomment)
+                    //     ->get()[0];
+
+                    // $target = $this->connection
+                    //     ->table('public_v2.Comment')
+                    //     ->select('tag', 'nik_karyawan', 'id_ticket')
+                    //     ->where('id_comment', '=', $temptarget->reply_to_id)
+                    //     ->get()[0];
 
                     $target = $this->connection
                         ->table('public_v2.Comment')
                         ->select('tag', 'nik_karyawan', 'id_ticket')
-                        ->where('id_comment', '=', $temptarget->reply_to_id)
+                        ->where('id_comment', '=', $idcomment)
                         ->get()[0];
                 }
 
