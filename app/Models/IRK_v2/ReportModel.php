@@ -59,11 +59,12 @@ class ReportModel extends Model
     public function showDataReportComment($request)
     {
         $idcomment = $request['idcomment'];
+        $parentreply = $request['parentreply'];
         $userid = $request['userid'];
 
         try {
             $data = [];
-            $data = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$idcomment, $userid]);
+            $data = $this->connection->select("select * from public_v2.showreportcomment(?,?,?)", [$idcomment, $parentreply, $userid]);
 
             if (is_array($data)) {
                 $this->status = 'Success';
@@ -235,18 +236,21 @@ class ReportModel extends Model
         $nik = $request['nik'];
         $report = $request['report'];
         $idcomment = $request['idcomment'];
+        $idreply = $request['idreply'];
+        $idparent = $request['idparent'];
+        $parentreply = $request['parentreply'];
         $tag = $request['tag'];
         $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
 
         try {
-            $data = $this->connection->insert("CALL public_v2.inputreportcomment(?,?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias, $platform]);
+            $data = $this->connection->insert("CALL public_v2.inputreportcomment(?,?,?,?,?,?,?,?,?)", [$nik, $report, $idcomment, $idreply, $idparent, $parentreply, $tag, $alias, $platform]);
 
             if ($data) {
 
                 $target = $this->connection
                     ->table('public_v2.Comment')
                     ->select('nik_karyawan', 'tag', 'id_ticket')
-                    ->where('id_comment', '=', $idcomment)
+                    ->where('id_comment', '=', $parentreply == 0 ? $idcomment : $idparent)
                     ->get()[0];
 
                 $toJson = json_encode($target->idticket);

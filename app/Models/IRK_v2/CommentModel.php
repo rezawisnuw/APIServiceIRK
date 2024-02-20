@@ -59,12 +59,14 @@ class CommentModel extends Model
     public function showDataReplyComment($request)
     {
         $idcomment = $request['idcomment'];
+        //$idreply = $request['idreply'];
         $parentreply = $request['parentreply'];
         $userid = $request['userid'];
 
         try {
             $data = [];
             $data = $this->connection->select("select * from public_v2.showreplycomment(?,?,?)", [$idcomment, $parentreply, $userid]);
+            //$data = $this->connection->select("select * from public_v2.showreplycomment(?,?,?,?)", [$idcomment, $idreply, $parentreply, $userid]);
 
             if (is_array($data)) {
                 $this->status = 'Success';
@@ -349,10 +351,13 @@ class CommentModel extends Model
     {
 
         $nik = $request['nik'];
+        $idcomment = $request['idcomment'];
         $idreplycomment = $request['idreplycomment'];
+        $idreply = $request['idreply'];
+        $parentcomment = $request['parentcomment'];
 
         try {
-            $data = $this->connection->insert("CALL public_v2.editreplycomment(?,?)", [$nik, $idreplycomment]);
+            $data = $this->connection->insert("CALL public_v2.editreplycomment(?,?,?,?,?)", [$nik, $idcomment, $idreplycomment, $idreply, $parentcomment]);
 
             if ($data) {
                 $this->status = 'Success';
