@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Helper\IRKHelper;
 
-class IdeakuModel extends Model
+class CeritakuModel extends Model
 {
 
     private $status = 'Failed', $message = 'Data is cannot be process', $data = [];
@@ -25,14 +25,14 @@ class IdeakuModel extends Model
         $this->path = $segment['path'];
     }
 
-    public function showDataIdeaku($request)
+    public function showDataCeritaku($request)
     {
         $page = isset($request['page']) && !empty($request['page']) ? $request['page'] : 0;
         $userid = $request['userid'];
 
         try {
             $data = [];
-            $data = $this->connection->select("select * from public_v2.showideakulist(?,?)", [$userid, $page]);
+            $data = $this->connection->select("select * from public_v2.showceritakulist(?,?)", [$userid, $page]);
 
             if (is_array($data)) {
                 $this->status = $page != 0 ? 'Processing' : 'Success';
@@ -121,14 +121,14 @@ class IdeakuModel extends Model
         ];
     }
 
-    public function showDataIdeakuSingle($request)
+    public function showDataCeritakuSingle($request)
     {
         $userid = $request['userid'];
         $idticket = $request['idticket'];
 
         try {
             $data = [];
-            $data = $this->connection->select("select * from public_v2.showideakudetail(?,?)", [$userid, $idticket]);
+            $data = $this->connection->select("select * from public_v2.showceritakudetail(?,?)", [$userid, $idticket]);
 
             if (is_array($data)) {
                 $this->status = 'Processing';
@@ -217,22 +217,22 @@ class IdeakuModel extends Model
         ];
     }
 
-    public function showDataIdeakuTotal($request)
+    public function showDataCeritakuTotal($request)
     {
 
         try {
             $data = [];
             $data = $this->connection
                 ->table('public_v2.CeritaKita')
-                ->select(DB::raw('count(*) as ttldataideaku'))
-                ->where('tag', '=', 'ideaku')
+                ->select(DB::raw('count(*) as ttldataceritaku'))
+                ->where('tag', '=', 'ceritaku')
                 ->get()
                 ->all();
 
             if (is_array($data)) {
                 $this->status = 'Success';
                 $this->message = 'Data has been process';
-                $this->data = $data[0]->ttldataideaku;
+                $this->data = $data[0]->ttldataceritaku;
             } else {
                 $this->status;
                 $this->message;
@@ -252,7 +252,7 @@ class IdeakuModel extends Model
         ];
     }
 
-    public function inputDataIdeaku($request)
+    public function inputDataCeritaku($request)
     {
         $activity = $this->connection
             ->table('public_v2.UserStatus')
@@ -268,7 +268,7 @@ class IdeakuModel extends Model
         $deskripsi = $request->deskripsi;
         $alias = base64_encode(microtime() . $request->nik);
         $gambar = isset($request->gambar) ? $request->gambar : '';
-        $tag = 'ideaku'; //$request->tag;
+        $tag = 'ceritaku'; //$request->tag;
         $platform = $activity[0]->platforms;
 
         try {
@@ -291,7 +291,7 @@ class IdeakuModel extends Model
                     $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag, $platform]);
 
                     if ($data) {
-                        $imgpath = $this->path . '/Ceritakita/Ideaku/' . $idimg . '.' . $imgextension;
+                        $imgpath = $this->path . '/Ceritakita/Ceritaku/' . $idimg . '.' . $imgextension;
 
                         $this->status = 'Success';
                         $this->message = 'Data has been process';
@@ -306,7 +306,7 @@ class IdeakuModel extends Model
                 $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag, $platform]);
 
                 if ($data) {
-                    $imgpath = $this->path . '/Ceritakita/Ideaku/' . $idimg . '.';
+                    $imgpath = $this->path . '/Ceritakita/Ceritaku/' . $idimg . '.';
 
                     $this->status = 'Success';
                     $this->message = 'Data has been process';

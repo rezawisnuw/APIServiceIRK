@@ -329,6 +329,22 @@ Route::group([
         });
     });
 
+    //Ceritaku Endpoint
+    Route::group(['prefix' => 'ceritaku'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CeritakuController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CeritakuController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CeritakuController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CeritakuController")->delete(request());
+        });
+    });
+
     //Comment Endpoint
     Route::group(['prefix' => 'comment'], function () {
         Route::post('get', function ($x) {
@@ -390,6 +406,22 @@ Route::group([
         });
         Route::post('delete', function ($x) {
             return app("App\\Http\\Controllers\\IRK_v{$x}\\ProfileController")->delete(request());
+        });
+    });
+
+    //Faq Endpoint
+    Route::group(['prefix' => 'faq'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\FaqController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\FaqController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\FaqController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\FaqController")->delete(request());
         });
     });
 });
