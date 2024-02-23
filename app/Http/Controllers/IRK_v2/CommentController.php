@@ -41,6 +41,12 @@ class CommentController extends Controller
                 case 2:
                     $result = $this->model->showDataReplyComment($formbody);
                     break;
+                case 3:
+                    $result = $this->model->showDataNewComment($formbody);
+                    break;
+                case 4:
+                    $result = $this->model->showDataReplyNewComment($formbody);
+                    break;
                 default:
                     $result = collect([
                         'status' => $this->status,
@@ -74,6 +80,12 @@ class CommentController extends Controller
                 case 2:
                     $result = $this->model->inputDataReplyComment($formbody);
                     break;
+                case 3:
+                    $result = $this->model->inputDataNewComment($formbody);
+                    break;
+                case 4:
+                    $result = $this->model->inputDataReplyNewComment($formbody);
+                    break;
                 default:
                     $result = collect([
                         'status' => $this->status,
@@ -106,6 +118,12 @@ class CommentController extends Controller
                     break;
                 case 2:
                     $result = $this->model->editDataReplyComment($formbody);
+                    break;
+                case 3:
+                    $result = $this->model->editDataNewComment($formbody);
+                    break;
+                case 4:
+                    $result = $this->model->editDataReplyNewComment($formbody);
                     break;
                 default:
                     $result = collect([

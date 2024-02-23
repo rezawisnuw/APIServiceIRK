@@ -91,12 +91,14 @@ class ReportModel extends Model
 
     public function inputDataReportTicket($request)
     {
-        $param['list_sp'] = array([
-            'conn' => 'POR_DUMMY',
-            'payload' => ['nik' => $request['nik']],
-            'sp_name' => 'SP_GetAccessLevel',
-            'process_name' => 'GetAccessLevelResult'
-        ]);
+        $param['list_sp'] = array(
+            [
+                'conn' => 'POR_DUMMY',
+                'payload' => ['nik' => $request['nik']],
+                'sp_name' => 'SP_GetAccessLevel',
+                'process_name' => 'GetAccessLevelResult'
+            ]
+        );
 
         $response = $this->helper->SPExecutor($param);
 
@@ -191,12 +193,14 @@ class ReportModel extends Model
 
     public function inputDataReportComment($request)
     {
-        $param['list_sp'] = array([
-            'conn' => 'POR_DUMMY',
-            'payload' => ['nik' => $request['nik']],
-            'sp_name' => 'SP_GetAccessLevel',
-            'process_name' => 'GetAccessLevelResult'
-        ]);
+        $param['list_sp'] = array(
+            [
+                'conn' => 'POR_DUMMY',
+                'payload' => ['nik' => $request['nik']],
+                'sp_name' => 'SP_GetAccessLevel',
+                'process_name' => 'GetAccessLevelResult'
+            ]
+        );
 
         $response = $this->helper->SPExecutor($param);
 
@@ -236,21 +240,28 @@ class ReportModel extends Model
         $nik = $request['nik'];
         $report = $request['report'];
         $idcomment = $request['idcomment'];
-        $idreply = $request['idreply'];
-        $idparent = $request['idparent'];
+        // $idreply = $request['idreply'];
+        // $idparent = $request['idparent'];
         $parentreply = $request['parentreply'];
         $tag = $request['tag'];
         $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
 
         try {
-            $data = $this->connection->insert("CALL public_v2.inputreportcomment(?,?,?,?,?,?,?,?,?)", [$nik, $report, $idcomment, $idreply, $idparent, $parentreply, $tag, $alias, $platform]);
+            // $data = $this->connection->insert("CALL public_v2.inputreportcomment(?,?,?,?,?,?,?,?,?)", [$nik, $report, $idcomment, $idreply, $idparent, $parentreply, $tag, $alias, $platform]);
+            $data = $this->connection->insert("CALL public_v2.inputreportcomment(?,?,?,?,?,?,?)", [$nik, $report, $idcomment, $parentreply, $tag, $alias, $platform]);
 
             if ($data) {
+
+                // $target = $this->connection
+                //     ->table('public_v2.Comment')
+                //     ->select('nik_karyawan', 'tag', 'id_ticket')
+                //     ->where('id_comment', '=', $parentreply == 0 ? $idcomment : $idparent)
+                //     ->get()[0];
 
                 $target = $this->connection
                     ->table('public_v2.Comment')
                     ->select('nik_karyawan', 'tag', 'id_ticket')
-                    ->where('id_comment', '=', $parentreply == 0 ? $idcomment : $idparent)
+                    ->where('id_comment', '=', $idcomment)
                     ->get()[0];
 
                 $toJson = json_encode($target->idticket);

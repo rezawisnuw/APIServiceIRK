@@ -65,12 +65,14 @@ class ProfileModel extends Model
 
     public function showDataProfileSubReport($request)
     {
-        $param['list_sp'] = array([
-            'conn' => 'POR_DUMMY',
-            'payload' => ['nik' => $request['userid']],
-            'sp_name' => 'SP_GetAccessLevel',
-            'process_name' => 'GetAccessLevelResult'
-        ]);
+        $param['list_sp'] = array(
+            [
+                'conn' => 'POR_DUMMY',
+                'payload' => ['nik' => $request['userid']],
+                'sp_name' => 'SP_GetAccessLevel',
+                'process_name' => 'GetAccessLevelResult'
+            ]
+        );
 
         $response = $this->helper->SPExecutor($param);
 
@@ -110,8 +112,10 @@ class ProfileModel extends Model
 
         try {
             $data = [];
-            $data = $this->connection->select("select * from public_v2.showuserstatusreport(?,?,?,?,?,?,?,?,?)",
-                [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $status, $kelamin, $periode1, $periode2]);
+            $data = $this->connection->select(
+                "select * from public_v2.showuserstatusreport(?,?,?,?,?,?,?,?,?)",
+                [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $status, $kelamin, $periode1, $periode2]
+            );
 
             $dataaktif = array_filter($data, function ($item) {
                 return $item->akun == 'Active';
@@ -126,6 +130,7 @@ class ProfileModel extends Model
                 $data[$index]->aktifceritaku = array_sum(array_column($dataaktif, 'ttlceritaku'));
                 $data[$index]->aktiflike = array_sum(array_column($dataaktif, 'ttllike'));
                 $data[$index]->aktifcomment = array_sum(array_column($dataaktif, 'ttlcomment'));
+                $data[$index]->aktifnewcomment = array_sum(array_column($dataaktif, 'ttlnewcomment'));
                 $data[$index]->aktifreport = array_sum(array_column($dataaktif, 'ttlreport'));
                 $data[$index]->aktifremove = array_sum(array_column($dataaktif, 'ttlremove'));
                 $data[$index]->aktifberilike = array_sum(array_column($dataaktif, 'rsplike'));
@@ -137,6 +142,7 @@ class ProfileModel extends Model
                 $data[$index]->terbatasceritaku = array_sum(array_column($dataterbatas, 'ttlceritaku'));
                 $data[$index]->terbataslike = array_sum(array_column($dataterbatas, 'ttllike'));
                 $data[$index]->terbatascomment = array_sum(array_column($dataterbatas, 'ttlcomment'));
+                $data[$index]->terbatasnewcomment = array_sum(array_column($dataterbatas, 'ttlnewcomment'));
                 $data[$index]->terbatasreport = array_sum(array_column($dataterbatas, 'ttlreport'));
                 $data[$index]->terbatasremove = array_sum(array_column($dataterbatas, 'ttlremove'));
                 $data[$index]->terbatasberilike = array_sum(array_column($dataterbatas, 'rsplike'));
@@ -169,12 +175,14 @@ class ProfileModel extends Model
 
     public function showDataProfileSubUser($request)
     {
-        $param['list_sp'] = array([
-            'conn' => 'POR_DUMMY',
-            'payload' => ['nik' => $request['userid']],
-            'sp_name' => 'SP_GetAccessLevel',
-            'process_name' => 'GetAccessLevelResult'
-        ]);
+        $param['list_sp'] = array(
+            [
+                'conn' => 'POR_DUMMY',
+                'payload' => ['nik' => $request['userid']],
+                'sp_name' => 'SP_GetAccessLevel',
+                'process_name' => 'GetAccessLevelResult'
+            ]
+        );
 
         $response = $this->helper->SPExecutor($param);
 
@@ -212,8 +220,10 @@ class ProfileModel extends Model
 
         try {
             $data = [];
-            $data = $this->connection->select("select * from public_v2.showuserstatusprofile(?,?,?,?,?,?,?)",
-                [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $status, $nik]);
+            $data = $this->connection->select(
+                "select * from public_v2.showuserstatusprofile(?,?,?,?,?,?,?)",
+                [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $status, $nik]
+            );
 
             if (is_array($data)) {
                 $this->status = 'Success';
@@ -240,12 +250,14 @@ class ProfileModel extends Model
 
     public function inputDataProfile($request)
     {
-        $param['list_sp'] = array([
-            'conn' => 'POR_DUMMY',
-            'payload' => ['nik' => $request['nik']],
-            'sp_name' => 'SP_GetAccessLevel',
-            'process_name' => 'GetAccessLevelResult'
-        ]);
+        $param['list_sp'] = array(
+            [
+                'conn' => 'POR_DUMMY',
+                'payload' => ['nik' => $request['nik']],
+                'sp_name' => 'SP_GetAccessLevel',
+                'process_name' => 'GetAccessLevelResult'
+            ]
+        );
 
         $response = $this->helper->SPExecutor($param);
 
@@ -289,7 +301,8 @@ class ProfileModel extends Model
         $platform = $request['platform'];
 
         try {
-            $data = $this->connection->insert("CALL public_v2.inputuserstatus(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            $data = $this->connection->insert(
+                "CALL public_v2.inputuserstatus(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 [$nik, $nama, $nohp, $platform == 'Website' ? $alias : base64_encode(microtime() . $nik), $email, $kelamin, $status, $idjabatan, $jabatan, $idunit, $unit, $idcabang, $cabang, $iddepartemen, $departemen, $platform]
             );
 
