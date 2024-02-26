@@ -422,12 +422,13 @@ class CommentModel extends Model
     public function showDataReplyNewComment($request)
     {
         $idcomment = $request['idcomment'];
+        $idticket = $request['idticket'];
         $parentreply = $request['parentreply'];
         $userid = $request['userid'];
 
         try {
             $data = [];
-            $data = $this->connection->select("select * from public_v2.showreplynewcomment(?,?,?)", [$idcomment, $parentreply, $userid]);
+            $data = $this->connection->select("select * from public_v2.showreplynewcomment(?,?,?,?)", [$idcomment, $idticket, $parentreply, $userid]);
 
             if (is_array($data)) {
                 $this->status = 'Success';
