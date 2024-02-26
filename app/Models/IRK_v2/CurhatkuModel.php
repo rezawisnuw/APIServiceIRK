@@ -68,9 +68,9 @@ class CurhatkuModel extends Model
                 $data[$index]->comments[$comment]->report_comment = 'Ya';
                 for ($child_comment = 0; $child_comment < count($replycomments); $child_comment++) {
                     if ($data[$index]->comments[$comment]->id_comment == $replycomments[$child_comment]->has_parent) {
-                        $data[$index]->comments[$comment]->child_comments = $this->connection->select("select * from public_v2.showreplynewcomment(?,?,?,?)", [$replycomments[$child_comment]->id_comment, $replycomments[$child_comment]->id_ticket, $replycomments[$child_comment]->has_parent, $userid]);
+                        $replycomments[$child_comment]->alias_reply = $data[$index]->comments[$comment]->alias;
+                        $data[$index]->comments[$comment]->child_comments[] = $replycomments[$child_comment];
                         $data[$index]->comments[$comment]->replycommentcount = count($data[$index]->comments[$comment]->child_comments);
-                        $data[$index]->comments[$comment]->zxc = !empty($data[$index]->comments[$comment]->child_comments[$comment]->id_comment) ? $data[$index]->comments[$comment]->child_comments[$comment]->id_comment : 'zxc';
                     } else {
                         if (!isset($data[$index]->comments[$comment]->child_comments)) {
                             $data[$index]->comments[$comment]->child_comments = [];
@@ -206,9 +206,9 @@ class CurhatkuModel extends Model
                 $data[$index]->comments[$comment]->report_comment = 'Ya';
                 for ($child_comment = 0; $child_comment < count($replycomments); $child_comment++) {
                     if ($data[$index]->comments[$comment]->id_comment == $replycomments[$child_comment]->has_parent) {
-                        $data[$index]->comments[$comment]->child_comments = $this->connection->select("select * from public_v2.showreplynewcomment(?,?,?,?)", [$replycomments[$child_comment]->id_comment, $replycomments[$child_comment]->id_ticket, $replycomments[$child_comment]->has_parent, $userid]);
+                        $replycomments[$child_comment]->alias_reply = $data[$index]->comments[$comment]->alias;
+                        $data[$index]->comments[$comment]->child_comments[] = $replycomments[$child_comment];
                         $data[$index]->comments[$comment]->replycommentcount = count($data[$index]->comments[$comment]->child_comments);
-                        $data[$index]->comments[$comment]->zxc = !empty($data[$index]->comments[$comment]->child_comments[$comment]->id_comment) ? $data[$index]->comments[$comment]->child_comments[$comment]->id_comment : 'zxc';
                     } else {
                         if (!isset($data[$index]->comments[$comment]->child_comments)) {
                             $data[$index]->comments[$comment]->child_comments = [];
