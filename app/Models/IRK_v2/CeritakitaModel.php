@@ -77,7 +77,7 @@ class CeritakitaModel extends Model
                 $data[$index]->comments[$comment]->report_comment = 'Ya';
                 for ($child_comment = 0; $child_comment < count($replycomments); $child_comment++) {
                     if ($data[$index]->comments[$comment]->id_comment == $replycomments[$child_comment]->has_parent) {
-                        $data[$index]->comments[$comment]->child_comments[] = $replycomments[$child_comment]; //$this->connection->select("select * from public_v2.showreplynewcomment(?,?,?,?)", [$replycomments[$child_comment]->id_comment, $replycomments[$child_comment]->id_ticket, $replycomments[$child_comment]->has_parent, $userid]);
+                        $data[$index]->comments[$comment]->child_comments = $this->connection->select("select * from public_v2.showreplynewcomment(?,?,?,?)", [$replycomments[$child_comment]->id_comment, $replycomments[$child_comment]->id_ticket, $replycomments[$child_comment]->has_parent, $userid]);
                         $data[$index]->comments[$comment]->replycommentcount = count($data[$index]->comments[$comment]->child_comments);
                         $data[$index]->comments[$comment]->zxc = !empty($data[$index]->comments[$comment]->child_comments[$comment]->id_comment) ? $data[$index]->comments[$comment]->child_comments[$comment]->id_comment : 'zxc';
                         // $nextreplycomments = $this->connection->select("select * from public_v2.showreplynewcomment(?,?,?,?)", [null, $replycomments[$child_comment]->id_ticket, null, $userid]);
@@ -85,9 +85,9 @@ class CeritakitaModel extends Model
                         //     $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = '$data[$index]->comments[$comment]->child_comments';
                         // }
 
-                        // for ($last_comment = 0; $last_comment < count($data[$index]->comments[$comment]->child_comments); $last_comment++) {
-                        //     if ($data[$index]->comments[$comment]->child_comments[$comment]->id_comment == $replycomments[$child_comment]->has_parent) {
-                        //         $data[$index]->comments[$comment]->child_comments[$comment]->asd[] = $replycomments[$last_comment]; //$this->connection->select("select * from public_v2.showreplynewcomment(?,?,?,?)", [$replycomments[$child_comment]->id_comment, $replycomments[$child_comment]->id_ticket, $replycomments[$child_comment]->has_parent, $userid]);
+                        // for ($last_comment = 0; $last_comment < count($replycomments); $last_comment++) {
+                        //     if ($data[$index]->comments[$comment]->child_comments[$comment]->id_comment == $replycomments[$last_comment]->has_parent) {
+                        //         $data[$index]->comments[$comment]->child_comments[$comment]->asd = $this->connection->select("select * from public_v2.showreplynewcomment(?,?,?,?)", [$replycomments[$last_comment]->id_comment, $replycomments[$last_comment]->id_ticket, $replycomments[$last_comment]->has_parent, $userid]);
                         //         //         $data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments = $this->connection->select("select * from public_v2.showreplynewcomment(?,?,?,?)", [$replycomments[$last_comment]->id_comment, $replycomments[$last_comment]->id_ticket, $replycomments[$last_comment]->has_parent, $userid]);
                         //         //         $data[$index]->comments[$comment]->child_comments[$child_comment]->replycommentcount = count($data[$index]->comments[$comment]->child_comments[$child_comment]->child_comments);
                         //         //     }
@@ -97,12 +97,12 @@ class CeritakitaModel extends Model
                         //         //             $data[$index]->comments[$comment]->child_comments[$child_comment]->replycommentcount = 0;
                         //         //         }
                         //     }
-                        //     //     //     // if (!isset($data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist)) {
-                        //     //     //     //     $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = [];
-                        //     //     //     //     $data[$index]->comments[$comment]->child_comments[$child_comment]->report_comment = 'Tidak';
-                        //     //     //     // }
-                        //     //     //     // $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?,?)", [$data[$index]->comments[$child_comment]->id_comment, $data[$index]->comments[$child_comment]->has_parent, $userid]);
-                        //     //     //     // $data[$index]->comments[$comment]->child_comments[$child_comment]->report_comment = 'Ya';
+                        //     //     //     //     // if (!isset($data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist)) {
+                        //     //     //     //     //     $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = [];
+                        //     //     //     //     //     $data[$index]->comments[$comment]->child_comments[$child_comment]->report_comment = 'Tidak';
+                        //     //     //     //     // }
+                        //     //     //     //     // $data[$index]->comments[$comment]->child_comments[$child_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?,?)", [$data[$index]->comments[$child_comment]->id_comment, $data[$index]->comments[$child_comment]->has_parent, $userid]);
+                        //     //     //     //     // $data[$index]->comments[$comment]->child_comments[$child_comment]->report_comment = 'Ya';
                         // }
                     }
                     // else if ($data[$index]->comments[$comment]->child_comments[$comment]->id_comment == $replycomments[$child_comment]->has_parent) {
@@ -299,7 +299,7 @@ class CeritakitaModel extends Model
                 $data[$index]->comments[$comment]->report_comment = 'Ya';
                 for ($child_comment = 0; $child_comment < count($replycomments); $child_comment++) {
                     if ($data[$index]->comments[$comment]->id_comment == $replycomments[$child_comment]->has_parent) {
-                        $data[$index]->comments[$comment]->child_comments[] = $replycomments[$child_comment]; //$this->connection->select("select * from public_v2.showreplynewcomment(?,?,?,?)", [$replycomments[$child_comment]->id_comment, $replycomments[$child_comment]->id_ticket, $replycomments[$child_comment]->has_parent, $userid]);
+                        $data[$index]->comments[$comment]->child_comments = $this->connection->select("select * from public_v2.showreplynewcomment(?,?,?,?)", [$replycomments[$child_comment]->id_comment, $replycomments[$child_comment]->id_ticket, $replycomments[$child_comment]->has_parent, $userid]);
                         $data[$index]->comments[$comment]->replycommentcount = count($data[$index]->comments[$comment]->child_comments);
                         $data[$index]->comments[$comment]->zxc = !empty($data[$index]->comments[$comment]->child_comments[$comment]->id_comment) ? $data[$index]->comments[$comment]->child_comments[$comment]->id_comment : 'zxc';
                     } else {
