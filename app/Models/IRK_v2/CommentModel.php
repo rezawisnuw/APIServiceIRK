@@ -455,6 +455,16 @@ class CommentModel extends Model
 
     public function inputDataNewComment($request)
     {
+        $activity = $this->connection
+            ->table('public_v2.UserStatus')
+            ->select('platforms')
+            ->where('nik', '=', $request['nik'])
+            ->orderBy('log', 'desc')
+            ->take(1)
+            ->get();
+
+        $platform = $activity[0]->platforms;
+
         $param['list_sp'] = array(
             [
                 'conn' => 'POR_DUMMY',
@@ -483,16 +493,6 @@ class CommentModel extends Model
                         'message' => $this->message
                     ];
                 }
-
-                $activity = $this->connection
-                    ->table('public_v2.UserStatus')
-                    ->select('platforms')
-                    ->where('nik', '=', $request['nik'])
-                    ->orderBy('log', 'desc')
-                    ->take(1)
-                    ->get();
-
-                $platform = $activity[0]->platforms;
 
             } else {
                 $level = null;
@@ -559,6 +559,16 @@ class CommentModel extends Model
 
     public function inputDataReplyNewComment($request)
     {
+        $activity = $this->connection
+            ->table('public_v2.UserStatus')
+            ->select('platforms')
+            ->where('nik', '=', $request['nik'])
+            ->orderBy('log', 'desc')
+            ->take(1)
+            ->get();
+
+        $platform = $activity[0]->platforms;
+
         $param['list_sp'] = array(
             [
                 'conn' => 'POR_DUMMY',
@@ -587,16 +597,6 @@ class CommentModel extends Model
                         'message' => $this->message
                     ];
                 }
-
-                $activity = $this->connection
-                    ->table('public_v2.UserStatus')
-                    ->select('platforms')
-                    ->where('nik', '=', $request['nik'])
-                    ->orderBy('log', 'desc')
-                    ->take(1)
-                    ->get();
-
-                $platform = $activity[0]->platforms;
 
             } else {
                 $level = null;

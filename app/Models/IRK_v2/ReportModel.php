@@ -59,12 +59,11 @@ class ReportModel extends Model
     public function showDataReportComment($request)
     {
         $idcomment = $request['idcomment'];
-        $parentreply = $request['parentreply'];
         $userid = $request['userid'];
 
         try {
             $data = [];
-            $data = $this->connection->select("select * from public_v2.showreportcomment(?,?,?)", [$idcomment, $parentreply, $userid]);
+            $data = $this->connection->select("select * from public_v2.showreportcomment(?,?)", [$idcomment, $userid]);
 
             if (is_array($data)) {
                 $this->status = 'Success';
@@ -91,6 +90,16 @@ class ReportModel extends Model
 
     public function inputDataReportTicket($request)
     {
+        $activity = $this->connection
+            ->table('public_v2.UserStatus')
+            ->select('platforms')
+            ->where('nik', '=', $request['nik'])
+            ->orderBy('log', 'desc')
+            ->take(1)
+            ->get();
+
+        $platform = $activity[0]->platforms;
+
         $param['list_sp'] = array(
             [
                 'conn' => 'POR_DUMMY',
@@ -119,16 +128,6 @@ class ReportModel extends Model
                         'message' => $this->message
                     ];
                 }
-
-                $activity = $this->connection
-                    ->table('public_v2.UserStatus')
-                    ->select('platforms')
-                    ->where('nik', '=', $request['nik'])
-                    ->orderBy('log', 'desc')
-                    ->take(1)
-                    ->get();
-
-                $platform = $activity[0]->platforms;
 
             } else {
                 $level = null;
@@ -193,6 +192,16 @@ class ReportModel extends Model
 
     public function inputDataReportComment($request)
     {
+        $activity = $this->connection
+            ->table('public_v2.UserStatus')
+            ->select('platforms')
+            ->where('nik', '=', $request['nik'])
+            ->orderBy('log', 'desc')
+            ->take(1)
+            ->get();
+
+        $platform = $activity[0]->platforms;
+
         $param['list_sp'] = array(
             [
                 'conn' => 'POR_DUMMY',
@@ -222,16 +231,6 @@ class ReportModel extends Model
                     ];
                 }
 
-                $activity = $this->connection
-                    ->table('public_v2.UserStatus')
-                    ->select('platforms')
-                    ->where('nik', '=', $request['nik'])
-                    ->orderBy('log', 'desc')
-                    ->take(1)
-                    ->get();
-
-                $platform = $activity[0]->platforms;
-
             } else {
                 $level = null;
             }
@@ -242,13 +241,13 @@ class ReportModel extends Model
         $idcomment = $request['idcomment'];
         // $idreply = $request['idreply'];
         // $idparent = $request['idparent'];
-        $parentreply = $request['parentreply'];
+        // $parentreply = $request['parentreply'];
         $tag = $request['tag'];
         $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
 
         try {
             // $data = $this->connection->insert("CALL public_v2.inputreportcomment(?,?,?,?,?,?,?,?,?)", [$nik, $report, $idcomment, $idreply, $idparent, $parentreply, $tag, $alias, $platform]);
-            $data = $this->connection->insert("CALL public_v2.inputreportcomment(?,?,?,?,?,?,?)", [$nik, $report, $idcomment, $parentreply, $tag, $alias, $platform]);
+            $data = $this->connection->insert("CALL public_v2.inputreportcomment(?,?,?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias, $platform]);
 
             if ($data) {
 
