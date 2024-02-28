@@ -35,16 +35,16 @@ class CommentController extends Controller
         try {
 
             switch ($codekey = $formbody['code']) {
+                // case 1:
+                //     $result = $this->model->showDataComment($formbody);
+                //     break;
+                // case 2:
+                //     $result = $this->model->showDataReplyComment($formbody);
+                //     break;
                 case 1:
-                    $result = $this->model->showDataComment($formbody);
-                    break;
-                case 2:
-                    $result = $this->model->showDataReplyComment($formbody);
-                    break;
-                case 3:
                     $result = $this->model->showDataNewComment($formbody);
                     break;
-                case 4:
+                case 2:
                     $result = $this->model->showDataReplyNewComment($formbody);
                     break;
                 default:
@@ -74,16 +74,16 @@ class CommentController extends Controller
         try {
 
             switch ($codekey = $formbody['code']) {
+                // case 1:
+                //     $result = $this->model->inputDataComment($formbody);
+                //     break;
+                // case 2:
+                //     $result = $this->model->inputDataReplyComment($formbody);
+                //     break;
                 case 1:
-                    $result = $this->model->inputDataComment($formbody);
-                    break;
-                case 2:
-                    $result = $this->model->inputDataReplyComment($formbody);
-                    break;
-                case 3:
                     $result = $this->model->inputDataNewComment($formbody);
                     break;
-                case 4:
+                case 2:
                     $result = $this->model->inputDataReplyNewComment($formbody);
                     break;
                 default:
@@ -113,16 +113,16 @@ class CommentController extends Controller
         try {
 
             switch ($codekey = $formbody['code']) {
+                // case 1:
+                //     $result = $this->model->editDataComment($formbody);
+                //     break;
+                // case 2:
+                //     $result = $this->model->editDataReplyComment($formbody);
+                //     break;
                 case 1:
-                    $result = $this->model->editDataComment($formbody);
-                    break;
-                case 2:
-                    $result = $this->model->editDataReplyComment($formbody);
-                    break;
-                case 3:
                     $result = $this->model->editDataNewComment($formbody);
                     break;
-                case 4:
+                case 2:
                     $result = $this->model->editDataReplyNewComment($formbody);
                     break;
                 default:

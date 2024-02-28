@@ -51,53 +51,12 @@ class MotivasiModel extends Model
         }
 
         for ($index = 0; $index < count($data); $index++) {
-            if (!isset($data[$index]->comments)) {
+            $comments = json_decode($this->connection->select("select * from public_v2.get_comments_temp(?,?)", [$data[$index]->idticket, $userid])[0]->comments);
+
+            if (count($comments) >= 1 && !empty($comments[0]->id_comment)) {
+                $data[$index]->comments = $comments;
+            } else {
                 $data[$index]->comments = [];
-                $data[$index]->replycommentcount = 0;
-            }
-            $data[$index]->comments = $this->connection->select("select * from public_v2.shownewcomment(?,?,?)", [$data[$index]->idticket, 0, $userid]);
-            $data[$index]->replycommentcount = count($data[$index]->comments);
-            $replycomments = $this->connection->select("select * from public_v2.shownewcomment(?,?,?)", [$data[$index]->idticket, null, $userid]);
-            for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
-                if (!isset($data[$index]->comments[$comment]->report_commentlist)) {
-                    $data[$index]->comments[$comment]->report_commentlist = [];
-                    $data[$index]->comments[$comment]->report_comment = 'Tidak';
-                }
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $data[$index]->comments[$comment]->has_parent, $userid]);
-                $data[$index]->comments[$comment]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
-                for ($child_comment = 0; $child_comment < count($replycomments); $child_comment++) {
-                    if ($data[$index]->comments[$comment]->id_comment == $replycomments[$child_comment]->has_parent) {
-                        $replycomments[$child_comment]->alias_reply = $data[$index]->comments[$comment]->alias;
-                        $replycomments[$child_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?,?)", [$replycomments[$child_comment]->id_comment, $replycomments[$child_comment]->has_parent, $userid]);
-                        $replycomments[$child_comment]->report_comment = count($replycomments[$child_comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
-                        $data[$index]->comments[$comment]->child_comments[] = $replycomments[$child_comment];
-                        $data[$index]->comments[$comment]->replycommentcount = count($data[$index]->comments[$comment]->child_comments);
-                        for ($last_comment = 0; $last_comment < count($replycomments); $last_comment++) {
-                            if ($replycomments[$child_comment]->id_comment == $replycomments[$last_comment]->has_parent) {
-                                $replycomments[$last_comment]->alias_reply = $replycomments[$child_comment]->alias;
-                                $replycomments[$last_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?,?)", [$replycomments[$last_comment]->id_comment, $replycomments[$last_comment]->has_parent, $userid]);
-                                $replycomments[$last_comment]->report_comment = count($replycomments[$last_comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
-                                $replycomments[$last_comment]->child_comments = [];
-                                $replycomments[$last_comment]->replycommentcount = 0;
-                                $replycomments[$child_comment]->child_comments[] = $replycomments[$last_comment];
-                                $replycomments[$child_comment]->replycommentcount = count($replycomments[$child_comment]->child_comments);
-                            } else {
-                                if (!isset($replycomments[$child_comment]->child_comments)) {
-                                    $replycomments[$child_comment]->child_comments = [];
-                                    $replycomments[$child_comment]->replycommentcount = 0;
-                                }
-                            }
-                        }
-
-                    } else {
-                        if (!isset($data[$index]->comments[$comment]->child_comments)) {
-                            $data[$index]->comments[$comment]->child_comments = [];
-                            $data[$index]->comments[$comment]->replycommentcount = 0;
-                        }
-                    }
-
-                }
-
             }
             if (!isset($data[$index]->likes)) {
                 $data[$index]->likes = [];
@@ -144,53 +103,12 @@ class MotivasiModel extends Model
         }
 
         for ($index = 0; $index < count($data); $index++) {
-            if (!isset($data[$index]->comments)) {
+            $comments = json_decode($this->connection->select("select * from public_v2.get_comments_temp(?,?)", [$data[$index]->idticket, $userid])[0]->comments);
+
+            if (count($comments) >= 1 && !empty($comments[0]->id_comment)) {
+                $data[$index]->comments = $comments;
+            } else {
                 $data[$index]->comments = [];
-                $data[$index]->replycommentcount = 0;
-            }
-            $data[$index]->comments = $this->connection->select("select * from public_v2.shownewcomment(?,?,?)", [$data[$index]->idticket, 0, $userid]);
-            $data[$index]->replycommentcount = count($data[$index]->comments);
-            $replycomments = $this->connection->select("select * from public_v2.shownewcomment(?,?,?)", [$data[$index]->idticket, null, $userid]);
-            for ($comment = 0; $comment < count($data[$index]->comments); $comment++) {
-                if (!isset($data[$index]->comments[$comment]->report_commentlist)) {
-                    $data[$index]->comments[$comment]->report_commentlist = [];
-                    $data[$index]->comments[$comment]->report_comment = 'Tidak';
-                }
-                $data[$index]->comments[$comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?,?)", [$data[$index]->comments[$comment]->id_comment, $data[$index]->comments[$comment]->has_parent, $userid]);
-                $data[$index]->comments[$comment]->report_comment = count($data[$index]->comments[$comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
-                for ($child_comment = 0; $child_comment < count($replycomments); $child_comment++) {
-                    if ($data[$index]->comments[$comment]->id_comment == $replycomments[$child_comment]->has_parent) {
-                        $replycomments[$child_comment]->alias_reply = $data[$index]->comments[$comment]->alias;
-                        $replycomments[$child_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?,?)", [$replycomments[$child_comment]->id_comment, $replycomments[$child_comment]->has_parent, $userid]);
-                        $replycomments[$child_comment]->report_comment = count($replycomments[$child_comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
-                        $data[$index]->comments[$comment]->child_comments[] = $replycomments[$child_comment];
-                        $data[$index]->comments[$comment]->replycommentcount = count($data[$index]->comments[$comment]->child_comments);
-                        for ($last_comment = 0; $last_comment < count($replycomments); $last_comment++) {
-                            if ($replycomments[$child_comment]->id_comment == $replycomments[$last_comment]->has_parent) {
-                                $replycomments[$last_comment]->alias_reply = $replycomments[$child_comment]->alias;
-                                $replycomments[$last_comment]->report_commentlist = $this->connection->select("select * from public_v2.showreportcomment(?,?,?)", [$replycomments[$last_comment]->id_comment, $replycomments[$last_comment]->has_parent, $userid]);
-                                $replycomments[$last_comment]->report_comment = count($replycomments[$last_comment]->report_commentlist) > 0 ? 'Ya' : 'Tidak';
-                                $replycomments[$last_comment]->child_comments = [];
-                                $replycomments[$last_comment]->replycommentcount = 0;
-                                $replycomments[$child_comment]->child_comments[] = $replycomments[$last_comment];
-                                $replycomments[$child_comment]->replycommentcount = count($replycomments[$child_comment]->child_comments);
-                            } else {
-                                if (!isset($replycomments[$child_comment]->child_comments)) {
-                                    $replycomments[$child_comment]->child_comments = [];
-                                    $replycomments[$child_comment]->replycommentcount = 0;
-                                }
-                            }
-                        }
-
-                    } else {
-                        if (!isset($data[$index]->comments[$comment]->child_comments)) {
-                            $data[$index]->comments[$comment]->child_comments = [];
-                            $data[$index]->comments[$comment]->replycommentcount = 0;
-                        }
-                    }
-
-                }
-
             }
             if (!isset($data[$index]->likes)) {
                 $data[$index]->likes = [];
