@@ -247,7 +247,7 @@ class ReportModel extends Model
 
         try {
             // $data = $this->connection->insert("CALL public_v2.inputreportcomment(?,?,?,?,?,?,?,?,?)", [$nik, $report, $idcomment, $idreply, $idparent, $parentreply, $tag, $alias, $platform]);
-            $data = $this->connection->insert("CALL public_v2.inputreportcomment(?,?,?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias, $platform]);
+            $data = $this->connection->insert("CALL public_v2.inputreportcomment(?,?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias, $platform]);
 
             if ($data) {
 
@@ -258,12 +258,12 @@ class ReportModel extends Model
                 //     ->get()[0];
 
                 $target = $this->connection
-                    ->table('public_v2.Comment')
+                    ->table('public_v2.NewComment')
                     ->select('nik_karyawan', 'tag', 'id_ticket')
                     ->where('id_comment', '=', $idcomment)
                     ->get()[0];
 
-                $toJson = json_encode($target->idticket);
+                $toJson = json_encode($target->id_ticket);
 
                 $toBase64 = base64_encode($toJson);
 
