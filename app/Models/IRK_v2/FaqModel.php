@@ -31,11 +31,21 @@ class FaqModel extends Model
 
         try {
             $data = [];
-            $data = $this->connection
-                ->table('public_v2.Faq')
-                ->where('id_faq', '=', $idfaq)
-                ->get()
-                ->all();
+
+            if ($idfaq > 0 || !empty($idfaq)) {
+                $data = $this->connection
+                    ->table('public_v2.Faq')
+                    ->where('id_faq', '=', $idfaq)
+                    ->get()
+                    ->all();
+            } else {
+                $data = $this->connection
+                    ->table('public_v2.Faq')
+                    ->where('id_faq', '!=', 0)
+                    ->get()
+                    ->all();
+            }
+
 
             if ($data) {
                 $this->status = 'Success';
@@ -63,16 +73,6 @@ class FaqModel extends Model
 
     public function inputDataFaq($request)
     {
-        $activity = $this->connection
-            ->table('public_v2.UserStatus')
-            ->select('platforms')
-            ->where('nik', '=', $request['nik'])
-            ->orderBy('log', 'desc')
-            ->take(1)
-            ->get();
-
-        $platform = $activity[0]->platforms;
-
         $param['list_sp'] = array(
             [
                 'conn' => 'POR_DUMMY',
@@ -101,6 +101,16 @@ class FaqModel extends Model
                         'message' => $this->message
                     ];
                 }
+
+                $activity = $this->connection
+                    ->table('public_v2.UserStatus')
+                    ->select('platforms')
+                    ->where('nik', '=', $request['nik'])
+                    ->orderBy('log', 'desc')
+                    ->take(1)
+                    ->get();
+
+                $platform = $activity[0]->platforms;
 
             } else {
                 $level = null;
