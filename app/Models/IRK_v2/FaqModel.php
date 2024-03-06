@@ -32,7 +32,7 @@ class FaqModel extends Model
         try {
             $data = [];
 
-            if ($idfaq > 0 || !empty($idfaq)) {
+            if ($idfaq != 0 || !empty($idfaq)) {
                 $data = $this->connection
                     ->table('public_v2.Faq')
                     ->where('id_faq', '=', $idfaq)
@@ -41,16 +41,15 @@ class FaqModel extends Model
             } else {
                 $data = $this->connection
                     ->table('public_v2.Faq')
-                    ->where('id_faq', '!=', 0)
                     ->get()
                     ->all();
             }
 
 
-            if ($data) {
+            if (is_array($data)) {
                 $this->status = 'Success';
                 $this->message = 'Data has been process';
-                $this->data = $data[0];
+                $this->data = $data;
             } else {
                 $this->status;
                 $this->message;
