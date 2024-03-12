@@ -662,9 +662,11 @@ class CommentModel extends Model
     {
         $nik = $request['nik'];
         $idcomment = $request['idcomment'];
+        $status = $request['status'];
 
         try {
-            $data = $this->connection->insert("CALL public_v2.editnewcomment(?,?)", [$nik, $idcomment]);
+            $data = $this->connection->insert("CALL public_v2.updated_comment(?,?,?)", [$nik, $status, $idcomment]);
+            //$data = $this->connection->insert("CALL public_v2.editnewcomment(?,?)", [$nik, $idcomment]);
 
             if ($data) {
                 $this->status = 'Success';

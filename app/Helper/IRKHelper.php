@@ -76,6 +76,28 @@ class IRKHelper
         return $arrayfile;
     }
 
+    public function MultiBlobtoFile($blob)
+    {
+        $arrayfile = [];
+        for ($i = 0; $i < count($blob); $i++) {
+            foreach ($blob[$i] as $b) {
+                $tmpFilePath = "example.txt";
+                file_put_contents($tmpFilePath, base64_decode($b));
+                $tmpFile = new File($tmpFilePath);
+                $file = new UploadedFile(
+                    $tmpFile->getPathname(),    // Temporary file path on the server
+                    $tmpFile->getFilename(),    // Original file name
+                    $tmpFile->getMimeType(),    // MIME type
+                    $tmpFile->getSize(),        // File size
+                    0                          // Manually setting error code to 0
+                );
+                array_push($arrayfile, $file);
+            }
+        }
+
+        return $arrayfile;
+    }
+
     public function SPExecutor($param)
     {
 
