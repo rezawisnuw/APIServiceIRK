@@ -8,7 +8,6 @@ use App\Helper\IRKHelper;
 
 class FaqModel extends Model
 {
-
     private $status = 'Failed', $message = 'Data is cannot be process', $data = [];
 
     public function __construct(Request $request, $slug)
@@ -26,37 +25,31 @@ class FaqModel extends Model
 
     public function showDataFaq($request)
     {
-
-        $idfaq = $request['idfaq'];
-
         try {
-            $data = [];
+            $idfaq = $request['data']['idfaq'] ?? null;
+            $question = $request['data']['question'] ?? null;
 
-            if ($idfaq != 0 || !empty($idfaq)) {
-                $data = $this->connection
-                    ->table('public_v2.Faq')
-                    ->where('id_faq', '=', $idfaq)
-                    ->get()
-                    ->all();
+            $query = $this->connection->table('public_v2.Faq');
+
+            if (is_null($idfaq) && is_null($question)) {
+                $data = $query->get()->toArray();
+            } elseif (!is_null($idfaq) && is_null($question)) {
+                $data = $query->where('id_faq', $idfaq)->get()->toArray();
+            } elseif (is_null($idfaq) && !is_null($question)) {
+                $data = $query->where('question', 'LIKE', "%$question%")->get()->toArray();
             } else {
-                $data = $this->connection
-                    ->table('public_v2.Faq')
-                    ->get()
-                    ->all();
-            }
-
-
+                $data = $query->where('id_faq', $idfaq)->where('question', 'LIKE', "%$question%")->get()->toArray();
+            }        
+            
             if (is_array($data)) {
                 $this->status = 'Success';
-                $this->message = 'Data has been process';
+                $this->message = 'Data has been processed';
                 $this->data = $data;
             } else {
                 $this->status;
                 $this->message;
                 $this->data;
             }
-
-
         } catch (\Throwable $e) {
             $this->status = 'Error';
             $this->data = null;
@@ -75,7 +68,7 @@ class FaqModel extends Model
         $param['list_sp'] = array(
             [
                 'conn' => 'POR_DUMMY',
-                'payload' => ['nik' => $request['nik']],
+                'payload' => ['nik' => $request['data']['nik']],
                 'sp_name' => 'SP_GetAccessLevel',
                 'process_name' => 'GetAccessLevelResult'
             ]
@@ -104,7 +97,7 @@ class FaqModel extends Model
                 $activity = $this->connection
                     ->table('public_v2.UserStatus')
                     ->select('platforms')
-                    ->where('nik', '=', $request['nik'])
+                    ->where('nik', '=', $request['data']['nik'])
                     ->orderBy('log', 'desc')
                     ->take(1)
                     ->get();
@@ -116,11 +109,11 @@ class FaqModel extends Model
             }
         }
 
-        $question = $request['question'];
-        $answer = $request['answer'];
-        $category = $request['category'];
-        $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
-        $nik = $request['nik'];
+        $question = $request['data']['question'];
+        $answer = $request['data']['answer'];
+        $category = $request['data']['category'];
+        $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['data']['nik']);
+        $nik = $request['data']['nik'];
 
         try {
             $data = $this->connection->insert("CALL public_v2.inputfaq(?,?,?,?,?,?)", [$question, $answer, $category, $nik, $alias, $platform]);
@@ -150,11 +143,11 @@ class FaqModel extends Model
 
     public function editDataFaq($request)
     {
-        $idfaq = $request['idfaq'];
-        $question = $request['question'];
-        $answer = $request['answer'];
-        $category = $request['category'];
-        $nik = $request['nik'];
+        $idfaq = $request['data']['idfaq'];
+        $question = $request['data']['question'];
+        $answer = $request['data']['answer'];
+        $category = $request['data']['category'];
+        $nik = $request['data']['nik'];
 
         try {
             $data = $this->connection->insert("CALL public_v2.editfaq(?,?,?,?,?)", [$idfaq, $question, $answer, $category, $nik]);
@@ -182,4 +175,33 @@ class FaqModel extends Model
         ];
     }
 
+    public function deleteDataFaq($request)
+    {
+        try {
+            $idfaq = $request['data']['idfaq'] ?? null;
+
+            $query = $this->connection->table('public_v2.Faq');
+
+            if (!is_null($idfaq)) {
+                $idfaqArray = explode(',', $idfaq);
+            $data = $this->connection->table('public_v2.Faq')->whereIn('id_faq', $idfaqArray)->delete();
+            }
+            if ($data) {
+                $this->status = 'Success';
+                $this->message = 'Data has been deleted';
+            } else {
+                $this->status = 'Error';
+                $this->message = 'Failed to delete data';
+            }
+        } catch (\Throwable $e) {
+            $this->status = 'Error';
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
+        }
+
+        return [
+            'status' => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
+        ];
+    }
 }

@@ -29,28 +29,14 @@ class FaqController extends Controller
 
     public function get(Request $request)
     {
-        $formbody = $request->data;
-        $codekey = null;
-
         try {
-
-            switch ($codekey = $formbody['code']) {
-                case 1:
-                    $result = $this->model->showDataFaq($formbody);
-                    break;
-                default:
-                    $result = collect([
-                        'status' => $this->status,
-                        'data' => $codekey,
-                        'message' => $this->message
-                    ]);
-            }
-
+            $data = $request->json()->all();
+            $result = $this->model->showDataFaq($data);
         } catch (\Throwable $e) {
             $result = collect([
                 'status' => 'Error',
                 'data' => null,
-                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage() . ' On Switch Case = ' . $codekey
+                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage()
             ]);
         }
 
@@ -59,28 +45,15 @@ class FaqController extends Controller
 
     public function post(Request $request)
     {
-        $formbody = $request->data;
-        $codekey = null;
+        $data = $request->json()->all();
 
         try {
-
-            switch ($codekey = $formbody['code']) {
-                case 1:
-                    $result = $this->model->inputDataFaq($formbody);
-                    break;
-                default:
-                    $result = collect([
-                        'status' => $this->status,
-                        'data' => $codekey,
-                        'message' => $this->message
-                    ]);
-            }
-
+            $result = $this->model->inputDataFaq($data);
         } catch (\Throwable $e) {
             $result = collect([
                 'status' => 'Error',
                 'data' => null,
-                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage() . ' On Switch Case = ' . $codekey
+                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage()
             ]);
         }
 
@@ -89,28 +62,15 @@ class FaqController extends Controller
 
     public function put(Request $request)
     {
-        $formbody = $request->data;
-        $codekey = null;
+        $data = $request->json()->all();
 
         try {
-
-            switch ($codekey = $formbody['code']) {
-                case 1:
-                    $result = $this->model->editDataFaq($formbody);
-                    break;
-                default:
-                    $result = collect([
-                        'status' => $this->status,
-                        'data' => $codekey,
-                        'message' => $this->message
-                    ]);
-            }
-
+            $result = $this->model->editDataFaq($data);
         } catch (\Throwable $e) {
             $result = collect([
                 'status' => 'Error',
                 'data' => null,
-                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage() . ' On Switch Case = ' . $codekey
+                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage()
             ]);
         }
 
@@ -119,6 +79,18 @@ class FaqController extends Controller
 
     public function delete(Request $request)
     {
+        $data = $request->json()->all();
 
+        try {
+            $result = $this->model->deleteDataFaq($data);
+        } catch (\Throwable $e) {
+            $result = collect([
+                'status' => 'Error',
+                'data' => null,
+                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage()
+            ]);
+        }
+
+        return response()->json($result);
     }
 }
