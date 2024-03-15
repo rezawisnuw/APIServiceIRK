@@ -207,9 +207,7 @@ class IdeakuModel extends Model
                 }
                 $images = '{' . implode(',', $imgname) . '}';
 
-                //$data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag, $platform]);
-
-                $data = $this->connection->insert("CALL public_v2.inputideaku(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $images, $tag, $platform]);
+                $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $images, $tag, $platform]);
 
                 if ($data) {
                     $this->status = 'Success';
@@ -223,9 +221,8 @@ class IdeakuModel extends Model
 
             } else {
                 $images = '{' . $idimg . '.' . '}';
-                // $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag, $platform]);
 
-                $data = $this->connection->insert("CALL public_v2.inputideaku(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $images, $tag, $platform]);
+                $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $images, $tag, $platform]);
 
                 if ($data) {
                     $imgpath = $this->path . '/Ceritakita/Ideaku/' . $idimg . '.';
