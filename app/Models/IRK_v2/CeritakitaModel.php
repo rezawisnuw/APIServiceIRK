@@ -362,6 +362,88 @@ class CeritakitaModel extends Model
         ];
     }
 
+    public function inputDataCeritakita($request)
+    {
+        $activity = $this->connection
+            ->table('public_v2.UserStatus')
+            ->select('platforms')
+            ->where('nik', '=', $request->nik)
+            ->orderBy('log', 'desc')
+            ->take(1)
+            ->get()
+            ->all();
+
+        $nik = $request->nik;
+        $caption = $request->caption;
+        $deskripsi = $request->deskripsi;
+        $alias = base64_encode(microtime() . $request->nik);
+        $gambar = isset($request->gambar) ? $request->gambar : '';
+        $tag = $request->tag;
+        $platform = $activity[0]->platforms;
+
+        try {
+            $idimg = substr($alias, 3, 8);
+
+            if (!empty($gambar)) {
+                $imgformat = array("jpeg", "jpg", "png");
+
+                foreach ($gambar as $key => $value) {
+                    if (!in_array($value->extension(), $imgformat) || $value->getSize() > 1048576) { // in bytes
+                        return [
+                            'status' => 'File Error',
+                            'data' => $this->data,
+                            'message' => 'Format File dan Size tidak sesuai',
+                            'code' => 200
+                        ];
+                    } else {
+
+                        $imgname[] = $idimg . '_' . $key . '.' . $value->extension();
+
+                        $imgpath[] = $this->path . '/Ceritakita/' . ucfirst($tag) . '/' . $imgname[$key];
+                    }
+                }
+                $images = '{' . implode(',', $imgname) . '}';
+
+                $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $images, $tag, $platform]);
+
+                if ($data) {
+                    $this->status = 'Success';
+                    $this->message = 'Data has been process';
+                    $this->data = $imgpath;
+                } else {
+                    $this->status;
+                    $this->message;
+                    $this->data;
+                }
+
+            } else {
+                $images = '{' . $idimg . '.' . '}';
+
+                $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $images, $tag, $platform]);
+
+                if ($data) {
+                    $imgpath = $this->path . '/Ceritakita/' . ucfirst($tag) . '/' . $idimg . '.';
+
+                    $this->status = 'Success';
+                    $this->message = 'Data has been process';
+                    $this->data = $imgpath;
+                }
+
+            }
+
+        } catch (\Throwable $e) {
+            $this->status = 'Error';
+            $this->data = null;
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
+        }
+
+        return [
+            'status' => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
+        ];
+    }
+
     public function showRekomendasiCeritakita($request)
     {
         $page = isset($request['page']) && !empty($request['page']) ? intval($request['page']) : 0;

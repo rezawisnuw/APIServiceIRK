@@ -4,6 +4,7 @@ namespace App\Models\IRK_v2;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Validator;
 use Illuminate\Http\Request;
 use App\Helper\IRKHelper;
 
@@ -179,7 +180,7 @@ class IdeakuModel extends Model
         $caption = $request->caption;
         $deskripsi = $request->deskripsi;
         $alias = base64_encode(microtime() . $request->nik);
-        $gambar = isset($request->gambar) ? $request->gambar : '';
+        $gambar = isset($request->gambar) && count($request->gambar) > 0 ? $request->gambar : '';
         $tag = 'ideaku'; //$request->tag;
         $platform = $activity[0]->platforms;
 
@@ -189,33 +190,42 @@ class IdeakuModel extends Model
             if (!empty($gambar)) {
                 $imgformat = array("jpeg", "jpg", "png");
 
-                if ($gambar->getSize() > 1048576 || !in_array($gambar->extension(), $imgformat)) {
-                    return [
-                        'status' => 'File Error',
-                        'data' => $this->data,
-                        'message' => 'Format File dan Size tidak sesuai',
-                        'code' => 200
-                    ];
-                } else {
-
-                    $imgextension = $gambar->extension();
-
-                    $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag, $platform]);
-
-                    if ($data) {
-                        $imgpath = $this->path . '/Ceritakita/Ideaku/' . $idimg . '.' . $imgextension;
-
-                        $this->status = 'Success';
-                        $this->message = 'Data has been process';
-                        $this->data = $imgpath;
+                foreach ($gambar as $key => $value) {
+                    if (!in_array($value->extension(), $imgformat) || $value->getSize() > 1048576) { // in bytes
+                        return [
+                            'status' => 'File Error',
+                            'data' => $this->data,
+                            'message' => 'Format File dan Size tidak sesuai',
+                            'code' => 200
+                        ];
                     } else {
-                        $this->status;
-                        $this->message;
-                        $this->data;
+
+                        $imgname[] = $idimg . '_' . $key . '.' . $value->extension();
+
+                        $imgpath[] = $this->path . '/Ceritakita/Ideaku/' . $imgname[$key];
                     }
                 }
+                $images = '{' . implode(',', $imgname) . '}';
+
+                //$data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.' . $imgextension, $tag, $platform]);
+
+                $data = $this->connection->insert("CALL public_v2.inputideaku(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $images, $tag, $platform]);
+
+                if ($data) {
+                    $this->status = 'Success';
+                    $this->message = 'Data has been process';
+                    $this->data = $imgpath;
+                } else {
+                    $this->status;
+                    $this->message;
+                    $this->data;
+                }
+
             } else {
-                $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag, $platform]);
+                $images = '{' . $idimg . '.' . '}';
+                // $data = $this->connection->insert("CALL public_v2.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $idimg . '.', $tag, $platform]);
+
+                $data = $this->connection->insert("CALL public_v2.inputideaku(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $images, $tag, $platform]);
 
                 if ($data) {
                     $imgpath = $this->path . '/Ceritakita/Ideaku/' . $idimg . '.';
