@@ -28,18 +28,28 @@ class FaqModel extends Model
         try {
             $idfaq = $request['data']['idfaq'] ?? null;
             $question = $request['data']['question'] ?? null;
+            $category = $request['data']['category'] ?? null;
 
             $query = $this->connection->table('public_v2.Faq');
-
-            if (is_null($idfaq) && is_null($question)) {
-                $data = $query->get()->toArray();
-            } elseif (!is_null($idfaq) && is_null($question)) {
+            
+            if (!is_null($idfaq) && is_null($question) && is_null($category)) {
                 $data = $query->where('id_faq', $idfaq)->get()->toArray();
-            } elseif (is_null($idfaq) && !is_null($question)) {
+            } 
+            elseif (is_null($idfaq) && !is_null($question) && is_null($category)) {
                 $data = $query->where('question', 'LIKE', "%$question%")->get()->toArray();
-            } else {
-                $data = $query->where('id_faq', $idfaq)->where('question', 'LIKE', "%$question%")->get()->toArray();
-            }        
+            } 
+            elseif (is_null($idfaq) && is_null($question) && !is_null($category)) {
+                $category = strtolower($category);
+                $data = $query->whereRaw('LOWER(category) = ?', $category)->get()->toArray();
+            } 
+            elseif (is_null($idfaq) && is_null($question) && is_null($category)) {
+                $data = $query->orderBy('category')->orderBy('id_faq')->get()->toArray();
+            }
+            else {
+                $this->status = 'Error';
+                $this->message = 'Data not found or payload is invalid';
+                $this->data = null;
+            }
             
             if (is_array($data)) {
                 $this->status = 'Success';
