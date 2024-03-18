@@ -113,11 +113,10 @@ class LikeModel extends Model
 
             if ($data) {
 
-
                 $target = $this->connection
                     ->table('public_v2.CeritaKita')
-                    ->select('CeritaKita.employee AS employee', 'CeritaKita.tag AS tag', 'Likes.like AS like')
-                    ->leftJoin('Likes', 'Likes.id_ticket', '=', 'CeritaKita.id_ticket')
+                    ->select('CeritaKita.employee AS employee', 'CeritaKita.tag AS tag', 'CeritaKita.is_used AS is_used', 'Likes.like AS like')
+                    ->leftJoin('public_v2.Likes', 'Likes.id_ticket', '=', 'CeritaKita.id_ticket')
                     ->where('Likes.id_ticket', '=', $idticket)
                     ->where('Likes.nik_karyawan', '=', $nik)
                     ->get()[0];
@@ -142,11 +141,11 @@ class LikeModel extends Model
 
                     $this->status = 'Success';
                     $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
-                    $this->data = $data;
+                    $this->data = $target->is_used == 'No' ? ["blocked" => false] : ["blocked" => true];
                 } else {
                     $this->status = 'Success';
                     $this->message = 'Data has been process';
-                    $this->data = $data;
+                    $this->data = $target->is_used == 'No' ? ["blocked" => false] : ["blocked" => true];
                 }
             } else {
                 $this->status;
