@@ -424,5 +424,21 @@ Route::group([
             return app("App\\Http\\Controllers\\IRK_v{$x}\\FaqController")->delete(request());
         });
     });
+
+    //Filemanager Endpoint
+    Route::group(['prefix' => 'filemanager'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\FilemanagerController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\FilemanagerController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\FilemanagerController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\FilemanagerController")->delete(request());
+        });
+    });
 });
 //-----------------------END SCHEME VERSE-----------------------------------------

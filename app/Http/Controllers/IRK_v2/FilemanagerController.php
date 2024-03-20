@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\IRK_v2;
 
 use Illuminate\Http\Request;
-use App\Models\IRK_v2\MotivasiModel;
+use App\Models\IRK_v2\FilemanagerModel;
 use App\Helper\IRKHelper;
 
-class MotivasiController extends Controller
+class FilemanagerController extends Controller
 {
     private $status = 'Failed', $data = [], $message = 'Process is not found', $model, $helper;
 
@@ -19,7 +19,7 @@ class MotivasiController extends Controller
         $x = $request->route('x');
         $this->base = 'v' . $x . '/' . $slug;
 
-        $model = new MotivasiModel($request, $slug);
+        $model = new FilemanagerModel($request, $slug);
         $this->model = $model;
 
         $helper = new IRKHelper($request);
@@ -29,7 +29,6 @@ class MotivasiController extends Controller
 
     public function get(Request $request)
     {
-
         $formbody = $request->data;
         $codekey = null;
 
@@ -37,13 +36,19 @@ class MotivasiController extends Controller
 
             switch ($codekey = $formbody['code']) {
                 case 1:
-                    $result = $this->model->showDataMotivasi($formbody);
+                    $result = $this->model->showDataUserStatus($formbody);
                     break;
                 case 2:
-                    $result = $this->model->showDataMotivasiSingle($formbody);
+                    $result = $this->model->showDataCeritakuIdeaku($formbody);
                     break;
                 case 3:
-                    $result = $this->model->showDataMotivasiTotal($formbody);
+                    $result = $this->model->showDataCurhatku($formbody);
+                    break;
+                case 4:
+                    $result = $this->model->showDataTotalActivity($formbody);
+                    break;
+                case 5:
+                    $result = $this->model->showDataReportAccount($formbody);
                     break;
                 default:
                     $result = collect([
@@ -66,41 +71,7 @@ class MotivasiController extends Controller
 
     public function post(Request $request)
     {
-        $codekey = null;
 
-        $datadecode = json_decode($request->data);
-
-        if (isset($request->file)) {
-            $filedecode = json_decode($request->file);
-            $arrayfile = $this->helper->MultiBlobtoFile($filedecode);
-            isset($datadecode->gambar) && !empty($datadecode->gambar) ? $datadecode->gambar = $arrayfile : $datadecode->gambar = '';
-        }
-
-        $formbody = $datadecode;
-
-        try {
-
-            switch ($codekey = $formbody->code) {
-                case 1:
-                    $result = $this->model->inputDataMotivasi($formbody);
-                    break;
-                default:
-                    $result = collect([
-                        'status' => $this->status,
-                        'data' => $codekey,
-                        'message' => $this->message
-                    ]);
-            }
-
-        } catch (\Throwable $e) {
-            $result = collect([
-                'status' => 'Error',
-                'data' => null,
-                'message' => $e->getCode() == 0 ? 'Error Controller Laravel = ' . $e->getMessage() : 'Error Model Laravel = ' . $e->getMessage() . ' Switch Case = ' . $codekey
-            ]);
-        }
-
-        return response()->json($result);
     }
 
     public function put(Request $request)
