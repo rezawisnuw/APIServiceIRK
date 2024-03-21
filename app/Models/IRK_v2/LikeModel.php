@@ -127,6 +127,13 @@ class LikeModel extends Model
 
                 $toBase64 = base64_encode($toJson);
 
+                if ($target->is_used == 'No') {
+                    $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
+                    $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$idticket])[0]->getttllike;
+                    $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$idticket])[0]->getttlcomment;
+                    $ttlnewcomment = $this->connection->select("select * from public_v2.getttlnewcomment(?)", [$idticket])[0]->getttlnewcomment;
+                }
+
                 if ($target->like == 1) {
                     $body['data'] = [
                         'nik' => $target->employee,
@@ -141,11 +148,11 @@ class LikeModel extends Model
 
                     $this->status = 'Success';
                     $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
-                    $this->data = $target->is_used == 'No' ? ["blocked" => false] : ["blocked" => true];
+                    $this->data = $target->is_used == 'No' ? ["blocked" => false, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment] : $data;
                 } else {
                     $this->status = 'Success';
                     $this->message = 'Data has been process';
-                    $this->data = $target->is_used == 'No' ? ["blocked" => false] : ["blocked" => true];
+                    $this->data = $target->is_used == 'No' ? ["blocked" => false, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment] : $data;
                 }
             } else {
                 $this->status;

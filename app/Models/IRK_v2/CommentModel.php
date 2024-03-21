@@ -514,7 +514,7 @@ class CommentModel extends Model
 
                 $target = $this->connection
                     ->table('public_v2.CeritaKita')
-                    ->select('employee', 'tag')
+                    ->select('employee', 'tag', 'is_used')
                     ->where('id_ticket', '=', $idticket)
                     ->get()[0];
 
@@ -535,9 +535,16 @@ class CommentModel extends Model
 
                 $response = $this->helper->NotificationPortal($body);
 
+                if ($target->is_used == 'No') {
+                    $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
+                    $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$idticket])[0]->getttllike;
+                    $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$idticket])[0]->getttlcomment;
+                    $ttlnewcomment = $this->connection->select("select * from public_v2.getttlnewcomment(?)", [$idticket])[0]->getttlnewcomment;
+                }
+
                 $this->status = 'Success';
                 $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
-                $this->data = $data;
+                $this->data = $target->is_used == 'No' ? ["blocked" => false, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment] : $data;
             } else {
                 $this->status;
                 $this->message;
@@ -617,7 +624,7 @@ class CommentModel extends Model
             if ($data) {
                 $target = $this->connection
                     ->table('public_v2.NewComment')
-                    ->select('tag', 'nik_karyawan', 'id_ticket')
+                    ->select('tag', 'nik_karyawan', 'id_ticket', 'is_blocked')
                     ->where('id_ticket', '=', $idticket)
                     ->get()[0];
 
@@ -636,9 +643,16 @@ class CommentModel extends Model
 
                 $response = $this->helper->NotificationPortal($body);
 
+                if ($target->is_blocked == false) {
+                    $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $target->id_ticket])[0]->getliked;
+                    $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$target->id_ticket])[0]->getttllike;
+                    $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$target->id_ticket])[0]->getttlcomment;
+                    $ttlnewcomment = $this->connection->select("select * from public_v2.getttlnewcomment(?)", [$target->id_ticket])[0]->getttlnewcomment;
+                }
+
                 $this->status = 'Success';
                 $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktifasi izin notifikasi pada browser anda terlebih dahulu';
-                $this->data = $data;
+                $this->data = $target->is_blocked == false ? ["blocked" => false, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment] : $data;
             } else {
                 $this->status;
                 $this->message;

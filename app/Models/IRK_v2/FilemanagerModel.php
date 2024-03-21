@@ -325,12 +325,10 @@ class FilemanagerModel extends Model
 
         }
 
-        if ($request['idunit'] != 'ALL' || $request['idcabang'] != 'ALL') {
-            $exportdata = [
-                'code' => '9',
+        if ($request['idunit'] = 'ALL' && $request['idcabang'] = 'ALL') {
+            $unit = [
+                'code' => '1',
                 'nik' => $request['userid'],
-                'id_unit' => $request['idunit'],
-                'id_cabang' => $request['idcabang']
             ];
 
             $client = new Client();
@@ -338,14 +336,66 @@ class FilemanagerModel extends Model
                 'http://' . $this->config . '/RESTSecurity/RESTSecurity.svc/IDM/Unit-Cabang',
                 [
                     RequestOptions::JSON =>
-                        ['param' => $exportdata]
+                        ['param' => $unit]
                 ]
             );
-
             $body = $response->getBody();
             $temp = json_decode($body);
-            $result = json_decode($temp->UnitCabangResult);
+            $resultunit = json_decode($temp->UnitCabangResult);
+
+            foreach ($resultunit as $k_unit => $v_unit) {
+                $param_unit[$k_unit] = $v_unit->AliasUnit;
+            }
+
+            $cabang = [
+                'code' => '2',
+                'nik' => $request['userid'],
+            ];
+
+            $client = new Client();
+            $response = $client->post(
+                'http://' . $this->config . '/RESTSecurity/RESTSecurity.svc/IDM/Unit-Cabang',
+                [
+                    RequestOptions::JSON =>
+                        ['param' => $cabang]
+                ]
+            );
+            $body = $response->getBody();
+            $temp = json_decode($body);
+            $resultcabang = json_decode($temp->UnitCabangResult);
+
+            foreach ($resultcabang as $k_cabang => $v_cabang) {
+                $param_cabang[$k_cabang] = $v_cabang->AREAID;
+            }
+
+        } else if ($request['idunit'] = 'ALL' && $request['idcabang'] != 'ALL') {
+            $exportdata = [
+                'code' => '9',
+                'nik' => $request['userid'],
+                'id_unit' => $request['idunit'],
+                'id_cabang' => $request['idcabang']
+            ];
+        } else if ($request['idunit'] != 'ALL' && $request['idcabang'] = 'ALL') {
+            $exportdata = [
+                'code' => '9',
+                'nik' => $request['userid'],
+                'id_unit' => $request['idunit'],
+                'id_cabang' => $request['idcabang']
+            ];
         }
+
+        $client = new Client();
+        $response = $client->post(
+            'http://' . $this->config . '/RESTSecurity/RESTSecurity.svc/IDM/Unit-Cabang',
+            [
+                RequestOptions::JSON =>
+                    ['param' => $exportdata]
+            ]
+        );
+
+        $body = $response->getBody();
+        $temp = json_decode($body);
+        $result = json_decode($temp->UnitCabangResult);
 
         $rolelevel = str_contains($level, 'Admin') ? $level : base64_encode(microtime() . $request['userid']);
         $periode1 = $request['periode1'];
