@@ -111,7 +111,7 @@ class ProfileModel extends Model
         try {
             $data = [];
             $data = $this->connection->select(
-                "select * from public_v2.showuserstatusprofile(?,?,?,?,?,?,?,?,?)",
+                "select * from public_v2.showuserstatusprofile(?,?,?,?,?,?,?)",
                 [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $status, $employee]
             );
 
