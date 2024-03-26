@@ -439,6 +439,17 @@ class FilemanagerModel extends Model
             );
 
             if (is_array($data)) {
+                // $param['list_sp'] = array(
+                //     [
+                //         'conn' => 'HRD_OPR',
+                //         'payload' => ['karyawan' => 'STRUCTUTURE'],
+                //         'sp_name' => 'SP_GetStrukturKaryawan',
+                //         'process_name' => 'GetStrukturKaryawanResult'
+                //     ]
+                // );
+
+                // $response = $this->helper->SPExecutor($param);
+
                 $this->status = 'Success';
                 $this->message = 'Data has been process';
                 $this->data = $data;
