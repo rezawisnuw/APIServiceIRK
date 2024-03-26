@@ -106,13 +106,13 @@ class ProfileModel extends Model
         $idunit = $request['idunit'];
         $idcabang = $request['idcabang'];
         $iddepartemen = $request['iddepartemen'];
-        $nik = $request['nik'];
+        $employee = $request['employee'];
 
         try {
             $data = [];
             $data = $this->connection->select(
-                "select * from public_v2.showuserstatusprofile(?,?,?,?,?,?,?)",
-                [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $status, $nik]
+                "select * from public_v2.showuserstatusprofile(?,?,?,?,?,?,?,?,?)",
+                [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $status, $employee]
             );
 
             if (is_array($data)) {
@@ -188,12 +188,16 @@ class ProfileModel extends Model
         $cabang = $request['cabang'];
         $iddepartemen = $request['iddepartemen'];
         $departemen = $request['departemen'];
+        $iddirektorat = $request['iddirektorat'];
+        $direktorat = $request['direktorat'];
+        $iddivisi = $request['iddivisi'];
+        $divisi = $request['divisi'];
         $platform = $request['platform'];
 
         try {
             $data = $this->connection->insert(
-                "CALL public_v2.inputuserstatus(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                [$nik, $nama, $nohp, $platform == 'Website' ? $alias : base64_encode(microtime() . $nik), $email, $kelamin, $status, $idjabatan, $jabatan, $idunit, $unit, $idcabang, $cabang, $iddepartemen, $departemen, $platform]
+                "CALL public_v2.inputuserstatus(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                [$nik, $nama, $nohp, $platform == 'Website' ? $alias : base64_encode(microtime() . $nik), $email, $kelamin, $status, $idjabatan, $jabatan, $idunit, $unit, $idcabang, $cabang, $iddepartemen, $departemen, $iddirektorat, $direktorat, $iddivisi, $divisi, $platform]
             );
 
             if ($data) {

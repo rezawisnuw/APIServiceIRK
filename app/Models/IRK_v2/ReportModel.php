@@ -163,7 +163,7 @@ class ReportModel extends Model
                     'nikLogin' => $nik,
                     'shortMessage' => 'Report Content ' . $target->tag,
                     'longMessage' => 'Random alias melaporkan postingan anda',
-                    'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $$toBase64
+                    'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
                 ];
 
                 $response = $this->helper->NotificationPortal($body);

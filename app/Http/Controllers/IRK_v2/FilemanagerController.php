@@ -48,7 +48,7 @@ class FilemanagerController extends Controller
                     $result = $this->model->showDataTotalActivity($formbody);
                     break;
                 case 5:
-                    $result = $this->model->showDataReportAccount($formbody);
+                    $result = $this->model->showDataLimitedAccount($formbody);
                     break;
                 default:
                     $result = collect([

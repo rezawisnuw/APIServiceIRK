@@ -325,77 +325,100 @@ class FilemanagerModel extends Model
 
         }
 
-        if ($request['idunit'] = 'ALL' && $request['idcabang'] = 'ALL') {
-            $unit = [
-                'code' => '1',
-                'nik' => $request['userid'],
-            ];
+        // if ($request['idunit'] = 'ALL' && $request['idcabang'] = 'ALL') {
+        //     $unit = [
+        //         'code' => '1',
+        //         'nik' => $request['userid'],
+        //     ];
 
-            $client = new Client();
-            $response = $client->post(
-                'http://' . $this->config . '/RESTSecurity/RESTSecurity.svc/IDM/Unit-Cabang',
-                [
-                    RequestOptions::JSON =>
-                        ['param' => $unit]
-                ]
-            );
-            $body = $response->getBody();
-            $temp = json_decode($body);
-            $resultunit = json_decode($temp->UnitCabangResult);
+        //     $responseunit = $this->helper->UnitCabang($unit);
 
-            foreach ($resultunit as $k_unit => $v_unit) {
-                $param_unit[$k_unit] = $v_unit->AliasUnit;
-            }
+        //     foreach ($responseunit as $k_unit => $v_unit) {
+        //         $listunit[$k_unit] = $v_unit->AliasUnit;
+        //     }
 
-            $cabang = [
-                'code' => '2',
-                'nik' => $request['userid'],
-            ];
+        //     $cabang = [
+        //         'code' => '2',
+        //         'nik' => $request['userid'],
+        //     ];
 
-            $client = new Client();
-            $response = $client->post(
-                'http://' . $this->config . '/RESTSecurity/RESTSecurity.svc/IDM/Unit-Cabang',
-                [
-                    RequestOptions::JSON =>
-                        ['param' => $cabang]
-                ]
-            );
-            $body = $response->getBody();
-            $temp = json_decode($body);
-            $resultcabang = json_decode($temp->UnitCabangResult);
+        //     $responsecabang = $this->helper->UnitCabang($cabang);
 
-            foreach ($resultcabang as $k_cabang => $v_cabang) {
-                $param_cabang[$k_cabang] = $v_cabang->AREAID;
-            }
+        //     foreach ($responsecabang as $k_cabang => $v_cabang) {
+        //         $listcabang[$k_cabang] = $v_cabang->AREAID;
+        //     }
 
-        } else if ($request['idunit'] = 'ALL' && $request['idcabang'] != 'ALL') {
-            $exportdata = [
-                'code' => '9',
-                'nik' => $request['userid'],
-                'id_unit' => $request['idunit'],
-                'id_cabang' => $request['idcabang']
-            ];
-        } else if ($request['idunit'] != 'ALL' && $request['idcabang'] = 'ALL') {
-            $exportdata = [
-                'code' => '9',
-                'nik' => $request['userid'],
-                'id_unit' => $request['idunit'],
-                'id_cabang' => $request['idcabang']
-            ];
-        }
+        //     for ($u = 0; $u < count($listunit); $u++) {
+        //         for ($c = 0; $c < count($listcabang); $c++) {
 
-        $client = new Client();
-        $response = $client->post(
-            'http://' . $this->config . '/RESTSecurity/RESTSecurity.svc/IDM/Unit-Cabang',
-            [
-                RequestOptions::JSON =>
-                    ['param' => $exportdata]
-            ]
-        );
+        //             $direktorat = [
+        //                 'code' => '9',
+        //                 'nik' => $request['userid'],
+        //                 'id_unit' => $listunit[$u],
+        //                 'id_cabang' => $listcabang[$c]
+        //             ];
 
-        $body = $response->getBody();
-        $temp = json_decode($body);
-        $result = json_decode($temp->UnitCabangResult);
+        //             $responsedirektorat[] = empty($this->helper->UnitCabang($direktorat)) ? '' : $this->helper->UnitCabang($direktorat);
+
+        //         }
+        //     }
+
+        //     $listdirektorat = array_filter($responsedirektorat);
+
+        // } else if ($request['idunit'] = 'ALL' && $request['idcabang'] != 'ALL') {
+        //     $unit = [
+        //         'code' => '1',
+        //         'nik' => $request['userid'],
+        //     ];
+
+        //     $responseunit = $this->helper->UnitCabang($unit);
+
+        //     foreach ($responseunit as $k_unit => $v_unit) {
+        //         $listunit[$k_unit] = $v_unit->AliasUnit;
+        //     }
+
+        //     for ($u = 0; $u < count($listunit); $u++) {
+
+        //         $direktorat = [
+        //             'code' => '9',
+        //             'nik' => $request['userid'],
+        //             'id_unit' => $listunit[$u],
+        //             'id_cabang' => $request['idcabang']
+        //         ];
+
+        //         $responsedirektorat[] = empty($this->helper->UnitCabang($direktorat)) ? '' : $this->helper->UnitCabang($direktorat);
+
+        //     }
+
+        //     $listdirektorat = array_filter($responsedirektorat);
+        // } else if ($request['idunit'] != 'ALL' && $request['idcabang'] = 'ALL') {
+        //     $cabang = [
+        //         'code' => '2',
+        //         'nik' => $request['userid'],
+        //     ];
+
+        //     $responsecabang = $this->helper->UnitCabang($cabang);
+
+        //     foreach ($responsecabang as $k_cabang => $v_cabang) {
+        //         $listcabang[$k_cabang] = $v_cabang->AREAID;
+        //     }
+
+        //     for ($c = 0; $c < count($listcabang); $c++) {
+
+        //         $direktorat = [
+        //             'code' => '9',
+        //             'nik' => $request['userid'],
+        //             'id_unit' => $request['idunit'],
+        //             'id_cabang' => $listcabang[$c]
+        //         ];
+
+        //         $responsedirektorat[] = empty($this->helper->UnitCabang($direktorat)) ? '' : $this->helper->UnitCabang($direktorat);
+
+        //     }
+
+        //     $listdirektorat = array_filter($responsedirektorat);
+
+        // }
 
         $rolelevel = str_contains($level, 'Admin') ? $level : base64_encode(microtime() . $request['userid']);
         $periode1 = $request['periode1'];
@@ -403,13 +426,92 @@ class FilemanagerModel extends Model
         $idunit = $request['idunit'];
         $idcabang = $request['idcabang'];
         $iddepartemen = $request['iddepartemen'];
-        $direktorat = $result;
+        $idjabatan = $request['idjabatan'];
+        // $direktorat = $listdirektorat;
 
         try {
             $data = [];
             $data = $this->connection->select(
                 "select * from public_v2.showttlactivityreport(?,?,?,?,?,?,?)",
-                [$rolelevel, $idunit, $idcabang, $iddepartemen, $direktorat, $periode1, $periode2]
+                [$rolelevel, $idjabatan, $idunit, $idcabang, $iddepartemen, $periode1, $periode2]
+            );
+
+            if (is_array($data)) {
+                $this->status = 'Success';
+                $this->message = 'Data has been process';
+                $this->data = $data;
+            } else {
+                $this->status;
+                $this->message;
+                $this->data;
+            }
+
+        } catch (\Throwable $e) {
+            $this->status = 'Error';
+            $this->data = null;
+            $this->message = $e->getCode() == 0 ? 'Error Function Laravel = ' . $e->getMessage() : 'Error Database = ' . $e->getMessage();
+        }
+
+        return [
+            'status' => $this->status,
+            'data' => $this->data,
+            'message' => $this->message
+        ];
+    }
+
+    public function showDataLimitedAccount($request)
+    {
+        $param['list_sp'] = array(
+            [
+                'conn' => 'POR_DUMMY',
+                'payload' => ['nik' => $request['userid']],
+                'sp_name' => 'SP_GetAccessLevel',
+                'process_name' => 'GetAccessLevelResult'
+            ]
+        );
+
+        $response = $this->helper->SPExecutor($param);
+
+        if ($response->status == 0) {
+            return [
+                'status' => $this->status,
+                'data' => 'SPExecutor is cannot be process',
+                'message' => $this->message
+            ];
+        } else {
+
+            if (!empty($response->result->GetAccessLevelResult[0])) {
+                $level = $response->result->GetAccessLevelResult[0]->role;
+
+                if (str_contains($level, 'Admin') == false) {
+                    return [
+                        'status' => $this->status,
+                        'data' => $level,
+                        'message' => $this->message
+                    ];
+                }
+            } else {
+                $level = null;
+            }
+
+        }
+
+        $rolelevel = str_contains($level, 'Admin') ? $level : base64_encode(microtime() . $request['userid']);
+        $statuspengguna = $request['statuspengguna'];
+        $statuskonten = $request['statuskonten'];
+        $statusdilaporkan = $request['statusdilaporkan'];
+        $periode1 = $request['periode1'];
+        $periode2 = $request['periode2'];
+        $idunit = $request['idunit'];
+        $idcabang = $request['idcabang'];
+        $kelamin = $request['kelamin'];
+
+
+        try {
+            $data = [];
+            $data = $this->connection->select(
+                "select * from public_v2.showlimitedaccountreport(?,?,?,?,?,?,?,?,?)",
+                [$rolelevel, $idunit, $idcabang, $statuspengguna, $statuskonten, $statusdilaporkan, $kelamin, $periode1, $periode2]
             );
 
             if (is_array($data)) {

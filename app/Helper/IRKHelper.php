@@ -145,6 +145,25 @@ class IRKHelper
         return $result;
     }
 
+    public function UnitCabang($param)
+    {
+
+        $client = new Client();
+        $response = $client->post(
+            'http://' . $this->Segment($this->request->route('slug'))['config'] . '/RESTSecurity/RESTSecurity.svc/IDM/Unit-Cabang',
+            [
+                RequestOptions::JSON =>
+                    ['param' => $param]
+            ]
+        );
+
+        $body = $response->getBody();
+        $temp = json_decode($body);
+        $result = json_decode($temp->UnitCabangResult);
+
+        return $result;
+    }
+
     public function RecommenderSystem($userid, $page)
     {
         $result = '';
