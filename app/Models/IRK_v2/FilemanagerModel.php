@@ -93,24 +93,26 @@ class FilemanagerModel extends Model
                 $data[$index]->aktifideaku = array_sum(array_column($dataaktif, 'ttlideaku'));
                 $data[$index]->aktifceritaku = array_sum(array_column($dataaktif, 'ttlceritaku'));
                 $data[$index]->aktiflike = array_sum(array_column($dataaktif, 'ttllike'));
-                $data[$index]->aktifcomment = array_sum(array_column($dataaktif, 'ttlcomment'));
-                $data[$index]->aktifnewcomment = array_sum(array_column($dataaktif, 'ttlnewcomment'));
+                // $data[$index]->aktifcomment = array_sum(array_column($dataaktif, 'ttlcomment'));
+                $data[$index]->aktifcomment = array_sum(array_column($dataaktif, 'ttlnewcomment'));
                 $data[$index]->aktifreport = array_sum(array_column($dataaktif, 'ttlreport'));
                 $data[$index]->aktifremove = array_sum(array_column($dataaktif, 'ttlremove'));
                 $data[$index]->aktifberilike = array_sum(array_column($dataaktif, 'rsplike'));
-                $data[$index]->aktifbericomment = array_sum(array_column($dataaktif, 'rspcomment'));
+                // $data[$index]->aktifbericomment = array_sum(array_column($dataaktif, 'rspcomment'));
+                $data[$index]->aktifbericomment = array_sum(array_column($dataaktif, 'rspnewcomment'));
                 $data[$index]->aktifberireport = array_sum(array_column($dataaktif, 'rspreport'));
 
                 $data[$index]->terbatascurhatku = array_sum(array_column($dataterbatas, 'ttlcurhatku'));
                 $data[$index]->terbatasideaku = array_sum(array_column($dataterbatas, 'ttlideaku'));
                 $data[$index]->terbatasceritaku = array_sum(array_column($dataterbatas, 'ttlceritaku'));
                 $data[$index]->terbataslike = array_sum(array_column($dataterbatas, 'ttllike'));
-                $data[$index]->terbatascomment = array_sum(array_column($dataterbatas, 'ttlcomment'));
-                $data[$index]->terbatasnewcomment = array_sum(array_column($dataterbatas, 'ttlnewcomment'));
+                // $data[$index]->terbatascomment = array_sum(array_column($dataterbatas, 'ttlcomment'));
+                $data[$index]->terbatascomment = array_sum(array_column($dataterbatas, 'ttlnewcomment'));
                 $data[$index]->terbatasreport = array_sum(array_column($dataterbatas, 'ttlreport'));
                 $data[$index]->terbatasremove = array_sum(array_column($dataterbatas, 'ttlremove'));
                 $data[$index]->terbatasberilike = array_sum(array_column($dataterbatas, 'rsplike'));
-                $data[$index]->terbatasbericomment = array_sum(array_column($dataterbatas, 'rspcomment'));
+                // $data[$index]->terbatasbericomment = array_sum(array_column($dataterbatas, 'rspcomment'));
+                $data[$index]->terbatasbericomment = array_sum(array_column($dataterbatas, 'rspnewcomment'));
                 $data[$index]->terbatasberireport = array_sum(array_column($dataterbatas, 'rspreport'));
             }
 
