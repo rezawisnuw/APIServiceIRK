@@ -31,26 +31,22 @@ class FaqModel extends Model
             $category = $request['data']['category'] ?? null;
 
             $query = $this->connection->table('public_v2.Faq');
-            
+
             if (!is_null($idfaq) && is_null($question) && is_null($category)) {
                 $data = $query->where('id_faq', $idfaq)->get()->toArray();
-            } 
-            elseif (is_null($idfaq) && !is_null($question) && is_null($category)) {
+            } elseif (is_null($idfaq) && !is_null($question) && is_null($category)) {
                 $data = $query->where('question', 'LIKE', "%$question%")->get()->toArray();
-            } 
-            elseif (is_null($idfaq) && is_null($question) && !is_null($category)) {
+            } elseif (is_null($idfaq) && is_null($question) && !is_null($category)) {
                 $category = strtolower($category);
                 $data = $query->whereRaw('LOWER(category) = ?', $category)->get()->toArray();
-            } 
-            elseif (is_null($idfaq) && is_null($question) && is_null($category)) {
+            } elseif (is_null($idfaq) && is_null($question) && is_null($category)) {
                 $data = $query->orderBy('category')->orderBy('id_faq')->get()->toArray();
-            }
-            else {
+            } else {
                 $this->status = 'Error';
                 $this->message = 'Data not found or payload is invalid';
                 $this->data = null;
             }
-            
+
             if (is_array($data)) {
                 $this->status = 'Success';
                 $this->message = 'Data has been processed';
@@ -75,6 +71,16 @@ class FaqModel extends Model
 
     public function inputDataFaq($request)
     {
+        $activity = $this->connection
+            ->table('public_v2.UserStatus')
+            ->select('platforms')
+            ->where('nik', '=', $request['data']['nik'])
+            ->orderBy('log', 'desc')
+            ->take(1)
+            ->get();
+
+        $platform = $activity[0]->platforms;
+
         $param['list_sp'] = array(
             [
                 'conn' => 'POR_DUMMY',
@@ -103,16 +109,6 @@ class FaqModel extends Model
                         'message' => $this->message
                     ];
                 }
-
-                $activity = $this->connection
-                    ->table('public_v2.UserStatus')
-                    ->select('platforms')
-                    ->where('nik', '=', $request['data']['nik'])
-                    ->orderBy('log', 'desc')
-                    ->take(1)
-                    ->get();
-
-                $platform = $activity[0]->platforms;
 
             } else {
                 $level = null;
@@ -194,7 +190,7 @@ class FaqModel extends Model
 
             if (!is_null($idfaq)) {
                 $idfaqArray = explode(',', $idfaq);
-            $data = $this->connection->table('public_v2.Faq')->whereIn('id_faq', $idfaqArray)->delete();
+                $data = $this->connection->table('public_v2.Faq')->whereIn('id_faq', $idfaqArray)->delete();
             }
             if ($data) {
                 $this->status = 'Success';
