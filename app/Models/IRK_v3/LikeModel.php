@@ -126,13 +126,11 @@ class LikeModel extends Model
                 $toJson = json_encode($target->idticket);
 
                 $toBase64 = base64_encode($toJson);
-
-                if ($target->is_used == 'No') {
-                    $likedby = $this->connection->select("select * from public_v3.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
-                    $ttllike = $this->connection->select("select * from public_v3.getttllike(?)", [$idticket])[0]->getttllike;
-                    $ttlcomment = $this->connection->select("select * from public_v3.getttlcomment(?)", [$idticket])[0]->getttlcomment;
-                    $ttlnewcomment = $this->connection->select("select * from public_v3.getttlnewcomment(?)", [$idticket])[0]->getttlnewcomment;
-                }
+                
+                $likedby = $this->connection->select("select * from public_v3.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
+                $ttllike = $this->connection->select("select * from public_v3.getttllike(?)", [$idticket])[0]->getttllike;
+                $ttlcomment = $this->connection->select("select * from public_v3.getttlcomment(?)", [$idticket])[0]->getttlcomment;
+                $ttlnewcomment = $this->connection->select("select * from public_v3.getttlnewcomment(?)", [$idticket])[0]->getttlnewcomment;
 
                 if ($target->like == 1) {
                     $body['data'] = [
@@ -148,11 +146,11 @@ class LikeModel extends Model
 
                     $this->status = 'Success';
                     $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
-                    $this->data = $response->Result->status == 1 ? ["blocked" => $target->is_used, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment] : $data;
+                    $this->data = ["blocked" => $target->is_used, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
                 } else {
                     $this->status = 'Success';
                     $this->message = 'Data has been process';
-                    $this->data = $response->Result->status == 1 ? ["blocked" => $target->is_used, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment] : $data;
+                    $this->data = ["blocked" => $target->is_used, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
                 }
             } else {
                 $this->status;

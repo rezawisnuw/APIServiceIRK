@@ -29,7 +29,7 @@ class NotificationuserModel extends Model
         try {
 
             $nik = $request['data']['nik'] ?? null;
-            //$data = $this->connection->select('SELECT * FROM public_v2.get_notificationuser(?)', [$nik]);
+            //$data = $this->connection->select('SELECT * FROM public_v3.get_notificationuser(?)', [$nik]);
             $data = $this->connection->select('SELECT * FROM public_v3.get_notificationuser(?)', [$nik]);
 
             if ($data) {
@@ -62,7 +62,7 @@ class NotificationuserModel extends Model
             $hub_id = $request->input('hub_id');
             $nik = $request->input('nik');
 
-            //$this->connection->select('CALL public_v2.input_NotificationUser(?, ?)', [$hub_id, $nik]);
+            //$this->connection->select('CALL public_v3.input_NotificationUser(?, ?)', [$hub_id, $nik]);
             $this->connection->select('CALL public_v3.input_NotificationUser(?, ?)', [$hub_id, $nik]);
 
             return [
@@ -88,7 +88,7 @@ class NotificationuserModel extends Model
         $nik = $request['data']['nik'];
         try {
 
-            //$data = $this->connection->insert('CALL public_v2.edit_NotificationUser(?, ?, ?)', [$hub_id, $action, $nik]);
+            //$data = $this->connection->insert('CALL public_v3.edit_NotificationUser(?, ?, ?)', [$hub_id, $action, $nik]);
             $data = $this->connection->insert('CALL public_v3.edit_NotificationUser(?, ?, ?)', [$notification_userid, $action, $nik]);
 
             return [
