@@ -168,7 +168,7 @@ class ReportModel extends Model
 
                 $response = $this->helper->NotificationPortal($body);
 
-                if ($target->is_used == 'No') {
+                if ($response->Result->status == 1) {
                     $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
                     $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$idticket])[0]->getttllike;
                     $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$idticket])[0]->getttlcomment;
@@ -177,7 +177,7 @@ class ReportModel extends Model
 
                 $this->status = 'Success';
                 $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
-                $this->data = $target->is_used == 'No' ? ["blocked" => false, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment] : $data;
+                $this->data = $response->Result->status == 1 ? ["blocked" => $target->is_used, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment] : $data;
             } else {
                 $this->status;
                 $this->message;
@@ -285,7 +285,7 @@ class ReportModel extends Model
 
                 $response = $this->helper->NotificationPortal($body);
 
-                if ($target->is_blocked == false) {
+                if ($response->Result->status == 1) {
                     $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $target->id_ticket])[0]->getliked;
                     $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$target->id_ticket])[0]->getttllike;
                     $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$target->id_ticket])[0]->getttlcomment;
@@ -294,7 +294,7 @@ class ReportModel extends Model
 
                 $this->status = 'Success';
                 $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
-                $this->data = $target->is_blocked == false ? ["blocked" => false, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment] : $data;
+                $this->data = $response->Result->status == 1 ? ["blocked" => $target->is_blocked, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment] : $data;
             } else {
                 $this->status;
                 $this->message;
