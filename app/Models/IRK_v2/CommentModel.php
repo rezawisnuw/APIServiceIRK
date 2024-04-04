@@ -551,7 +551,7 @@ class CommentModel extends Model
                     $ttlnewcomment = $this->connection->select("select * from public_v2.getttlnewcomment(?)", [$idticket])[0]->getttlnewcomment;
 
                     $this->status = 'Success';
-                    $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
+                    $this->message = 'Data has been process';
                     $this->data = ["blocked" => true, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
                 }
 
@@ -666,13 +666,13 @@ class CommentModel extends Model
                     $this->data = ["blocked" => $target->is_blocked, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
 
                 }else{
-                    $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $id_ticket])[0]->getliked;
-                    $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$id_ticket])[0]->getttllike;
-                    $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$id_ticket])[0]->getttlcomment;
-                    $ttlnewcomment = $this->connection->select("select * from public_v2.getttlnewcomment(?)", [$id_ticket])[0]->getttlnewcomment;
+                    $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
+                    $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$idticket])[0]->getttllike;
+                    $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$idticket])[0]->getttlcomment;
+                    $ttlnewcomment = $this->connection->select("select * from public_v2.getttlnewcomment(?)", [$idticket])[0]->getttlnewcomment;
 
                     $this->status = 'Success';
-                    $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktifasi izin notifikasi pada browser anda terlebih dahulu';
+                    $this->message = 'Data has been process';
                     $this->data = ["blocked" => true, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
                 }
 
