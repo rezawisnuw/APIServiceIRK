@@ -119,39 +119,53 @@ class LikeModel extends Model
                     ->leftJoin('public_v2.Likes', 'Likes.id_ticket', '=', 'CeritaKita.id_ticket')
                     ->where('Likes.id_ticket', '=', $idticket)
                     ->where('Likes.nik_karyawan', '=', $nik)
-                    ->get()[0];
+                    ->get()[0] ?? null;
 
-                $target->idticket = ["idticket" => $idticket];
+                if(!empty($target)){
+                    $target->idticket = ["idticket" => $idticket];
 
-                $toJson = json_encode($target->idticket);
+                    $toJson = json_encode($target->idticket);
 
-                $toBase64 = base64_encode($toJson);
-                
-                $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
-                $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$idticket])[0]->getttllike;
-                $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$idticket])[0]->getttlcomment;
-                $ttlnewcomment = $this->connection->select("select * from public_v2.getttlnewcomment(?)", [$idticket])[0]->getttlnewcomment;
+                    $toBase64 = base64_encode($toJson);
+                    
+                    $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
+                    $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$idticket])[0]->getttllike;
+                    $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$idticket])[0]->getttlcomment;
+                    $ttlnewcomment = $this->connection->select("select * from public_v2.getttlnewcomment(?)", [$idticket])[0]->getttlnewcomment;
 
-                if ($target->like == 1) {
-                    $body['data'] = [
-                        'nik' => $target->employee,
-                        'apps' => 'Web Admin IRK',
-                        'nikLogin' => $nik,
-                        'shortMessage' => 'Like ' . $target->tag,
-                        'longMessage' => 'Random alias menyukai postingan anda',
-                        'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
-                    ];
+                    if ($target->like == 1) {
+                        $body['data'] = [
+                            'nik' => $target->employee,
+                            'apps' => 'Web Admin IRK',
+                            'nikLogin' => $nik,
+                            'shortMessage' => 'Like ' . $target->tag,
+                            'longMessage' => 'Random alias menyukai postingan anda',
+                            'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
+                        ];
 
-                    $response = $this->helper->NotificationPortal($body);
+                        $response = $this->helper->NotificationPortal($body);
 
-                    $this->status = 'Success';
-                    $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
-                    $this->data = ["blocked" => $target->is_used == "Yes" ? true : false, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
-                } else {
+                        $this->status = 'Success';
+                        $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
+                        $this->data = ["blocked" => $target->is_used == "Yes" ? true : false, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
+                    } else {
+                        $this->status = 'Success';
+                        $this->message = 'Data has been process';
+                        $this->data = ["blocked" => $target->is_used == "Yes" ? true : false, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
+                    }
+
+                }else{
+                    $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
+                    $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$idticket])[0]->getttllike;
+                    $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$idticket])[0]->getttlcomment;
+                    $ttlnewcomment = $this->connection->select("select * from public_v2.getttlnewcomment(?)", [$idticket])[0]->getttlnewcomment;
+
                     $this->status = 'Success';
                     $this->message = 'Data has been process';
-                    $this->data = ["blocked" => $target->is_used == "Yes" ? true : false, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
+                    $this->data = ["blocked" => true, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
                 }
+
+                
             } else {
                 $this->status;
                 $this->message;
