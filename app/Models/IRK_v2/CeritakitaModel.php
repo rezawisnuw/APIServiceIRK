@@ -306,9 +306,42 @@ class CeritakitaModel extends Model
             $data = $this->connection->insert("CALL public_v2.editceritakita(?,?,?,?)", [$nik, $idticket, $tag, $reason]);
 
             if ($data) {
+                // $this->status = 'Success';
+                // $this->message = 'Data has been process';
+                // $this->data = $data;
+
+                $target = $this->connection
+                    ->table('public_v2.CeritaKita')
+                    ->select('employee', 'tag', 'is_used')
+                    ->where('id_ticket', '=', $idticket)
+                    ->get()[0];
+
+                $target->idticket = ["idticket" => $idticket];
+
+                $toJson = json_encode($target->idticket);
+
+                $toBase64 = base64_encode($toJson);
+
+                $body['data'] = [
+                    'nik' => $target->employee,
+                    'apps' => 'Web Admin IRK',
+                    'nikLogin' => $nik,
+                    'shortMessage' => 'Content ' . $target->tag,
+                    'longMessage' => 'Random alias menghapus postingan anda',
+                    'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
+                ];
+
+                $response = $this->helper->NotificationPortal($body);
+                
+                $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
+                $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$idticket])[0]->getttllike;
+                $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$idticket])[0]->getttlcomment;
+                $ttlnewcomment = $this->connection->select("select * from public_v2.getttlnewcomment(?)", [$idticket])[0]->getttlnewcomment;
+                
+
                 $this->status = 'Success';
-                $this->message = 'Data has been process';
-                $this->data = $data;
+                $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
+                $this->data = ["blocked" => $target->is_used == "Yes" ? true : false, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
             } else {
                 $this->status;
                 $this->message;

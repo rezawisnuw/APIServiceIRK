@@ -625,6 +625,7 @@ class CommentModel extends Model
                     ->table('public_v2.NewComment')
                     ->select('tag', 'nik_karyawan', 'id_ticket', 'is_blocked')
                     ->where('id_ticket', '=', $idticket)
+                    ->where('has_parent', '=', $parentreply)
                     ->get()[0];
 
                 $toJson = json_encode($target->id_ticket);
@@ -681,9 +682,41 @@ class CommentModel extends Model
             $data = $this->connection->insert("CALL public_v2.update_comment(?,?,?)", [$nik, $status, $idcomment]);
             //$data = $this->connection->insert("CALL public_v2.editnewcomment(?,?)", [$nik, $idcomment]);
             if ($data) {
+                // $this->status = 'Success';
+                // $this->message = 'Data has been process';
+                // $this->data = $data;
+
+                $target = $this->connection
+                    ->table('public_v2.NewComment')
+                    ->select('tag', 'nik_karyawan', 'id_ticket', 'is_blocked')
+                    ->where('id_comment', '=', $idcomment)
+                    ->get()[0];
+
+                $toJson = json_encode($target->id_ticket);
+
+                $toBase64 = base64_encode($toJson);
+
+                $body['data'] = [
+                    'nik' => $target->nik_karyawan,
+                    'apps' => 'Web Admin IRK',
+                    'nikLogin' => $nik,
+                    'shortMessage' => 'Comment ' . $target->tag,
+                    'longMessage' => 'Random alias menghapus komentar anda',
+                    'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
+                ];
+
+                $response = $this->helper->NotificationPortal($body);
+
+                
+                $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $target->id_ticket])[0]->getliked;
+                $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$target->id_ticket])[0]->getttllike;
+                $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$target->id_ticket])[0]->getttlcomment;
+                $ttlnewcomment = $this->connection->select("select * from public_v2.getttlnewcomment(?)", [$target->id_ticket])[0]->getttlnewcomment;
+                
+
                 $this->status = 'Success';
-                $this->message = 'Data has been process';
-                $this->data = $data;
+                $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktifasi izin notifikasi pada browser anda terlebih dahulu';
+                $this->data = ["blocked" => $target->is_blocked, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
             } else {
                 $this->status;
                 $this->message;
@@ -712,9 +745,41 @@ class CommentModel extends Model
             $data = $this->connection->insert("CALL public_v2.editreplynewcomment(?,?)", [$nik, $idcomment]);
 
             if ($data) {
+                // $this->status = 'Success';
+                // $this->message = 'Data has been process';
+                // $this->data = $data;
+
+                $target = $this->connection
+                    ->table('public_v2.NewComment')
+                    ->select('tag', 'nik_karyawan', 'id_ticket', 'is_blocked')
+                    ->where('id_comment', '=', $idcomment)
+                    ->get()[0];
+
+                $toJson = json_encode($target->id_ticket);
+
+                $toBase64 = base64_encode($toJson);
+
+                $body['data'] = [
+                    'nik' => $target->nik_karyawan,
+                    'apps' => 'Web Admin IRK',
+                    'nikLogin' => $nik,
+                    'shortMessage' => 'Reply Comment ' . $target->tag,
+                    'longMessage' => 'Random alias menghapus komentar anda',
+                    'link' => 'portal/irk/transaksi/cerita-kita/rincian/redirect/' . $toBase64
+                ];
+
+                $response = $this->helper->NotificationPortal($body);
+
+                
+                $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $target->id_ticket])[0]->getliked;
+                $ttllike = $this->connection->select("select * from public_v2.getttllike(?)", [$target->id_ticket])[0]->getttllike;
+                $ttlcomment = $this->connection->select("select * from public_v2.getttlcomment(?)", [$target->id_ticket])[0]->getttlcomment;
+                $ttlnewcomment = $this->connection->select("select * from public_v2.getttlnewcomment(?)", [$target->id_ticket])[0]->getttlnewcomment;
+                
+
                 $this->status = 'Success';
-                $this->message = 'Data has been process';
-                $this->data = $data;
+                $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktifasi izin notifikasi pada browser anda terlebih dahulu';
+                $this->data = ["blocked" => $target->is_blocked, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
             } else {
                 $this->status;
                 $this->message;
