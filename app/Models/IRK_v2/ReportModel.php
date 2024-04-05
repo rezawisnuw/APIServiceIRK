@@ -268,6 +268,11 @@ class ReportModel extends Model
                     ->where('id_comment', '=', $idcomment)
                     ->get()[0];
 
+                $transit = $this->connection
+                    ->table('public_v2.CeritaKita')
+                    ->select('employee', 'tag', 'is_used')
+                    ->where('id_ticket', '=', $$target->id_ticket)
+                    ->get()[0];
                 
                 $toJson = json_encode($target->id_ticket);
 
@@ -291,7 +296,7 @@ class ReportModel extends Model
 
                 $this->status = 'Success';
                 $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktivasi izin notifikasi pada browser anda terlebih dahulu';
-                $this->data = ["blocked" => $target->is_blocked, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
+                $this->data = ["blocked" => $transit->is_used == 'No' ? $target->is_blocked : true, "blocked_comment" => $transit->is_used == 'Yes' ? false : $target->is_blocked, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
                
             } else {
                 $this->status;

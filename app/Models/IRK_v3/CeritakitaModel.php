@@ -247,7 +247,7 @@ class CeritakitaModel extends Model
 
         try {
             $data = [];
-            $data = $this->connection->select("select * from public_v3.showceritakitadetail(?,?,?,?,?,?,?,?,?)", [$userid, $page, $tag, $periode1, $periode2, $report, $content, $follow, $userstatus]);
+            $data = $this->connection->select("select * from public_v3.showceritakitadetail(?,?,?,?,?,?,?,?,?) ORDER BY is_bookmark DESC", [$userid, $page, $tag, $periode1, $periode2, $report, $content, $follow, $userstatus]);
 
 
             if (is_array($data)) {
@@ -315,8 +315,6 @@ class CeritakitaModel extends Model
                     ->select('employee', 'tag', 'is_used')
                     ->where('id_ticket', '=', $idticket)
                     ->get()[0];
-
-                $response = $this->helper->NotificationPortal($body);
                 
                 $likedby = $this->connection->select("select * from public_v3.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
                 $ttllike = $this->connection->select("select * from public_v3.getttllike(?)", [$idticket])[0]->getttllike;
@@ -421,7 +419,7 @@ class CeritakitaModel extends Model
                 }
                 $images = '{' . implode(',', $imgname) . '}';
 
-                $data = $this->connection->insert("CALL public_v3.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $images, $tag, $platform]);
+                $data = $this->connection->insert("CALL public_v3.input_CeritakitaNotif(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $images, $tag, $platform]);
 
                 if ($data) {
                     $this->status = 'Success';
@@ -436,7 +434,7 @@ class CeritakitaModel extends Model
             } else {
                 $images = '{' . $idimg . '.' . '}';
 
-                $data = $this->connection->insert("CALL public_v3.inputceritakita(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $images, $tag, $platform]);
+                $data = $this->connection->insert("CALL public_v3.input_CeritakitaNotif(?,?,?,?,?,?,?)", [$nik, $caption, $deskripsi, $alias, $images, $tag, $platform]);
 
                 if ($data) {
                     $imgpath = $this->path . '/Ceritakita/' . ucfirst($tag) . '/' . $idimg . '.';

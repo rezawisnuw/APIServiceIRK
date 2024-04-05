@@ -669,7 +669,7 @@ class CommentModel extends Model
 
                     $this->status = 'Success';
                     $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktifasi izin notifikasi pada browser anda terlebih dahulu';
-                    $this->data = ["blocked" => $transit->is_used == 'No' ? $target->is_blocked : true, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
+                    $this->data = ["blocked" => $transit->is_used == 'No' ? $target->is_blocked : true, "blocked_comment" => $transit->is_used == 'Yes' ? false : $target->is_blocked, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
 
                 }else{
                     $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
@@ -679,7 +679,7 @@ class CommentModel extends Model
 
                     $this->status = 'Success';
                     $this->message = 'Data has been process';
-                    $this->data = ["blocked" => true, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
+                    $this->data = ["blocked" => true,  "blocked_comment" => false, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
                 }
 
                 

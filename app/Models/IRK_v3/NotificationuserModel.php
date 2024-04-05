@@ -79,23 +79,96 @@ class NotificationuserModel extends Model
         }
     }
 
-
     public function editDataNotificationUser($request)
     {
-
         $notification_userid = isset($request['data']['notification_userid']) ? $request['data']['notification_userid'] : null;
         $action = $request['data']['action'];
         $nik = $request['data']['nik'];
+
         try {
+            $sql = "CALL public_v3.edit_notificationuser(?, ?, ?, ?)";
 
-            //$data = $this->connection->insert('CALL public_v3.edit_NotificationUser(?, ?, ?)', [$hub_id, $action, $nik]);
-            $data = $this->connection->insert('CALL public_v3.edit_NotificationUser(?, ?, ?)', [$notification_userid, $action, $nik]);
+            // Sesuaikan parameter yang dikirimkan berdasarkan kondisi
+            if ($action === 'lihat' && $notification_userid !== "") {
+                $data = $this->connection->select($sql, [$notification_userid, $action, $nik, null]);
+            } elseif ($action === 'tandai_semua_dibaca') {
+                $data = $this->connection->select($sql, [null, $action, $nik, null]);
+                $data = $this->connection->select('SELECT * FROM public_v3.get_notificationuser(?)', [$nik]);
+                // Jika tindakan adalah 'tandai_semua_dibaca', tidak ada data yang perlu diproses
+                return [
+                    'status' => 'Success',
+                    'data' => $data,
+                    'message' => 'All notifications marked as read successfully'
+                ];
+            } else {
+                return [
+                    'status' => 'Error',
+                    'data' => null,
+                    'message' => 'Invalid action or conditions'
+                ];
+            }
 
-            return [
-                'status' => 'Success',
-                'data' => null,
-                'message' => 'Notification user edited successfully'
-            ];
+            if (is_array($data) && count($data) > 0) {
+                $result_variable = json_decode($data[0]->result_variable, true);
+
+                // Lakukan pemrosesan data sesuai dengan kebutuhan Anda
+                $formatted_data = [
+                    "idticket" => $result_variable['idticket'],
+                    "employee" => $result_variable['employee'],
+                    "header" => $result_variable['header'],
+                    "text" => $result_variable['text'],
+                    "picture" => $result_variable['picture'],
+                    "key" => $result_variable['key'],
+                    "created" => $result_variable['created'],
+                    "alias" => $result_variable['alias'],
+                    "ttlcomment" => $result_variable['ttlcomment'],
+                    "ttlnewcomment" => $result_variable['ttlnewcomment'],
+                    "ttllike" => $result_variable['ttllike'],
+                    "likeby" => $result_variable['likeby'],
+                    "blocked" => $result_variable['blocked'],
+                    "reasonblocked" => $result_variable['reasonblocked'],
+                    "followup" => $result_variable['followup'],
+                    //"postingby" => $result_variable['postingby'],
+                    "userflag" => $result_variable['userflag'],
+                    "employeename" => $result_variable['employeename'],
+                    "jabatan" => $result_variable['jabatan'],
+                    "kodejabatan" => $result_variable['kodejabatan'],
+                    "namacabang" => $result_variable['namacabang'],
+                    "idcabang" => $result_variable['idcabang'],
+                    "namadepartemen" => $result_variable['namadepartemen'],
+                    "iddepartemen" => $result_variable['iddepartemen'],
+                    "lastloginby" => $result_variable['lastloginby'],
+                    "viewer" => $result_variable['viewer'],
+                    "is_bookmark" => $result_variable['is_bookmark']
+                ];
+
+                $userid = $request['data']['nik'];
+                // Periksa apakah properti 'comments' tersedia sebelum mencoba mengaksesnya
+                $comments = json_decode($this->connection->select("select * from public_v3.get_comments_temp(?,?)", [$formatted_data['idticket'], $userid])[0]->comments);
+
+                if (count($comments) >= 1 && !empty($comments[0]->id_comment)) {
+                    $formatted_data['comments'] = $comments;
+                } else {
+                    $formatted_data['comments'] = [];
+                }
+
+                $formatted_data['likes'] = $this->connection->select("select * from public_v3.showlike(?,?)", [$formatted_data['idticket'], $userid]);
+
+                $formatted_data['report_ticketlist'] = $this->connection->select("select * from public_v3.showreportticket(?,?)", [$formatted_data['idticket'], $userid]);
+                $formatted_data['report_ticket'] = count($formatted_data['report_ticketlist']) > 0 ? 'Ya' : 'Tidak';
+
+                return [
+                    'status' => 'Success',
+                    'data' => $formatted_data,
+                    'message' => 'Notification user edited successfully'
+                ];
+            } else {
+                return [
+                    'status' => 'Error',
+                    'data' => null,
+                    'message' => 'No data found'
+                ];
+            }
         } catch (\Throwable $e) {
             return [
                 'status' => 'Error',
@@ -104,4 +177,5 @@ class NotificationuserModel extends Model
             ];
         }
     }
+
 }
