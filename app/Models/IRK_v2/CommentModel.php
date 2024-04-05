@@ -632,11 +632,17 @@ class CommentModel extends Model
             $data = $this->connection->insert("CALL public_v2.inputreplynewcomment(?,?,?,?,?,?,?)", [$nik, $comment, $idticket, $alias, $tag, $platform, $parentreply]);
 
             if ($data) {
+                $transit = $this->connection
+                    ->table('public_v2.CeritaKita')
+                    ->select('employee', 'tag', 'is_used')
+                    ->where('id_ticket', '=', $idticket)
+                    ->get()[0];
+                    
                 $target = $this->connection
                     ->table('public_v2.NewComment')
                     ->select('tag', 'nik_karyawan', 'id_ticket', 'is_blocked')
                     ->where('id_ticket', '=', $idticket)
-                    ->where('has_parent', '=', $parentreply)
+                    ->where('id_comment', '=', $parentreply)
                     ->get()[0] ?? null;
 
 
@@ -663,7 +669,7 @@ class CommentModel extends Model
 
                     $this->status = 'Success';
                     $this->message = $response->Result->status == 1 ? $response->Result->message : 'Silahkan periksa aktifasi izin notifikasi pada browser anda terlebih dahulu';
-                    $this->data = ["blocked" => $target->is_blocked, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
+                    $this->data = ["blocked" => $transit->is_used == 'No' ? $target->is_blocked : true, "likedby" => $likedby, "ttllike" => $ttllike, "ttlcomment" => $ttlcomment, "ttlnewcomment" => $ttlnewcomment];
 
                 }else{
                     $likedby = $this->connection->select("select * from public_v2.getliked(?,?)", [$request['userid'], $idticket])[0]->getliked;
