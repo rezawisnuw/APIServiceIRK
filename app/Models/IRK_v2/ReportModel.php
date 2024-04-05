@@ -271,7 +271,7 @@ class ReportModel extends Model
                 $transit = $this->connection
                     ->table('public_v2.CeritaKita')
                     ->select('employee', 'tag', 'is_used')
-                    ->where('id_ticket', '=', $$target->id_ticket)
+                    ->where('id_ticket', '=', $target->id_ticket)
                     ->get()[0];
                 
                 $toJson = json_encode($target->id_ticket);
