@@ -244,23 +244,15 @@ class ReportModel extends Model
         $nik = $request['nik'];
         $report = $request['report'];
         $idcomment = $request['idcomment'];
-        // $idreply = $request['idreply'];
-        // $idparent = $request['idparent'];
-        // $parentreply = $request['parentreply'];
+       
         $tag = $request['tag'];
         $alias = str_contains($level, 'Admin') && $platform == 'Website' ? $level : base64_encode(microtime() . $request['nik']);
 
         try {
-            // $data = $this->connection->insert("CALL public_v3.inputreportcomment(?,?,?,?,?,?,?,?,?)", [$nik, $report, $idcomment, $idreply, $idparent, $parentreply, $tag, $alias, $platform]);
+            
             $data = $this->connection->insert("CALL public_v3.inputreportcomment(?,?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias, $platform]);
 
             if ($data) {
-
-                // $target = $this->connection
-                //     ->table('public_v3.Comment')
-                //     ->select('nik_karyawan', 'tag', 'id_ticket')
-                //     ->where('id_comment', '=', $parentreply == 0 ? $idcomment : $idparent)
-                //     ->get()[0];
 
                 $target = $this->connection
                     ->table('public_v3.NewComment')
