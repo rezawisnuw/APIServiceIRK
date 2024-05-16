@@ -182,7 +182,7 @@ class MotivasiModel extends Model
         $deskripsi = $request->deskripsi;
         $alias = str_contains($level, 'Admin') ? $level : base64_encode(microtime() . $request->nik);
         $gambar = isset($request->gambar) ? $request->gambar : '';
-        $tag = 'motivasi'; //$request->tag;
+        $tag = 'motivasi';
 
         try {
             $idimg = str_contains($alias, 'Admin') ? substr(base64_encode(microtime() . $request->nik), 3, 8) : substr($alias, 3, 8);

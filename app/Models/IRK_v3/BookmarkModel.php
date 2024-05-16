@@ -27,7 +27,6 @@ class BookmarkModel extends Model
     {
         try {
             $nik = $request['data']['nik'] ?? null;
-            //$query = $this->connection->table('public_v3.Bookmark');
             $query = $this->connection->table('public_v3.Bookmark');
             $data = $query->where('nik', $nik)->get();
 
@@ -61,7 +60,7 @@ class BookmarkModel extends Model
         $post_id = $request['data']['post_id'];
 
         try {
-            //$data = $this->connection->insert("CALL public_v3.input_Bookmark(?, ?)", [$nik, $post_id]);
+            
             $data = $this->connection->insert("CALL public_v3.input_Bookmark(?, ?)", [$nik, $post_id]);
 
             if ($data) {
@@ -94,7 +93,7 @@ class BookmarkModel extends Model
         $post_id = $request['data']['post_id'];
 
         try {
-            //$data = $this->connection->insert('CALL public_v3.edit_Bookmark(?, ?)', [$nik, $post_id]);
+
             $data = $this->connection->insert('CALL public_v3.edit_Bookmark(?, ?)', [$nik, $post_id]);
 
             if ($data) {

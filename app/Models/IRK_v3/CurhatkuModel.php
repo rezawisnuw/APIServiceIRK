@@ -180,7 +180,7 @@ class CurhatkuModel extends Model
         $deskripsi = $request->deskripsi;
         $alias = base64_encode(microtime() . $request->nik);
         $gambar = isset($request->gambar) ? $request->gambar : '';
-        $tag = 'curhatku'; //$request->tag;
+        $tag = 'curhatku';
         $platform = $activity[0]->platforms;
 
         try {

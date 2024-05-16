@@ -74,7 +74,6 @@ class IdeakuController extends Controller
             $b64filedecode = base64_decode($filedecode);
 
             $arrayfile = $this->helper->BlobtoFile($b64filedecode);
-            //return response()->json($arrayfile[0]->extension());
             isset($datadecode->gambar) && !empty($datadecode->gambar) ? $datadecode->gambar = $arrayfile[0] : $datadecode->gambar = '';
         }
 

@@ -181,7 +181,7 @@ class IdeakuModel extends Model
         $deskripsi = $request->deskripsi;
         $alias = base64_encode(microtime() . $request->nik);
         $gambar = isset($request->gambar) && count($request->gambar) > 0 ? $request->gambar : '';
-        $tag = 'ideaku'; //$request->tag;
+        $tag = 'ideaku';
         $platform = $activity[0]->platforms;
 
         try {
