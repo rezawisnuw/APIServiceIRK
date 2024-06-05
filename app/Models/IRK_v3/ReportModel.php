@@ -250,9 +250,9 @@ class ReportModel extends Model
 
         try {
             
-            $data = $this->connection->insert("CALL public_v3.inputreportcomment(?,?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias, $platform]);
+            //$data = $this->connection->insert("CALL public_v3.inputreportcomment(?,?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias, $platform]);
 
-            if ($data) {
+            if (1==1) {
 
                 $target = $this->connection
                     ->table('public_v3.NewComment')
@@ -261,7 +261,7 @@ class ReportModel extends Model
                     ->get()[0];
 
                 $transit = $this->connection
-                    ->table('public_v2.CeritaKita')
+                    ->table('public_v3.CeritaKita')
                     ->select('employee', 'tag', 'is_used')
                     ->where('id_ticket', '=', $target->id_ticket)
                     ->get()[0];
