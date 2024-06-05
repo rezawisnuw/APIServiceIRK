@@ -250,9 +250,9 @@ class ReportModel extends Model
 
         try {
             
-            //$data = $this->connection->insert("CALL public_v3.inputreportcomment(?,?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias, $platform]);
+            $data = $this->connection->insert("CALL public_v3.inputreportcomment(?,?,?,?,?,?)", [$nik, $report, $idcomment, $tag, $alias, $platform]);
 
-            if (1==1) {
+            if ($data) {
 
                 $target = $this->connection
                     ->table('public_v3.NewComment')
