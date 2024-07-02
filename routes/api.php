@@ -35,6 +35,22 @@ Route::group([
     'middleware' => 'cors'
 ], function () {
 
+    //Credentials Endpoint
+    Route::group(['prefix' => 'credential'], function () {
+        Route::post('get', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CredentialController")->get(request());
+        });
+        Route::post('post', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CredentialController")->post(request());
+        });
+        Route::post('put', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CredentialController")->put(request());
+        });
+        Route::post('delete', function ($x) {
+            return app("App\\Http\\Controllers\\IRK_v{$x}\\CredentialController")->delete(request());
+        });
+    });
+
     //Version Endpoint
     Route::group(['prefix' => 'version'], function () {
         Route::post('get', function ($x) {

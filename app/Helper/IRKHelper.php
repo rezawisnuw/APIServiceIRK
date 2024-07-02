@@ -28,16 +28,19 @@ class IRKHelper
         if ($slug == 'dev') {
             $setting['authorize'] = 'Authorization-dev';
             $setting['config'] = config('app.URL_DEV');
+            $setting['credential'] = DB::connection(config('app.URL_PGSQLGCP_ESS'));// . $this->request->route('x') . '_DEV'));
             $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_V' . $this->request->route('x') . '_DEV'));
             $setting['path'] = 'Dev';
         } else if ($slug == 'stag') {
             $setting['authorize'] = 'Authorization-stag';
             $setting['config'] = config('app.URL_STAG');
+            $setting['credential'] = DB::connection(config('app.URL_PGSQLGCP_ESS'));// . $this->request->route('x') . '_STAG'));
             $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_V' . $this->request->route('x') . '_STAG'));
             $setting['path'] = 'Stag';
         } else if ($slug == 'live') {
             $setting['authorize'] = 'Authorization';
             $setting['config'] = config('app.URL_LIVE');
+            $setting['credential'] = DB::connection(config('app.URL_PGSQLGCP_ESS'));// . $this->request->route('x') . '_LIVE'));
             $setting['connection'] = DB::connection(config('app.URL_PGSQLGCP_IRK_V' . $this->request->route('x') . ''));
             $setting['path'] = 'Live';
         } else {
